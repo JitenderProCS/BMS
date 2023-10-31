@@ -318,6 +318,7 @@ E:\Jitendra\GIT\main\BMS\BMS-New\obj\Debug\BMS-New.csproj.CoreCompileInputs.cach
 E:\Jitendra\GIT\main\BMS\BMS-New\obj\Debug\BMS-New.csproj.CopyComplete
 E:\Jitendra\GIT\main\BMS\BMS-New\obj\Debug\BMS-New.dll
 E:\Jitendra\GIT\main\BMS\BMS-New\obj\Debug\BMS-New.pdb
+E:\Jitendra\GIT\developement\BMS\BMS-New\obj\Debug\BMS-New.csproj.CoreCompileInputs.cache
 E:\Jitendra\GIT\developement\BMS\BMS-New\bin\BMS-New.dll.config
 E:\Jitendra\GIT\developement\BMS\BMS-New\bin\BMS-New.dll
 E:\Jitendra\GIT\developement\BMS\BMS-New\bin\BMS-New.pdb
@@ -393,8 +394,6 @@ E:\Jitendra\GIT\developement\BMS\BMS-New\bin\System.Net.Http.Formatting.xml
 E:\Jitendra\GIT\developement\BMS\BMS-New\bin\System.Web.Http.xml
 E:\Jitendra\GIT\developement\BMS\BMS-New\bin\System.Web.Http.WebHost.xml
 E:\Jitendra\GIT\developement\BMS\BMS-New\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-E:\Jitendra\GIT\developement\BMS\BMS-New\obj\Debug\BMS-New.csproj.CoreCompileInputs.cache
 E:\Jitendra\GIT\developement\BMS\BMS-New\obj\Debug\BMS-New.csproj.CopyComplete
 E:\Jitendra\GIT\developement\BMS\BMS-New\obj\Debug\BMS-New.dll
 E:\Jitendra\GIT\developement\BMS\BMS-New\obj\Debug\BMS-New.pdb
-E:\Jitendra\GIT\developement\BMS\BMS-New\obj\Debug\BMS-New.csproj.AssemblyReference.cache

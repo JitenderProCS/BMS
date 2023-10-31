@@ -4794,6 +4794,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="assets\plugins\custom\summernote\" />
+    <Folder Include="BoardMeeting\images\user\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -717,60 +717,6 @@ namespace BMS_New.Models.BMS.Repository
             return _userResponse;
         }
         /*********Add By Jitender**********/
-        //public AdminUserResponse GetUserCompanyList(AdminUser objUser)
-        //{
-        //    _userResponse = new AdminUserResponse();
-        //    _userResponse.StatusFl = false;
-        //    _userResponse.Msg = "No Data Found!";
-        //    try
-        //    {
-        //        using (SqlConnection conn = new SqlConnection(connectionString))
-        //        {
-        //            conn.Open();
-        //            using (SqlCommand cmd = new SqlCommand("SP_PROCS_USER", conn))
-        //            {
-        //                cmd.CommandType = CommandType.StoredProcedure;
-        //                cmd.CommandTimeout = 0;
-        //                cmd.Parameters.Clear();
-        //                cmd.Parameters.Add(new SqlParameter("@MODE", "GET_USER_COMPANY_LIST"));
-        //                cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-        //                cmd.Parameters.Add(new SqlParameter("@LOGIN_ID", objUser.userLogin));
-        //                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-        //                {
-        //                    DataTable dt = new DataTable();
-        //                    da.Fill(dt);
-        //                    if (dt.Rows.Count > 0)
-        //                    {
-        //                        //List<CompanyAccess> CompanyMapping = new List<CompanyAccess>();
-        //                        foreach (CompanyAccess Cmap in objUser.CompanyMapping)
-        //                        {
-        //                            DataRow dr = dt.NewRow();
-        //                            dr["companyId"] = Cmap.companyId;
-        //                            dr["CompanyName"] = Cmap.CompanyName;
-        //                            //dr["moduleId"] = Cmap.moduleId;
-        //                            //dr["moduleName"] = Cmap.moduleName;
-        //                            //dr["Role_Admin"] = Cmap.Role_Admin;
-        //                            dt.Rows.Add(dr);
-        //                        }
-        //                        _userResponse.User = objUser;
-        //                        _userResponse.StatusFl = true;
-        //                        _userResponse.Msg = "Data has been fetched successfully !";
-        //                    }
-        //                }
-        //            }
-        //            conn.Close();
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _userResponse = new AdminUserResponse();
-        //        _userResponse.StatusFl = false;
-        //        _userResponse.Msg = "Something went wrong. Please try again or Contact Support!";
-        //        //new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
-        //    }
-        //    return _userResponse;
-        //}
-
         public AdminUserResponse GetUserCompanyList(AdminUser objUser)
         {
             AdminUserResponse _userResponse = new AdminUserResponse();
@@ -826,9 +772,6 @@ namespace BMS_New.Models.BMS.Repository
         }
 
         /*************End**********/
-
-
-
         #region "Date Conversion"
 
         private DateTime ConvertDate(String date)

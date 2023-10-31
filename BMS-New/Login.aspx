@@ -218,7 +218,10 @@
                 </div>
                 <div class="modal-body">
                     <!--begin::Group-->
-                    <div><h3> Comapny Logo</h3><h3>Module Acceess</h3></div>
+                    <div>
+                        <h3> Comapny Logo          Module Acceess</h3>
+                    </div>
+                    <br />
                     <div id="ShowListing" runat="server"></div>
                     <!--end::Group-->
                 </div>

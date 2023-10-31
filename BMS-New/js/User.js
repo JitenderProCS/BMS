@@ -333,20 +333,6 @@ function fnAddUpdateUser() {
     debugger
     var userData = new FormData();
     var multicompanies = [];
-    debugger
-
-
-    //$('#tblmultiCompanies tbody tr').each(function (index, row) {
-    //    var companyInput = $(row).find('#txtOtherCompanies');
-    //    var companyValue = companyInput.val().trim();
-
-    //    if (companyValue !== '') {
-    //        var data = {
-    //            companyValue,
-    //        };
-    //        multicompanies.push(data);
-    //    }
-    //});
 
     for (var i = 0; i < $("#tbdCompany").children().length; i++) {
         var AE = new String();

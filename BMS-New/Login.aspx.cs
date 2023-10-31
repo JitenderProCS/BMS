@@ -49,8 +49,8 @@ namespace BMS_New
                     {
                         //Session.Clear();
                         Session["EmployeeId"] = Convert.ToString(login.LoginId);
-                        //Session["CompanyId"] = Convert.ToInt32(objResponse.Usr.UAccess[0].CompanyId);
-                        //Session["ModuleDatabase"] = Convert.ToInt32(objResponse.Usr.UAccess[0].moduleDatabase);
+                        Session["CompanyId"] = Convert.ToInt32(objResponse.Usr.UAccess[0].CompanyId);
+                        Session["ModuleDatabase"] = Convert.ToString(objResponse.Usr.UAccess[0].ModuleDataBase);
                         StringBuilder sb = new StringBuilder();
                         HashSet<Int32> companyIds = new HashSet<Int32>();
                         foreach (UserAccess usr in objResponse.Usr.UAccess)
@@ -140,11 +140,7 @@ namespace BMS_New
                             }
                         }
                         ShowListing.InnerHtml = sb.ToString();
-                        //Session["EmailId"] = objResponse.Usr.Email;
-                        //Session["UserNm"] = objResponse.Usr.UserName;
-                        //Session["ModuleDatabase"] = objResponse.Usr.ModuleDataBase;
-
-                        //Response.Redirect("Dashboard.aspx");
+                        
                     }
                 }
                 else

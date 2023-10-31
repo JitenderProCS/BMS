@@ -32,7 +32,7 @@ namespace BMS_New.Controllers
                 HttpContext.Current.Session["ModuleId"] = usraccess.ModuleId;
                  HttpContext.Current.Session["ModuleName"] = usraccess.ModuleNm;
                 HttpContext.Current.Session["ModuleFolder"] = usraccess.ModuleFolder;
-                //HttpContext.Current.Session["ModuleDatabase"] = usraccess.moduleDatabase;
+                //HttpContext.Current.Session["ModuleDatabase"] = usraccess.ModuleDataBase;
                 HttpContext.Current.Session["ModuleDatabase"] = "PROCS_BOARD_MEETING_50";
                 HttpContext.Current.Session["EmployeeId"] = usraccess.EmployeeId;
                 HttpContext.Current.Session["UserMobile"] = usraccess.Mobile;

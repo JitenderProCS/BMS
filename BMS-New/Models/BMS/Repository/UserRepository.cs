@@ -406,9 +406,9 @@ namespace BMS_New.Models.BMS.Repository
                 parameters[0] = new SqlParameter("@Mode", "GET_USER_LIST");
                 parameters[1] = new SqlParameter("@SET_COUNT", SqlDbType.Int);
                 parameters[1].Direction = ParameterDirection.Output;
-                parameters[2] = new SqlParameter("@COMPANY_ID", objUser.companyId);
-                parameters[3] = new SqlParameter("@MODULE_ID", objUser.moduleId);
-                parameters[4] = new SqlParameter("@STATUS", (objUser.status != "0" ? objUser.status : null));
+                //parameters[2] = new SqlParameter("@COMPANY_ID", objUser.companyId);
+                //parameters[3] = new SqlParameter("@MODULE_ID", objUser.moduleId);
+                //parameters[4] = new SqlParameter("@STATUS", (objUser.status != "0" ? objUser.status : null));
 
                 //SqlDataReader rdr = SQLHelper.ExecuteReader(SQLHelper.GetConnString(), CommandType.StoredProcedure, "SP_PROCS_INSIDER_USER_PERSONAL_MASTER", objUser.MODULE_DATABASE, parameters);
 
@@ -451,7 +451,7 @@ namespace BMS_New.Models.BMS.Repository
                             obj.status = (!String.IsNullOrEmpty(Convert.ToString(dr["STATUS"]))) ? Convert.ToString(dr["STATUS"]) : String.Empty;
                             obj.uploadAvatar = (!String.IsNullOrEmpty(Convert.ToString(dr["UPLOAD_AVATAR"]))) ? Convert.ToString(dr["UPLOAD_AVATAR"]) : String.Empty;
                             obj.profile = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_PROFILE"]))) ? Convert.ToString(dr["USER_PROFILE"]) : String.Empty;
-                            obj.companyId = Convert.ToInt32(dr["COMPANY_ID"]);
+                           // obj.companyId = Convert.ToInt32(dr["COMPANY_ID"]);
                             //obj.department = new Department
                             //{
                             //    departmentId = Convert.ToInt32(dr["DEPARTMENT_ID"]),

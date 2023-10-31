@@ -162,9 +162,9 @@ namespace BMS_New.Controllers
                 }
                 User user = new JavaScriptSerializer().Deserialize<User>(input);
                 // meetingVenue.createdBy = Convert.ToString(HttpContext.Current.Session["EMPLOYEE_ID"]);
-                 user.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                 //user.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 user.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
-                user.moduleId = Convert.ToInt32(HttpContext.Current.Session["ModuleId"]);
+                //user.moduleId = Convert.ToInt32(HttpContext.Current.Session["ModuleId"]);
                 UserRequest gReqUserList = new UserRequest(user);
                 userResponse = gReqUserList.GetUserList();
             }

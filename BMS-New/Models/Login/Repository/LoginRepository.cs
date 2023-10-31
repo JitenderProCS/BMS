@@ -93,67 +93,64 @@ namespace BMS_New.Models.Login.Repository
             LoginResponse oRes = new LoginResponse();
             try
             {
-                string sConStr = CryptoEngine.Decrypt(Convert.ToString(ConfigurationManager.AppSettings["ConnectionString"]), true);
+                string sConStr = CryptoEngine.Decrypt(ConfigurationManager.AppSettings["ConnectionString"], true);
+
                 using (SqlConnection sCon = new SqlConnection(sConStr))
                 {
                     sCon.Open();
+
                     using (SqlCommand cmd = new SqlCommand("SP_BMS_USER_OPERATION", sCon))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandTimeout = 0;
                         cmd.Parameters.Clear();
                         cmd.Parameters.AddWithValue("@LoginId", objUsr.LoginId);
-                        //cmd.Parameters.AddWithValue("@Password", objUsr.Password);
                         cmd.Parameters.AddWithValue("@Mode", "ValidateUser");
 
                         DataTable dtCnt = new DataTable();
                         SqlDataAdapter daCnt = new SqlDataAdapter(cmd);
                         daCnt.Fill(dtCnt);
-                        if (dtCnt.Rows.Count > 0)
-                        {
-                            if (dtCnt.Rows.Count > 0 && Convert.ToInt32(dtCnt.Rows[0][0]) > 0)
-                            {
-                                cmd.CommandType = CommandType.StoredProcedure;
-                                cmd.CommandTimeout = 0;
-                                cmd.Parameters.Clear();
-                                cmd.Parameters.AddWithValue("@LoginId", objUsr.LoginId);
-                                //cmd.Parameters.AddWithValue("@Password", objUsr.Password);
-                                cmd.Parameters.AddWithValue("@Mode", "ACCESS");
-                                DataTable dtAccess = new DataTable();
-                                SqlDataAdapter daAccess = new SqlDataAdapter(cmd);
-                                daAccess.Fill(dtAccess);
 
-                                if (dtAccess.Rows.Count > 0)
+                        if (dtCnt.Rows.Count > 0 && Convert.ToInt32(dtCnt.Rows[0][0]) > 0)
+                        {
+                            cmd.Parameters.Clear();
+                            cmd.Parameters.AddWithValue("@LoginId", objUsr.LoginId);
+                            cmd.Parameters.AddWithValue("@Mode", "ACCESS");
+                            DataTable dtAccess = new DataTable();
+                            SqlDataAdapter daAccess = new SqlDataAdapter(cmd);
+                            daAccess.Fill(dtAccess);
+
+                            if (dtAccess.Rows.Count > 0)
+                            {
+                                List<UserAccess> lstAccess = new List<UserAccess>();
+
+                                foreach (DataRow drAccess in dtAccess.Rows)
                                 {
-                                    List<UserAccess> lstAccess = new List<UserAccess>();
-                                    
-                                    foreach (DataRow drAccess in dtAccess.Rows)
-                                    {
-                                        UserAccess obj = new UserAccess();
-                                        obj.CompanyId = Convert.ToInt32(drAccess["COMPANY_ID"]);
-                                        obj.CompanyLogo = Convert.ToString(drAccess["COMPANY_LOGO"]);
-                                        obj.CompanyNm = Convert.ToString(drAccess["COMPANY_NM"]);
-                                        obj.GroupId = Convert.ToInt32(drAccess["GROUP_ID"]);
-                                        obj.GroupLogo = Convert.ToString(drAccess["GROUP_LOGO"]);
-                                        obj.GroupNm = Convert.ToString(drAccess["GROUP_NM"]);
-                                        obj.ModuleId = Convert.ToInt32(drAccess["MODULE_ID"]);
-                                        obj.ModuleLogo = Convert.ToString(drAccess["MODULE_LOGO"]);
-                                        obj.ModuleNm = Convert.ToString(drAccess["MODULE_NM"]);
-                                        obj.ModuleFolder = Convert.ToString(drAccess["MODULE_FOLDER"]);
-                                        obj.ModuleDataBase = Convert.ToString(drAccess["DATABASE_NAME"]);
-                                        obj.Mobile = Convert.ToString(drAccess["USER_MOBILE"]);
-                                        lstAccess.Add(obj);
-                                    }
-                                    objUsr.UAccess = lstAccess;
-                                    oRes.Msg = "Success";
-                                    oRes.StatusFl = true;
-                                    oRes.Usr = objUsr;
+                                    UserAccess obj = new UserAccess();
+                                    obj.CompanyId = Convert.ToInt32(drAccess["COMPANY_ID"]);
+                                    obj.CompanyLogo = Convert.ToString(drAccess["COMPANY_LOGO"]);
+                                    obj.CompanyNm = Convert.ToString(drAccess["COMPANY_NM"]);
+                                    obj.GroupId = Convert.ToInt32(drAccess["GROUP_ID"]);
+                                    obj.GroupLogo = Convert.ToString(drAccess["GROUP_LOGO"]);
+                                    obj.GroupNm = Convert.ToString(drAccess["GROUP_NM"]);
+                                    obj.ModuleId = Convert.ToInt32(drAccess["MODULE_ID"]);
+                                    obj.ModuleLogo = Convert.ToString(drAccess["MODULE_LOGO"]);
+                                    obj.ModuleNm = Convert.ToString(drAccess["MODULE_NM"]);
+                                    obj.ModuleFolder = Convert.ToString(drAccess["MODULE_FOLDER"]);
+                                    obj.ModuleDataBase = Convert.ToString(drAccess["DATABASE_NAME"]);
+                                    obj.Mobile = Convert.ToString(drAccess["USER_MOBILE"]);
+                                    lstAccess.Add(obj);
                                 }
-                                else
-                                {
-                                    oRes.Msg = "No Data Found";
-                                    oRes.StatusFl = false;
-                                }
+
+                                objUsr.UAccess = lstAccess;
+                                oRes.Msg = "Success";
+                                oRes.StatusFl = true;
+                                oRes.Usr = objUsr;
+                            }
+                            else
+                            {
+                                oRes.Msg = "No Data Found";
+                                oRes.StatusFl = false;
                             }
                         }
                         else
@@ -162,16 +159,100 @@ namespace BMS_New.Models.Login.Repository
                             oRes.StatusFl = false;
                         }
                     }
-                    sCon.Close();
                 }
             }
             catch (Exception ex)
             {
-                oRes.Msg = "Processing failed because of system error !";
+                oRes.Msg = "Processing failed because of a system error!";
                 oRes.StatusFl = false;
             }
             return oRes;
         }
+
+        //public LoginResponse ValidateUser(BMS_New.Models.Login.Model.Login objUsr)
+        //{
+        //    LoginResponse oRes = new LoginResponse();
+        //    try
+        //    {
+        //        string sConStr = CryptoEngine.Decrypt(Convert.ToString(ConfigurationManager.AppSettings["ConnectionString"]), true);
+        //        using (SqlConnection sCon = new SqlConnection(sConStr))
+        //        {
+        //            sCon.Open();
+        //            using (SqlCommand cmd = new SqlCommand("SP_BMS_USER_OPERATION", sCon))
+        //            {
+        //                cmd.CommandType = CommandType.StoredProcedure;
+        //                cmd.CommandTimeout = 0;
+        //                cmd.Parameters.Clear();
+        //                cmd.Parameters.AddWithValue("@LoginId", objUsr.LoginId);
+        //                //cmd.Parameters.AddWithValue("@Password", objUsr.Password);
+        //                cmd.Parameters.AddWithValue("@Mode", "ValidateUser");
+
+        //                DataTable dtCnt = new DataTable();
+        //                SqlDataAdapter daCnt = new SqlDataAdapter(cmd);
+        //                daCnt.Fill(dtCnt);
+        //                if (dtCnt.Rows.Count > 0)
+        //                {
+        //                    if (dtCnt.Rows.Count > 0 && Convert.ToInt32(dtCnt.Rows[0][0]) > 0)
+        //                    {
+        //                        cmd.CommandType = CommandType.StoredProcedure;
+        //                        cmd.CommandTimeout = 0;
+        //                        cmd.Parameters.Clear();
+        //                        cmd.Parameters.AddWithValue("@LoginId", objUsr.LoginId);
+        //                        //cmd.Parameters.AddWithValue("@Password", objUsr.Password);
+        //                        cmd.Parameters.AddWithValue("@Mode", "ACCESS");
+        //                        DataTable dtAccess = new DataTable();
+        //                        SqlDataAdapter daAccess = new SqlDataAdapter(cmd);
+        //                        daAccess.Fill(dtAccess);
+
+        //                        if (dtAccess.Rows.Count > 0)
+        //                        {
+        //                            List<UserAccess> lstAccess = new List<UserAccess>();
+
+        //                            foreach (DataRow drAccess in dtAccess.Rows)
+        //                            {
+        //                                UserAccess obj = new UserAccess();
+        //                                obj.CompanyId = Convert.ToInt32(drAccess["COMPANY_ID"]);
+        //                                obj.CompanyLogo = Convert.ToString(drAccess["COMPANY_LOGO"]);
+        //                                obj.CompanyNm = Convert.ToString(drAccess["COMPANY_NM"]);
+        //                                obj.GroupId = Convert.ToInt32(drAccess["GROUP_ID"]);
+        //                                obj.GroupLogo = Convert.ToString(drAccess["GROUP_LOGO"]);
+        //                                obj.GroupNm = Convert.ToString(drAccess["GROUP_NM"]);
+        //                                obj.ModuleId = Convert.ToInt32(drAccess["MODULE_ID"]);
+        //                                obj.ModuleLogo = Convert.ToString(drAccess["MODULE_LOGO"]);
+        //                                obj.ModuleNm = Convert.ToString(drAccess["MODULE_NM"]);
+        //                                obj.ModuleFolder = Convert.ToString(drAccess["MODULE_FOLDER"]);
+        //                                obj.ModuleDataBase = Convert.ToString(drAccess["DATABASE_NAME"]);
+        //                                obj.Mobile = Convert.ToString(drAccess["USER_MOBILE"]);
+        //                                lstAccess.Add(obj);
+        //                            }
+        //                            objUsr.UAccess = lstAccess;
+        //                            oRes.Msg = "Success";
+        //                            oRes.StatusFl = true;
+        //                            oRes.Usr = objUsr;
+        //                        }
+        //                        else
+        //                        {
+        //                            oRes.Msg = "No Data Found";
+        //                            oRes.StatusFl = false;
+        //                        }
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    oRes.Msg = "No Data Found";
+        //                    oRes.StatusFl = false;
+        //                }
+        //            }
+        //            sCon.Close();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        oRes.Msg = "Processing failed because of system error !";
+        //        oRes.StatusFl = false;
+        //    }
+        //    return oRes;
+        //}
         /*************End*****************/
 
         #region  "Set Session Status"

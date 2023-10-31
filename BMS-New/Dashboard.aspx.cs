@@ -13,20 +13,7 @@ namespace BMS_New
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ////string login = HttpContext.Current.Session["EmployeeId"].ToString();
-            //BMS_New.Models.BMS.Model.AdminUser user = new BMS_New.Models.BMS.Model.AdminUser();
-            //user.userLogin = Convert.ToString(Session["EmployeeId"]);
-            //user.moduleDatabase = Convert.ToString(Session["ModuleDatabase"]);
-            //user.companyId = Convert.ToInt32(Session["CompanyId"]);
-            //AdminUserRequest objUser = new AdminUserRequest(user);
-            //AdminUserResponse objResponse = objUser.GetUserDetails();
-            //if (objResponse.StatusFl)
-            //{
-
-            //    //SpComapnyName.InnerHtml = objResponse.User.userName;
-            //    SpComapnyName.InnerHtml = objResponse.User.CompanyName;
-            //}
-            SpComapnyName.InnerText = Session["CompanyName"].ToString();
+            //SpComapnyName.InnerText = Session["CompanyName"].ToString();
 
         }
     }

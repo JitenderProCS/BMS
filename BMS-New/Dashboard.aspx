@@ -24,9 +24,9 @@
                 <!--end::Page Title-->
                 <!--begin::Actions-->
                 <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
-                <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">
+               <%-- <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">
                 <span id="SpComapnyName" runat="server" class="text-muted font-weight-bold mr-4">Logged in user Company Name here</span>
-                    </h5>
+                    </h5>--%>
                 <%--<a href="#" class="btn btn-light-warning font-weight-bolder btn-sm">Add New</a>--%>
                 <!--end::Actions-->
             </div>
