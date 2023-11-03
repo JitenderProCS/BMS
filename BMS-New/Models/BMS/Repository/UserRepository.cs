@@ -138,7 +138,6 @@ namespace BMS_New.Models.BMS.Repository
                             cmd.Parameters.Add(new SqlParameter("@PASSWORD", CryptoEngine.Encrypt(objUser.password, true)));
                             cmd.Parameters.Add(new SqlParameter("@STATUS", objUser.status));
                             cmd.Parameters.Add(new SqlParameter("@UPLOAD_AVATAR", objUser.uploadAvatar));
-                            cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
                             cmd.Parameters.Add(new SqlParameter("@ID", objUser.ID));
                             cmd.Parameters.Add(new SqlParameter("@MODULE_ID", objUser.moduleId));
                             cmd.Parameters.Add(new SqlParameter("@USER_PROFILE", objUser.profile));
@@ -186,7 +185,7 @@ namespace BMS_New.Models.BMS.Repository
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    //conn.ChangeDatabase(objUser.moduleDatabase);
+                    conn.ChangeDatabase(objUser.moduleDatabase);
                     using (SqlCommand cmd = new SqlCommand("SP_PROCS_BMS_USER_MASTER", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
@@ -262,34 +261,6 @@ namespace BMS_New.Models.BMS.Repository
                                 }
                                 cmd.Parameters.Add(new SqlParameter("@OTHER_COMPANIES", dt));
                             }
-
-
-
-                            //cmd.Parameters.Add(new SqlParameter("@ACTION_TYPE_COMP", "MULTICOMPANY_INSERT"));
-                            //Int32 objcomp = Convert.ToInt32(cmd.Parameters["@SET_COUNT"].Value);
-                            //if (objcomp == 1)
-                            //{
-                            //    foreach (var item in objUser.multi_Companies)
-                            //    {
-                            //        //cmd.Parameters.Add(new SqlParameter("@ID", objUser.ID));
-                            //        cmd.Parameters.Add(new SqlParameter("@OTHER_COMPANIES", item.ToString()));
-                            //        //cmd.Parameters.Add(new SqlParameter("@EMAIL_ID", objUser.emailId));
-                            //        //cmd.Parameters.Add(new SqlParameter("@USER_LOGIN", objUser.userLogin));
-                            //        //cmd.Parameters.Add(new SqlParameter("@MODIFIED_BY", objUser.createdBy));
-                            //    }
-                            //}
-                            //else
-                            //{
-                            //    foreach (var item in objUser.multi_Companies)
-                            //    {
-                            //        //cmd.Parameters.Add(new SqlParameter("@ID", objUser.ID));
-                            //        cmd.Parameters.Add(new SqlParameter("@OTHER_COMPANIES", item.ToString()));
-                            //        //cmd.Parameters.Add(new SqlParameter("@EMAIL_ID", objUser.emailId));
-                            //        //cmd.Parameters.Add(new SqlParameter("@USER_LOGIN", objUser.userLogin));
-                            //        //cmd.Parameters.Add(new SqlParameter("@CREATED_BY", objUser.createdBy));
-                            //    }
-                            //}
-
                             cmd.Parameters.Add(new SqlParameter("@COMMITTEES_ALREADY_DIRECTOR", objUser.committees_Already_director));
                             cmd.Parameters.Add(new SqlParameter("@MEMBERSHIP_NUM_SECRETARIAL_USER", objUser.membership_Num_Secretarial_User));
 
@@ -406,9 +377,9 @@ namespace BMS_New.Models.BMS.Repository
                 parameters[0] = new SqlParameter("@Mode", "GET_USER_LIST");
                 parameters[1] = new SqlParameter("@SET_COUNT", SqlDbType.Int);
                 parameters[1].Direction = ParameterDirection.Output;
-                //parameters[2] = new SqlParameter("@COMPANY_ID", objUser.companyId);
-                //parameters[3] = new SqlParameter("@MODULE_ID", objUser.moduleId);
-                //parameters[4] = new SqlParameter("@STATUS", (objUser.status != "0" ? objUser.status : null));
+                parameters[2] = new SqlParameter("@COMPANY_ID", objUser.companyId);
+                parameters[3] = new SqlParameter("@CREATED_BY", objUser.createdBy);
+                parameters[4] = new SqlParameter("@STATUS", (objUser.status != "0" ? objUser.status : null));
 
                 //SqlDataReader rdr = SQLHelper.ExecuteReader(SQLHelper.GetConnString(), CommandType.StoredProcedure, "SP_PROCS_INSIDER_USER_PERSONAL_MASTER", objUser.MODULE_DATABASE, parameters);
 
@@ -447,7 +418,8 @@ namespace BMS_New.Models.BMS.Repository
                             obj.dateOfBirth = (!String.IsNullOrEmpty(Convert.ToString(dr["DATE_OF_BIRTH"]))) ? Convert.ToString(dr["DATE_OF_BIRTH"]) : String.Empty;
                             obj.nationality = (!String.IsNullOrEmpty(Convert.ToString(dr["NATIONALITY"]))) ? Convert.ToString(dr["NATIONALITY"]) : String.Empty;
                             obj.userLogin = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_LOGIN"]))) ? Convert.ToString(dr["USER_LOGIN"]) : String.Empty;
-                            obj.password = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_PWD"]))) ? CryptoEngine.Decrypt(Convert.ToString(dr["USER_PWD"]), true) : String.Empty;
+                            //obj.password = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_PWD"]))) ? Convert.ToString(dr["USER_PWD"]) : String.Empty;
+                             obj.password = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_PWD"]))) ? CryptoEngine.Decrypt(Convert.ToString(dr["USER_PWD"]), true) : String.Empty;
                             obj.status = (!String.IsNullOrEmpty(Convert.ToString(dr["STATUS"]))) ? Convert.ToString(dr["STATUS"]) : String.Empty;
                             obj.uploadAvatar = (!String.IsNullOrEmpty(Convert.ToString(dr["UPLOAD_AVATAR"]))) ? Convert.ToString(dr["UPLOAD_AVATAR"]) : String.Empty;
                             obj.profile = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_PROFILE"]))) ? Convert.ToString(dr["USER_PROFILE"]) : String.Empty;

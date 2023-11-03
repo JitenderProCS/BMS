@@ -111,41 +111,57 @@ namespace BMS_New.Models.Login.Repository
                         SqlDataAdapter daCnt = new SqlDataAdapter(cmd);
                         daCnt.Fill(dtCnt);
 
-                        if (dtCnt.Rows.Count > 0 && Convert.ToInt32(dtCnt.Rows[0][0]) > 0)
+
+
+                        string salt = Convert.ToString(HttpContext.Current.Session["salt"]);
+                        string moreSalts = Convert.ToString(HttpContext.Current.Session["moreSalt"]);
+                        var dbPassword = Convert.ToString(dtCnt.Rows[0]["USER_PWD"]);
+                        var hash = hashcodegenerate.GetSHA512(hashcodegenerate.GetSHA512(dbPassword + salt) + salt);
+                        var fff = hashcodegenerate.GetSHA512(hash + moreSalts);
+
+                        if (Convert.ToString(dtCnt.Rows[0]["USER_PWD"]) == CryptoEngine.Encrypt(objUsr.Password, true))
                         {
-                            cmd.Parameters.Clear();
-                            cmd.Parameters.AddWithValue("@LoginId", objUsr.LoginId);
-                            cmd.Parameters.AddWithValue("@Mode", "ACCESS");
-                            DataTable dtAccess = new DataTable();
-                            SqlDataAdapter daAccess = new SqlDataAdapter(cmd);
-                            daAccess.Fill(dtAccess);
-
-                            if (dtAccess.Rows.Count > 0)
+                            if (dtCnt.Rows.Count > 0 && Convert.ToInt32(dtCnt.Rows[0][0]) > 0)
                             {
-                                List<UserAccess> lstAccess = new List<UserAccess>();
+                                cmd.Parameters.Clear();
+                                cmd.Parameters.AddWithValue("@LoginId", objUsr.LoginId);
+                                cmd.Parameters.AddWithValue("@Mode", "ACCESS");
+                                DataTable dtAccess = new DataTable();
+                                SqlDataAdapter daAccess = new SqlDataAdapter(cmd);
+                                daAccess.Fill(dtAccess);
 
-                                foreach (DataRow drAccess in dtAccess.Rows)
+                                if (dtAccess.Rows.Count > 0)
                                 {
-                                    UserAccess obj = new UserAccess();
-                                    obj.CompanyId = Convert.ToInt32(drAccess["COMPANY_ID"]);
-                                    obj.CompanyLogo = Convert.ToString(drAccess["COMPANY_LOGO"]);
-                                    obj.CompanyNm = Convert.ToString(drAccess["COMPANY_NM"]);
-                                    obj.GroupId = Convert.ToInt32(drAccess["GROUP_ID"]);
-                                    obj.GroupLogo = Convert.ToString(drAccess["GROUP_LOGO"]);
-                                    obj.GroupNm = Convert.ToString(drAccess["GROUP_NM"]);
-                                    obj.ModuleId = Convert.ToInt32(drAccess["MODULE_ID"]);
-                                    obj.ModuleLogo = Convert.ToString(drAccess["MODULE_LOGO"]);
-                                    obj.ModuleNm = Convert.ToString(drAccess["MODULE_NM"]);
-                                    obj.ModuleFolder = Convert.ToString(drAccess["MODULE_FOLDER"]);
-                                    obj.ModuleDataBase = Convert.ToString(drAccess["DATABASE_NAME"]);
-                                    obj.Mobile = Convert.ToString(drAccess["USER_MOBILE"]);
-                                    lstAccess.Add(obj);
-                                }
+                                    List<UserAccess> lstAccess = new List<UserAccess>();
 
-                                objUsr.UAccess = lstAccess;
-                                oRes.Msg = "Success";
-                                oRes.StatusFl = true;
-                                oRes.Usr = objUsr;
+                                    foreach (DataRow drAccess in dtAccess.Rows)
+                                    {
+                                        UserAccess obj = new UserAccess();
+                                        obj.CompanyId = Convert.ToInt32(drAccess["COMPANY_ID"]);
+                                        obj.CompanyLogo = Convert.ToString(drAccess["COMPANY_LOGO"]);
+                                        obj.CompanyNm = Convert.ToString(drAccess["COMPANY_NM"]);
+                                        obj.GroupId = Convert.ToInt32(drAccess["GROUP_ID"]);
+                                        obj.GroupLogo = Convert.ToString(drAccess["GROUP_LOGO"]);
+                                        obj.GroupNm = Convert.ToString(drAccess["GROUP_NM"]);
+                                        obj.ModuleId = Convert.ToInt32(drAccess["MODULE_ID"]);
+                                        obj.ModuleLogo = Convert.ToString(drAccess["MODULE_LOGO"]);
+                                        obj.ModuleNm = Convert.ToString(drAccess["MODULE_NM"]);
+                                        obj.ModuleFolder = Convert.ToString(drAccess["MODULE_FOLDER"]);
+                                        obj.ModuleDataBase = Convert.ToString(drAccess["DATABASE_NAME"]);
+                                        obj.Mobile = Convert.ToString(drAccess["USER_MOBILE"]);
+                                        lstAccess.Add(obj);
+                                    }
+
+                                    objUsr.UAccess = lstAccess;
+                                    oRes.Msg = "Success";
+                                    oRes.StatusFl = true;
+                                    oRes.Usr = objUsr;
+                                }
+                                else
+                                {
+                                    oRes.Msg = "No Data Found";
+                                    oRes.StatusFl = false;
+                                }
                             }
                             else
                             {
@@ -155,9 +171,12 @@ namespace BMS_New.Models.Login.Repository
                         }
                         else
                         {
-                            oRes.Msg = "No Data Found";
+                            oRes.Msg = "User not validate";
                             oRes.StatusFl = false;
+
                         }
+
+
                     }
                 }
             }
@@ -184,7 +203,7 @@ namespace BMS_New.Models.Login.Repository
         //                cmd.CommandTimeout = 0;
         //                cmd.Parameters.Clear();
         //                cmd.Parameters.AddWithValue("@LoginId", objUsr.LoginId);
-        //                //cmd.Parameters.AddWithValue("@Password", objUsr.Password);
+        //                //cmd.Parameters.AddWithValue("@UserPwd", objUsr.Password);
         //                cmd.Parameters.AddWithValue("@Mode", "ValidateUser");
 
         //                DataTable dtCnt = new DataTable();

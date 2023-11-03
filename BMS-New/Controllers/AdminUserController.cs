@@ -52,7 +52,7 @@ namespace DMS.Controllers
                 {
                     AdminUser objUser = new AdminUser();
                     objUser = lstUser[0];
-                    //objUser.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                    objUser.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                     objUser.CREATED_BY = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
                     //objUser.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
                     //objUser.moduleId = Convert.ToInt32(HttpContext.Current.Session["ModuleId"]);
@@ -126,11 +126,14 @@ namespace DMS.Controllers
                     input = sr.ReadToEnd();
                 }
                 Company company = new JavaScriptSerializer().Deserialize<Company>(input);
+
+                Company Objcomp = new Company();
                 //meetingVenue.createdBy = Convert.ToString(HttpContext.Current.Session["EMPLOYEE_ID"]);
-                //user.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                var id = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                Objcomp.companyId = Convert.ToInt32( id);
                 //  user.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
                 // user.moduleId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
-                CompanyRequest gReqCompanyList = new CompanyRequest(company);
+                CompanyRequest gReqCompanyList = new CompanyRequest(Objcomp);
                 companyResponse = gReqCompanyList.GetCompanyForAdminUserList();
             }
             catch (Exception ex)
@@ -197,8 +200,8 @@ namespace DMS.Controllers
                 }
                 AdminUser user = new JavaScriptSerializer().Deserialize<AdminUser>(input);
                 // meetingVenue.createdBy = Convert.ToString(HttpContext.Current.Session["EMPLOYEE_ID"]);
-                //user.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
-                //user.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
+                user.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                user.CREATED_BY = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
                 //user.moduleId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 AdminUserRequest gReqUserList = new AdminUserRequest(user);
                 userResponse = gReqUserList.GetUserList();

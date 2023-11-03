@@ -36,7 +36,8 @@
                     <div class="form-group row">
                         <label id="lblName" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">Company Name <sup class="text-danger">*</sup></label>
                         <div class="col-lg-9 col-xl-9">
-                            <input id="txtCompanyName" placeholder="Enter name" class="form-control form-control-solid form-control-lg" name="name" type="text" value="" onkeypress="javascript:fnRemoveClass(this,'Name');" autocomplete="off" maxlength="100" />
+                           <%-- <span id="<%= Session["CompanyName"] %>"></span>--%>
+                            <input id="txtCompanyName" placeholder="Enter name" class="form-control form-control-solid form-control-lg" name="name" type="text" value="<%= Session["CompanyName"] %>" onkeypress="javascript:fnRemoveClass(this,'Name');" autocomplete="off" maxlength="100" />
                             <input id="txtCompanyId" type="hidden" value="0" />
                         </div>
                     </div>

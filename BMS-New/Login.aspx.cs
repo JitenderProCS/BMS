@@ -1,6 +1,5 @@
-﻿
+﻿using BMS_New.Models.Login.Modal;
 using BMS_New.Models.Infrastructure;
-using BMS_New.Models.Login.Modal;
 using BMS_New.Models.Login.Service.Request;
 using BMS_New.Models.Login.Service.Response;
 using System;

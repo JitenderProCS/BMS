@@ -1,4 +1,7 @@
-﻿function fnLogin() {
+﻿function preventBack() { window.history.forward(); }
+setTimeout("preventBack()", 0);
+window.onunload = function () { null };
+function fnLogin() {
     debugger;
     //alert("In function fnLogin");
     var _salt = $("#txtSalt").val();
@@ -24,7 +27,9 @@
 
     var hash = hex_sha512(hex_sha512(hex_sha512(_pwd) + _salt) + _salt);
     var fff = hex_sha512(hash + _msalt);
-    $("#txtPwd").val(fff);
+    /*$("#txtPwd").val(fff);*/
+
+    $("#txtPwd").val();
     return true;
 }
 
@@ -32,12 +37,13 @@ function openModal() {
     $('#stack1').modal({ show: true });
 }
 
-function unValidCredential() {
+function unValidCredential(Msg) {
     debugger
-    alert(Email);
-    alert($('#UserName').val());
-    alert($('#Password').val());
-     alert(Password);
+    //alert(Email);
+   // alert(Msg);
+    //alert($('#UserName').val());
+    //alert($('#Password').val());
+    // alert(Password);
     alert("User name or Password is incorrect. Please try again!");
 }
 

@@ -58,6 +58,7 @@ namespace BMS_New.Models.BMS.Repository
                             cmd.Parameters.Add(new SqlParameter("@USER_MOBILE", objUser.phone));
                             cmd.Parameters.Add(new SqlParameter("@USER_AUTHENTICATION", objUser.authentication));
                             cmd.Parameters.Add(new SqlParameter("@CREATE_BY", objUser.CREATED_BY));
+                            cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
                             cmd.Parameters.Add(new SqlParameter("@STATUS", "Active"));
                             cmd.Parameters.Add(new SqlParameter("@ID", objUser.ID));
                             objUser.ID = Convert.ToInt32(cmd.Parameters["@SET_COUNT"].Value);
@@ -125,7 +126,8 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Clear();
                         cmd.Parameters.Add(new SqlParameter("@MODE", "GET_User_List"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-                        //cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
+                        cmd.Parameters.Add(new SqlParameter("@CREATE_BY", objUser.CREATED_BY));
                         cmd.Parameters.Add(new SqlParameter("@USER_AUTHENTICATION", (objUser.authentication == "0" ? objUser.authentication : null)));
                         DataSet ds = new DataSet();
 
@@ -242,6 +244,7 @@ namespace BMS_New.Models.BMS.Repository
                             cmd.Parameters.Add(new SqlParameter("@USER_MOBILE", objUser.phone));
                             cmd.Parameters.Add(new SqlParameter("@USER_AUTHENTICATION", objUser.authentication));
                             cmd.Parameters.Add(new SqlParameter("@CREATE_BY", objUser.CREATED_BY));
+                            cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
                             cmd.Parameters.Add(new SqlParameter("@STATUS", "Active"));
                             cmd.Parameters.Add(new SqlParameter("@ACTION_TYPE_COMP_MAP", "COMPANY_MAPPING_UPDATE"));
                             {
@@ -746,7 +749,7 @@ namespace BMS_New.Models.BMS.Repository
                                 while (reader.Read())
                                 {
                                     CompanyAccess Cmap = new CompanyAccess();
-                                    Cmap.companyId = Convert.ToInt32( reader["ID"]);
+                                    Cmap.companyId = Convert.ToInt32( reader["COMPANY_ID"]);
                                     Cmap.CompanyName = reader["COMPANY_NM"].ToString();
                                     // Populate other properties if needed
                                     CompanyMapping.Add(Cmap);

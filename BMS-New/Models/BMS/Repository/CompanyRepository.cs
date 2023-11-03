@@ -188,7 +188,7 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Clear();
                         cmd.Parameters.Add(new SqlParameter("@MODE", "GET_COMPANIES"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-                        //cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objCompany.companyId));
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objCompany.companyId));
                         // cmd.Parameters.Add(new SqlParameter("@STATUS", (objCompany.status != "0" ? objUser.status : null)));
                         SqlDataReader rdr = cmd.ExecuteReader();
                         if (rdr.HasRows)

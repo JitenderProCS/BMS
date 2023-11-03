@@ -130,11 +130,14 @@ namespace BMS_New.Controllers
                     input = sr.ReadToEnd();
                 }
                 Company company = new JavaScriptSerializer().Deserialize<Company>(input);
-                 //meetingVenue.createdBy = Convert.ToString(HttpContext.Current.Session["EMPLOYEE_ID"]);
+                Company objcom = new Company();
+               var Id = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                objcom.companyId = Convert.ToInt32(Id);
+                //meetingVenue.createdBy = Convert.ToString(HttpContext.Current.Session["EMPLOYEE_ID"]);
                 //user.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
-              //  user.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
+                //  user.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
                 // user.moduleId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
-                CompanyRequest gReqCompanyList = new CompanyRequest(company);
+                CompanyRequest gReqCompanyList = new CompanyRequest(objcom);
                 companyResponse = gReqCompanyList.GetCompanyList();
             }
             catch (Exception ex)
@@ -200,11 +203,14 @@ namespace BMS_New.Controllers
                     input = sr.ReadToEnd();
                 }
                 CompanyGrooup company = new JavaScriptSerializer().Deserialize<CompanyGrooup>(input);
-                //meetingVenue.createdBy = Convert.ToString(HttpContext.Current.Session["EMPLOYEE_ID"]);
+                CompanyGrooup objGrp = new CompanyGrooup();
+                var createdBy = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
+                objGrp.createdBy = Convert.ToString(createdBy);
+
                 //user.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 //  user.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
                 // user.moduleId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
-                CompanyGroupRequest gReqCompanyList = new CompanyGroupRequest(company);
+                CompanyGroupRequest gReqCompanyList = new CompanyGroupRequest(objGrp);
                 companygroupResponse = gReqCompanyList.GetCompanyGroupList();
             }
             catch (Exception ex)

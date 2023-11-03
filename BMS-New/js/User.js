@@ -370,7 +370,10 @@ function fnAddUpdateUser() {
         $("input[id*='txtFirstName']").val(), $("input[id*='txtMiddleName']").val(), $("input[id*='txtLastName']").val(), $("input[id*='txtEmail']").val(), $("select[id*='ddlRole']").val(), $("select[id*='ddlSalutation']").val(),
         $("input[id*='txtPhone']").val(), $("textarea[id*='txtAddress']").val(), $("input[id*='txtTenurestartdate']").val(),
         $("input[id*='txtTenureenddate']").val(), $("input[id*='txtDateofbirth']").val(), $("select[id*='ddlNationality']").val(),
-        $("input[id*='txtUserid']").val(), $("input[id*='txtPassword']").val(), $("select[id*='ddlStatus']").val(),
+        $("input[id*='txtUserid']").val(),
+        $("input[id*='txtPassword']").val(),
+        //$("#txtPassword").val(fff),
+        $("select[id*='ddlStatus']").val(),
         $("select[id*='ddlDepartment']").val(), $("select[id*='ddlDesignation']").val(), $("select[id*='ddlCategory']").val(),
         /*$("select[id*='ddlRole']").val(), */$("textarea[id*='txtProfile']").val(),
         $("input[id*='txtPAN']").val(),
@@ -672,11 +675,8 @@ function fnEditUser(index, UserLogin) {
         str += ' <td>' +
             '<input id="txtOtherCompanies" class="form-control form-control-solid form-control-lg" placeholder="Enter Company" type="text" autocomplete="off" />' +
             '</td>';
-
         str += '<td>' +
             '<img onclick="javascript:fnAddmultiCompanies();" src="../assets/Image/Icon/AddButton.png" height="24" width="24" />' +
-            '&nbsp;' +
-            '<img onclick="javascript:fnDeletemultiCompanies(this);" src="../assets/Image/Icon/MinusButton.png" height="24" width="24" />' +
             '</td>';
         str += '</tr>';
         $("#tbdCompany").append(str);
@@ -689,7 +689,6 @@ function fnEditUser(index, UserLogin) {
     $('#txtCommitteesAlreadyDirector').val(objUser[index].committees_Already_director);
     $('#txtMembershipnumber').val(objUser[index].membership_Num_Secretarial_User);
 }
-
 
 function fnCloseModal() {
     fnClearForm();
@@ -867,8 +866,24 @@ function fnValidate() {
         isValid = false;
         $('#lblPhone').addClass('text-danger');
     }
+    else if (Phone.length > 10) {
+        $('#lblPhone').removeClass('text-danger');
+    }
     else {
         $('#lblPhone').removeClass('text-danger');
+
+        var regex =  /^[0-9]{10}$/;
+        //var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-+.]).{8,20}$/;        /*(^.* (?=.{ 8,}) (?=.*\d) (?=.* [a - z])(?=.* [A - Z])(?=.* [!*@#$%^&+=]).* $)*/
+        if (Phone != "") {
+            if (Phone.match(regex)) {
+                $('#lblPhone').removeClass('text-danger');
+            }
+            else {
+                isValid = false;
+                alert("Please enter correct Phone Number format !");
+                $('#lblPhone').addClass('text-danger');
+            }
+        }
     }
 
 
@@ -893,6 +908,7 @@ function fnValidate() {
     else {
         $('#lblPassword').removeClass('text-danger');
 
+       //var regex =  /^[0-9]{10}$/;
         var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-+.]).{8,20}$/;        /*(^.* (?=.{ 8,}) (?=.*\d) (?=.* [a - z])(?=.* [A - Z])(?=.* [!*@#$%^&+=]).* $)*/
         if (Password != "") {
             if (Password.match(regex)) {
@@ -919,6 +935,16 @@ function fnValidate() {
         $('#lblPassword').removeClass('text-danger');
         $('#lblConfirm').removeClass('text-danger');
     }
+    /******Add By Jitender**********/
+    //var _salt = $("#txtSalt").val();
+    //var _msalt = $("#txtMSalt").val();
+
+    //var Password = $("#txtPassword").val();
+    //var hash = (hex_sha512(Password) + _salt);
+    //var fff = hex_sha512(hash );
+    //$("#txtPassword").val(fff);
+    //return true;
+    /*************End***********/
 
     if (Role == 3) {
         if (Category == '0') {

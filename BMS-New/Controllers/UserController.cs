@@ -51,7 +51,7 @@ namespace BMS_New.Controllers
                     objUser = lstUser[0];
                     objUser.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                     objUser.createdBy = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
-                    //objUser.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
+                    objUser.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
                     objUser.moduleId = Convert.ToInt32(HttpContext.Current.Session["ModuleId"]);
 
                     if (HttpContext.Current.Request.Files.Count > 0)
@@ -161,8 +161,8 @@ namespace BMS_New.Controllers
                     input = sr.ReadToEnd();
                 }
                 User user = new JavaScriptSerializer().Deserialize<User>(input);
-                // meetingVenue.createdBy = Convert.ToString(HttpContext.Current.Session["EMPLOYEE_ID"]);
-                 //user.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                user.createdBy = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
+                user.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 user.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
                 //user.moduleId = Convert.ToInt32(HttpContext.Current.Session["ModuleId"]);
                 UserRequest gReqUserList = new UserRequest(user);

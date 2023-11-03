@@ -880,7 +880,7 @@
                                                                                  <input id="txtOtherCompanies" type="text" class="form-control d-flex form-control-solid form-control-lg" placeholder="Enter Company" onkeypress="javascript:fnRemoveClass(this,'OtherCompanies');" autocomplete="off" />
                                                                             </td>
                                                                             <td>
-                                                                                <img onclick="javascript:fnAddmultiCompanies();" src="../assets/Image/Icons/AddButton.png" height="24" width="24" />
+                                                                                <img onclick="javascript:fnAddmultiCompanies();" src="../assets/Image/Icon/AddButton.png" height="24" width="24" />
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
