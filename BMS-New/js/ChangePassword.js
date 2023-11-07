@@ -2,36 +2,37 @@
     debugger
     var count = 0;
     if ($("#txtLoginId").val() == undefined || $("#txtLoginId").val() == null || $("#txtLoginId").val().trim() == "") {
-        $("#lblLoginId").addClass('required');
+
+        $("#lblLoginId").addClass('text-danger');
         count++;
     }
     else {
         $("#lblLoginId").removeClass('required');
     }
     if ($("#txtOldPassword").val() == undefined || $("#txtOldPassword").val() == null || $("#txtOldPassword").val().trim() == "") {
-        $("#lblOldPassword").addClass('required');
+        $('#lblOldPassword').addClass('text-danger');
         count++;
     }
     else {
-        $("#lblOldPassword").removeClass('required');
+        $("#lblOldPassword").removeClass('text-danger');
     }
     if ($("#txtNewPassword").val() == undefined || $("#txtNewPassword").val() == null || $("#txtNewPassword").val().trim() == "") {
-        $("#lblNewPassword").addClass('required');
+        $("#lblNewPassword").addClass('text-danger');
         count++;
     }
     else if ($("#txtNewPassword").val().length < 6) {
         alert(" Password at least 6 Character");
-        $("#lblNewPassword").addClass('required');
+        $("#lblNewPassword").addClass('text-danger');
     }
     else {
-        $("#lblNewPassword").removeClass('required');
+        $("#lblNewPassword").removeClass('text-danger');
     }
     if ($("#txtConfirmNewPassword").val() == undefined || $("#txtConfirmNewPassword").val() == null || $("#txtConfirmNewPassword").val().trim() == "") {
-        $("#lblConfirmNewPassword").addClass('required');
+        $("#lblConfirmNewPassword").addClass('text-danger');
         count++;
     }
     else {
-        $("#lblConfirmNewPassword").removeClass('required');
+        $("#lblConfirmNewPassword").removeClass('text-danger');
     }
     if ($("#txtConfirmNewPassword").val() !== $("#txtNewPassword").val()) {
         alert("New Password and Confirm New Password does not match");

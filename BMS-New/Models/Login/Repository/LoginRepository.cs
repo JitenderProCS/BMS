@@ -276,7 +276,10 @@ namespace BMS_New.Models.Login.Repository
 
         public LoginResponse ChangePassword(BMS_New.Models.Login.Model.Login objUsr)
         {
-            LoginResponse oRes = new LoginResponse();
+             LoginResponse oRes = new LoginResponse();
+           //oRes = new LoginResponse();
+           // oRes.StatusFl = false;
+           // oRes.Msg = "Something went wrong. Please try again or Contact Support!";
             try
             {
                 string sConStr = CryptoEngine.Decrypt(ConfigurationManager.AppSettings["ConnectionString"], true);
@@ -285,25 +288,21 @@ namespace BMS_New.Models.Login.Repository
                     sCon.Open();
                     using (SqlCommand cmd = new SqlCommand("SP_BMS_USER_OPERATION", sCon))
                     {
-                        }
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = 0;
+                        cmd.Parameters.Clear();
+                        cmd.Parameters.AddWithValue("@LoginId", objUsr.LoginId);
+                        cmd.Parameters.Add(new SqlParameter("@UserPwd", CryptoEngine.Encrypt(objUsr.Password, true)));
+                        //cmd.Parameters.AddWithValue("@Password", objUsr.Password);
+                        cmd.Parameters.AddWithValue("@Mode", "CHANGE_PASSWORD_BY_LOGIN_ID");
+                        //cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
+                        cmd.ExecuteNonQuery();
+                        sCon.Close();
+                       // oRes.StatusFl = true;
+                       // oRes.Msg = "Success";
                     }
-                    //using (SqlConnection sCon = new SqlConnection(connectionString))
-                    //{
-                    //    SqlCommand sCmd = new SqlCommand();
-                    //    sCmd.Connection = sCon;
-                    //    sCmd.CommandType = CommandType.StoredProcedure;
-
-                    //    sCmd.Parameters.Clear();
-                    //    sCmd.Parameters.AddWithValue("@LoginId", objLogin.LoginId);
-                    //    sCmd.Parameters.AddWithValue("@Password", objLogin.Password);
-                    //    sCmd.Parameters.AddWithValue("@Mode", "CHANGE_PASSWORD_BY_LOGIN_ID");
-                    //    sCmd.CommandText = "PROCS_LOGIN_USER";
-                    //    sCon.Open();
-                    //    sCmd.ExecuteNonQuery();
-                    //    sCon.Close();
-                    //    res.StatusFl = true;
-                    //    res.Msg = "Success";
-                    //}
+                    }
+                    
                 }
             catch (Exception ex)
             {
