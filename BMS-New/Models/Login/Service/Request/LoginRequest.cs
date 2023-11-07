@@ -33,5 +33,11 @@ namespace BMS_New.Models.Login.Service.Request
             LoginRepository rep = new LoginRepository();
             return rep.SetSessionStatus(_usr);
         }
+
+        public LoginResponse ChangePassword()
+        {
+            LoginRepository rep = new LoginRepository();
+            return rep.ChangePassword(_usr);
+        }
     }
 }

@@ -4263,6 +4263,7 @@
     <Content Include="BoardMeeting\images\CompanyGroupLogo\TCS_2023_10_20_05_41_22_582.png" />
     <Content Include="BoardMeeting\images\CompanyLogo\images_2023_10_20_07_20_34_819.png" />
     <Content Include="BoardMeeting\images\CompanyLogo\TCS_2023_10_20_06_49_54_877.png" />
+    <Content Include="ChangePassword.aspx" />
     <Content Include="CommitteeComposition.aspx" />
     <Content Include="CompanyGroupMaster.aspx" />
     <Content Include="CompanyMaster.aspx" />
@@ -4549,6 +4550,7 @@
     <Content Include="assets\plugins\global\summernote-bs4.js.map" />
     <Content Include="BMSMaster.Master" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="js\ChangePassword.js" />
     <Content Include="js\CommitteeComposition.js" />
     <Content Include="js\CompanyGroup.js" />
     <Content Include="js\CompanyMaster.js" />
@@ -4617,6 +4619,13 @@
     <Compile Include="BMSMaster.Master.designer.cs">
       <DependentUpon>BMSMaster.Master</DependentUpon>
     </Compile>
+    <Compile Include="ChangePassword.aspx.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ChangePassword.aspx.designer.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CommitteeComposition.aspx.cs">
       <DependentUpon>CommitteeComposition.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -4649,6 +4658,7 @@
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\DesignationController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\SwitchDashBoardController.cs" />
     <Compile Include="Controllers\UserCompanyModuleSelectionController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Dashboard.aspx.cs">

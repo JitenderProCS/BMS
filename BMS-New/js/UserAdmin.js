@@ -405,13 +405,37 @@ function fnValidate() {
         $('#lblUserid').removeClass('text-danger');
     }
 
+    //if (Phone == "") {
+    //    isValid = false;
+    //    $('#lblPhone').addClass('text-danger');
+    //}
+    //else {
+    //    $('#lblPhone').removeClass('text-danger');
+    //}
+    /****Add By Jitender*******/
     if (Phone == "") {
         isValid = false;
         $('#lblPhone').addClass('text-danger');
     }
-    else {
+    else if (Phone.length > 10) {
         $('#lblPhone').removeClass('text-danger');
     }
+    else {
+        $('#lblPhone').removeClass('text-danger');
+
+        var regex = /^[0-9]{10}/;
+        if (Phone != "") {
+            if (Phone.match(regex)) {
+                $('#lblPhone').removeClass('text-danger');
+            }
+            else {
+                isValid = false;
+                alert("Please enter correct Phone Number format !");
+                $('#lblPhone').addClass('text-danger');
+            }
+        }
+    }
+    /******End*****************/
 
     if (authentication == '0') {
         isValid = false;

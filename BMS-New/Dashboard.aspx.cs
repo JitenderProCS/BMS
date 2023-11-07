@@ -13,7 +13,6 @@ namespace BMS_New
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //SpComapnyName.InnerText = Session["CompanyName"].ToString();
 
         }
     }

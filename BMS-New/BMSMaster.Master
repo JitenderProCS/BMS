@@ -21,6 +21,7 @@
     <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
     <link href="assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/style.bundle.css" rel="stylesheet" />
     <!--end::Global Theme Styles-->
     <!--begin::Layout Themes(used by all pages)-->
     <link href="assets/css/themes/layout/header/base/light.css" rel="stylesheet" type="text/css" />
@@ -30,8 +31,6 @@
     <!--end::Layout Themes-->
     <link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
     <link href="css/Dashboard.css" rel="stylesheet" />
-
-
     <asp:ContentPlaceHolder ID="head" runat="server" />
 </head>
 <!--begin::Body-->
@@ -40,7 +39,6 @@
 
     <div class="d-flex flex-column flex-root">
         <!--begin::Page-->
-        <h1>deepak</h1>
         <!--begin::Header Mobile-->
         <div id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
             <!--begin::Logo-->
@@ -79,8 +77,6 @@
             <!--end::Toolbar-->
         </div>
         <!--end::Header Mobile-->
-        <!--deepak start-->
-        <!--deepak end-->
         <div class="d-flex flex-column flex-root">
             <!--begin::Page-->
             <div class="d-flex flex-row flex-column-fluid page">
@@ -136,7 +132,7 @@
 
                             <!--begin::Menu Nav-->
                             
-                            <img src="assets/Image/procs.png" alt="Logo" style="margin-left: 20px;margin-top: 325px;"/>
+                            <img src="assets/Image/procs.png" alt="Logo" style="margin-left: 20px;margin-top: 360px;"/>
                             <!--end::Menu Nav-->
                         </div>
                         <!--end::Menu Container-->
@@ -173,6 +169,8 @@
                                             <span class="symbol-label font-size-h5 font-weight-bold">S</span>
                                         </span>--%>
 
+                                    
+
                                         <!--begin::Dropdowns-->
                                         <div class="dropdown dropdown-inline" data-toggle="tooltip" data-placement="left">
                                             <a href="#" class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -198,7 +196,7 @@
                                                         </a>
                                                     </li>
                                                     <li class="navi-item">
-                                                        <a href="#" class="navi-link">
+                                                        <a href="../ChangePassword.aspx" class="navi-link">
                                                             <span class="navi-icon">
                                                                 <i class="flaticon2-gear"></i>
                                                             </span>
@@ -331,6 +329,7 @@
     <script src="assets/js/pages/crud/ktdatatable/base/data-local.js"></script>
     <script src="assets/js/pages/crud/datatables/basic/basic.js"></script>
     <script src="js/Global.js"></script>
+    <script src="js/Login.js"></script>
 
     <script src="https://keenthemes.com/metronic/assets/js/engage_code.js"></script>
     <!--end::Global Theme Bundle-->

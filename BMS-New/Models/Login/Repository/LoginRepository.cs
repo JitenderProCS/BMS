@@ -274,6 +274,46 @@ namespace BMS_New.Models.Login.Repository
         //}
         /*************End*****************/
 
+        public LoginResponse ChangePassword(BMS_New.Models.Login.Model.Login objUsr)
+        {
+            LoginResponse oRes = new LoginResponse();
+            try
+            {
+                string sConStr = CryptoEngine.Decrypt(ConfigurationManager.AppSettings["ConnectionString"], true);
+                using (SqlConnection sCon = new SqlConnection(sConStr))
+                {
+                    sCon.Open();
+                    using (SqlCommand cmd = new SqlCommand("SP_BMS_USER_OPERATION", sCon))
+                    {
+                        }
+                    }
+                    //using (SqlConnection sCon = new SqlConnection(connectionString))
+                    //{
+                    //    SqlCommand sCmd = new SqlCommand();
+                    //    sCmd.Connection = sCon;
+                    //    sCmd.CommandType = CommandType.StoredProcedure;
+
+                    //    sCmd.Parameters.Clear();
+                    //    sCmd.Parameters.AddWithValue("@LoginId", objLogin.LoginId);
+                    //    sCmd.Parameters.AddWithValue("@Password", objLogin.Password);
+                    //    sCmd.Parameters.AddWithValue("@Mode", "CHANGE_PASSWORD_BY_LOGIN_ID");
+                    //    sCmd.CommandText = "PROCS_LOGIN_USER";
+                    //    sCon.Open();
+                    //    sCmd.ExecuteNonQuery();
+                    //    sCon.Close();
+                    //    res.StatusFl = true;
+                    //    res.Msg = "Success";
+                    //}
+                }
+            catch (Exception ex)
+            {
+                oRes.Msg = "Processing failed because of a system error!";
+                oRes.StatusFl = false;
+                // new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, "ChangePassword", "Reset Password Page", 1, 0);
+            }
+            return oRes;
+        }
+
         #region  "Set Session Status"
         public LoginResponse SetSessionStatus(BMS_New.Models.Login.Model.Login objLogin)
         {

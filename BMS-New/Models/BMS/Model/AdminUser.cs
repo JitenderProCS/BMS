@@ -35,12 +35,17 @@ namespace BMS_New.Models.BMS.Model
         public string LOGIN_ID { set; get; }
         public Int32 companyId { set; get; }
         public string CompanyName { set; get; }
+        public string logo { set; get; }
         public Int32 moduleId { set; get; }
         public string moduleName { set; get; }
+        public string modulefolder { set; get; }
+        public string ModuleDataBase { set; get; }
+        public string Mobile { set; get; }
         public string Role_Admin { set; get; }
         public string CREATE_BY { set; get; }
         public string STATUS { set; get; }
         public string STATUS1 { set; get; }
+        public string selectedValue { set; get; }
 
     }
     /************End**********/

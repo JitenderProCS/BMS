@@ -503,6 +503,8 @@ namespace BMS_New.Models.BMS.Repository
                                 AdminUser obj = new AdminUser();
                                 obj.userName = !String.IsNullOrEmpty(Convert.ToString(dt.Rows[0]["USER_NM"])) ? Convert.ToString(dt.Rows[0]["USER_NM"]) : String.Empty;
                                 obj.CompanyName = !String.IsNullOrEmpty(Convert.ToString(dt.Rows[0]["COMPANY_NM"])) ? Convert.ToString(dt.Rows[0]["COMPANY_NM"]) : String.Empty;
+                                obj.emailId = !String.IsNullOrEmpty(Convert.ToString(dt.Rows[0]["USER_EMAIL"])) ? Convert.ToString(dt.Rows[0]["USER_EMAIL"]) : String.Empty;
+                                obj.phone = !String.IsNullOrEmpty(Convert.ToString(dt.Rows[0]["USER_MOBILE"])) ? Convert.ToString(dt.Rows[0]["USER_MOBILE"]) : String.Empty;
                                 _userResponse.User = obj;
                                 _userResponse.StatusFl = true;
                                 _userResponse.Msg = "Data has been fetched successfully !";
@@ -751,6 +753,13 @@ namespace BMS_New.Models.BMS.Repository
                                     CompanyAccess Cmap = new CompanyAccess();
                                     Cmap.companyId = Convert.ToInt32( reader["COMPANY_ID"]);
                                     Cmap.CompanyName = reader["COMPANY_NM"].ToString();
+                                    Cmap.LOGIN_ID = reader["LOGIN_ID"].ToString();
+                                    Cmap.ModuleDataBase = reader["BMS_DB_NAME"].ToString();
+                                    Cmap.modulefolder = reader["MODULE_FOLDER"].ToString();
+                                    Cmap.moduleName = reader["MODULE_NM"].ToString();
+                                    Cmap.moduleId = Convert.ToInt32(reader["MODULE_ID"]);
+                                    Cmap.Mobile = reader["USER_MOBILE"].ToString();
+                                    Cmap.logo = reader["LOGO"].ToString();
                                     // Populate other properties if needed
                                     CompanyMapping.Add(Cmap);
                                 }

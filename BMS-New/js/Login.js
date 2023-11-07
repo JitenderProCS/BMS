@@ -75,3 +75,72 @@ function GoToDashBoard(companyId, CompanyNm, CompanyLogo, ModuleId, ModuleNm, Mo
         }
     })
 }
+
+/********Switch Company Dashboard***********/
+function SwitchDashBoard(selectedValue) {
+    debugger;
+    const selectedValues = selectedValue.split(',');
+    const data = [];
+    var rowData = {
+        companyId: selectedValues[0],
+        CompanyName: selectedValues[1],
+        logo: selectedValues[2],
+        moduleId: selectedValues[3],
+        moduleName: selectedValues[4],
+        modulefolder: selectedValues[5],
+        //ModuleDataBase: selectedValues[6],
+        LOGIN_ID: selectedValues[7],
+        Mobile: selectedValues[8]
+    };
+
+    data.push(rowData);
+    //const data = {
+    //    selectedValue: selectedValue
+    //};
+    var webUrl = uri + "/api/UserCompanyModuleSelection/SetSessionDashBoard";
+    $.ajax({
+        type: "POST",
+        url: webUrl,
+       // data: [],
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json", // Corrected "datatype" to "dataType"
+        //async: true,
+        async: false,
+        success: function (res) {
+            debugger;
+            // Handle the response or redirect to another page
+            window.location.href = "/Dashboard.aspx"; // Modify the URL as needed
+        },
+        error: function (error) {
+            alert(error);
+        }
+    });
+}
+
+/*************End***************************/
+
+/********Test***********/
+function Test() {
+    debugger;
+    
+    var webUrl = uri + "/api/UserCompanyModuleSelection/Test";
+    $.ajax({
+        type: "POST",
+        url: webUrl,
+         data: [],
+        contentType: "application/json; charset=utf-8",
+        dataType: "json", // Corrected "datatype" to "dataType"
+        async: false,
+        success: function (res) {
+            debugger;
+            // Handle the response or redirect to another page
+            window.location.href = "/Dashboard.aspx"; // Modify the URL as needed
+        },
+        error: function (error) {
+            alert(error);
+        }
+    });
+}
+
+/*************End***************************/

@@ -158,6 +158,8 @@ namespace BMS_New
                 {
 
                     SpUserNameHeader.InnerHtml = objResponse.User.userName;
+                   // UserName.InnerHtml = objResponse.User.userName;
+                    //UserEmailID.InnerHtml = objResponse.User.emailId;
                 }
             }
             catch (Exception ex)
@@ -180,12 +182,17 @@ namespace BMS_New
                 AdminUserResponse objResponse = objUser.GetUserCompanyList();
                 if (objResponse.StatusFl)
                 {
-                    sb.Append("<select style='width: 230px; margin-inline: 20px; height: 30px;'>");
-                    sb.Append("<option value='" + Session["CompanyId"] + "'>" + Session["CompanyName"] + "</option>");
+                    //sb.Append("<select style='width: 230px; margin-inline: 20px; height: 30px;'>");
+                    //sb.Append("<select id='companySelect'  style='width: 230px; margin-inline: 20px; height: 30px;' onchange='javascript:GoToDashBoard(this.value,\"" + Session["CompanyLogo"] + "\", \"" + Session["ModuleId"] + "\",\"" + Session["ModuleName"] + "\",\"" + Session["ModuleFolder"] + "\",\"" + Session["ModuleDatabase"] + "\",\"" + Session["EmployeeId"] + "\", \"" + Session["UserMobile"] + "\")'>");
+                    //sb.Append("<select id='companySelect' style='width: 230px; margin-inline: 20px; height: 30px;' onchange='GoToDashBoard(this.value,\"" + Session["CompanyLogo"] + "\", \"" + Session["ModuleId"] + "\", \"" + Session["ModuleName"] + "\", \"" + Session["ModuleFolder"] + "\", \"" + Session["ModuleDatabase"] + "\", \"" + Session["EmployeeId"] + "\", \"" + Session["UserMobile"] + "\")'>");
+                    sb.Append("<select id='companySelect' style='width: 230px; margin-inline: 20px; height: 30px;' onchange='SwitchDashBoard(this.value,)'>");
+
+                    //sb.Append("<select id='companySelect' style='width: 230px; margin-inline: 20px; height: 30px;' onchange='Test()'>");
+                     sb.Append("<option value='" + Session["CompanyId"] + "'>" + Session["CompanyName"] + "</option>");
                     foreach (var item in objResponse.User.CompanyMapping)
                     {
-                        sb.Append("<option value='" + item.companyId + "'>" + item.CompanyName + "</option>");
-                        //sb.Append("<option value='" + item.companyId + "' onclick='SwitchDashBoard(" + item.companyId + ")'>" + item.CompanyName + "</option>");
+                        sb.Append("<option value='" + item.companyId + "," + item.CompanyName + "," + item.logo + "," + item.moduleId + "," + item.moduleName + "," + item.modulefolder + "," + item.ModuleDataBase + "," + item.LOGIN_ID + "," + item.Mobile + "'>" + item.CompanyName + "</option>");
+                        //sb.Append("<option value='" + item.companyId + "' onchange='javascript:GoToDashBoard(" + item.companyId + ","+item.CompanyName+ ", "+ Session["ModuleDatabase"] +")'>" + item.CompanyName + "</option>");
 
                     }
                     sb.Append("</select>");
