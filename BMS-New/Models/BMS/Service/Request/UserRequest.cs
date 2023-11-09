@@ -76,6 +76,7 @@ namespace BMS_New.Models.BMS.Service.Request
 
         }
 
+
         //public UserResponse GetAllUsersRole()
         //{
         //    try

@@ -7,7 +7,7 @@
         count++;
     }
     else {
-        $("#lblLoginId").removeClass('required');
+        $("#lblLoginId").removeClass('text-danger');
     }
     if ($("#txtOldPassword").val() == undefined || $("#txtOldPassword").val() == null || $("#txtOldPassword").val().trim() == "") {
         $('#lblOldPassword').addClass('text-danger');
@@ -46,7 +46,7 @@
     }
 
 }
-
 function fnRemoveClass(obj, val) {
-    $("#lbl" + val + "").removeClass('required');
+    debugger
+    $("#lbl" + val + "").removeClass('text-danger');
 }

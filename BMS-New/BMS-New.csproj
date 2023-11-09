@@ -4265,6 +4265,7 @@
     <Content Include="BoardMeeting\images\CompanyLogo\TCS_2023_10_20_06_49_54_877.png" />
     <Content Include="ChangePassword.aspx" />
     <Content Include="CommitteeComposition.aspx" />
+    <Content Include="CommitteeMaster.aspx" />
     <Content Include="CompanyGroupMaster.aspx" />
     <Content Include="CompanyMaster.aspx" />
     <Content Include="Contact.aspx" />
@@ -4551,6 +4552,7 @@
     <Content Include="BMSMaster.Master" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="js\ChangePassword.js" />
+    <Content Include="js\Committee.js" />
     <Content Include="js\CommitteeComposition.js" />
     <Content Include="js\CompanyGroup.js" />
     <Content Include="js\CompanyMaster.js" />
@@ -4633,6 +4635,13 @@
     <Compile Include="CommitteeComposition.aspx.designer.cs">
       <DependentUpon>CommitteeComposition.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CommitteeMaster.aspx.cs">
+      <DependentUpon>CommitteeMaster.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CommitteeMaster.aspx.designer.cs">
+      <DependentUpon>CommitteeMaster.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CompanyGroupMaster.aspx.cs">
       <DependentUpon>CompanyGroupMaster.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -4655,10 +4664,10 @@
       <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AdminUserController.cs" />
+    <Compile Include="Controllers\CommitteeController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\DesignationController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
-    <Compile Include="Controllers\SwitchDashBoardController.cs" />
     <Compile Include="Controllers\UserCompanyModuleSelectionController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Dashboard.aspx.cs">

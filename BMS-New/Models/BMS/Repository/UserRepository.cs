@@ -1021,7 +1021,7 @@ namespace BMS_New.Models.BMS.Repository
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    //conn.ChangeDatabase(objUser.moduleDatabase);
+                    conn.ChangeDatabase(objUser.moduleDatabase);
                     using (SqlCommand cmd = new SqlCommand("SP_PROCS_BMS_COMMITTEE", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
@@ -1038,7 +1038,7 @@ namespace BMS_New.Models.BMS.Repository
                             {
                                 User obj = new User();
                                 obj.ID = Convert.ToInt32(rdr["ID"]);
-                                obj.userName = (!String.IsNullOrEmpty(Convert.ToString(rdr["NAME"]))) ? Convert.ToString(rdr["NAME"]) : String.Empty;
+                                obj.userName = (!String.IsNullOrEmpty(Convert.ToString(rdr["USER_NM"]))) ? Convert.ToString(rdr["USER_NM"]) : String.Empty;
                                 obj.emailId = (!String.IsNullOrEmpty(Convert.ToString(rdr["EMAIL_ID"]))) ? Convert.ToString(rdr["EMAIL_ID"]) : String.Empty;
                                 _userResponse.AddObject(obj);
                             }

@@ -2,7 +2,6 @@
 setTimeout("preventBack()", 0);
 window.onunload = function () { null };
 function fnLogin() {
-    debugger;
     //alert("In function fnLogin");
     var _salt = $("#txtSalt").val();
     var _msalt = $("#txtMSalt").val();
@@ -38,7 +37,6 @@ function openModal() {
 }
 
 function unValidCredential(Msg) {
-    debugger
     //alert(Email);
    // alert(Msg);
     //alert($('#UserName').val());
@@ -48,7 +46,6 @@ function unValidCredential(Msg) {
 }
 
 function GoToDashBoard(companyId, CompanyNm, CompanyLogo, ModuleId, ModuleNm, ModuleFolder, ModuleDataBase, EmployeeId, Mobile) {
-    debugger
     //var webUrl = "UserCompanyModuleListing/api/UserCompanyModuleSelectionHandler.ashx?caller=SetSession";
     var webUrl = uri + "/api/UserCompanyModuleSelection/SetSession";
     //var webUrl = "api/UserCompanyModuleSelection/SetSession";
@@ -65,10 +62,9 @@ function GoToDashBoard(companyId, CompanyNm, CompanyLogo, ModuleId, ModuleNm, Mo
         datatype: "json",
         async: true,
         success: function (res) {
-            debugger
             //    window.location.href = window.location.protocol + "//" + window.location.host + "/" + res + "/" + "DesignationMaster.aspx";
-            /*window.location.href = res + "/" + "Dashboard.aspx";*/
-            window.location.href = "/Dashboard.aspx";
+           // window.location.href = res + "/" + "Dashboard.aspx";
+            window.location.href = "../Dashboard.aspx";
         },
         error: function (error) {
             alert(error);
@@ -110,32 +106,7 @@ function SwitchDashBoard(selectedValue) {
         success: function (res) {
             debugger;
             // Handle the response or redirect to another page
-            window.location.href = "/Dashboard.aspx"; // Modify the URL as needed
-        },
-        error: function (error) {
-            alert(error);
-        }
-    });
-}
-
-/*************End***************************/
-
-/********Test***********/
-function Test() {
-    debugger;
-    
-    var webUrl = uri + "/api/UserCompanyModuleSelection/Test";
-    $.ajax({
-        type: "POST",
-        url: webUrl,
-         data: [],
-        contentType: "application/json; charset=utf-8",
-        dataType: "json", // Corrected "datatype" to "dataType"
-        async: false,
-        success: function (res) {
-            debugger;
-            // Handle the response or redirect to another page
-            window.location.href = "/Dashboard.aspx"; // Modify the URL as needed
+            window.location.href = "../Dashboard.aspx"; // Modify the URL as needed
         },
         error: function (error) {
             alert(error);

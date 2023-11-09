@@ -113,11 +113,11 @@ namespace BMS_New.Models.Login.Repository
 
 
 
-                        string salt = Convert.ToString(HttpContext.Current.Session["salt"]);
-                        string moreSalts = Convert.ToString(HttpContext.Current.Session["moreSalt"]);
-                        var dbPassword = Convert.ToString(dtCnt.Rows[0]["USER_PWD"]);
-                        var hash = hashcodegenerate.GetSHA512(hashcodegenerate.GetSHA512(dbPassword + salt) + salt);
-                        var fff = hashcodegenerate.GetSHA512(hash + moreSalts);
+                        //string salt = Convert.ToString(HttpContext.Current.Session["salt"]);
+                        //string moreSalts = Convert.ToString(HttpContext.Current.Session["moreSalt"]);
+                        //var dbPassword = Convert.ToString(dtCnt.Rows[0]["USER_PWD"]);
+                        //var hash = hashcodegenerate.GetSHA512(hashcodegenerate.GetSHA512(dbPassword + salt) + salt);
+                        //var fff = hashcodegenerate.GetSHA512(hash + moreSalts);
 
                         if (Convert.ToString(dtCnt.Rows[0]["USER_PWD"]) == CryptoEngine.Encrypt(objUsr.Password, true))
                         {
@@ -298,8 +298,8 @@ namespace BMS_New.Models.Login.Repository
                         //cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
                         cmd.ExecuteNonQuery();
                         sCon.Close();
-                       // oRes.StatusFl = true;
-                       // oRes.Msg = "Success";
+                        oRes.StatusFl = true;
+                        oRes.Msg = "Success";
                     }
                     }
                     
@@ -318,32 +318,33 @@ namespace BMS_New.Models.Login.Repository
         {
             LoginResponse res = new LoginResponse();
 
-            //res = new LoginResponse();
-            //res.Msg = "No Data Found";
-            //res.StatusFl = false;
-            //try
-            //{
-            //    using (SqlConnection sCon = new SqlConnection(connectionString))
-            //    {
-            //        string s = Convert.ToString(System.Web.HttpContext.Current.Session["EmployeeId"]);
-            //        sCon.Open();
-            //        string query = "update [dbo].[PROCS_SESSION_MAINTAIN] set END_SESSION=GETDATE(),STATUS='CLOSE'   where LOGIN_ID='" + s + "'";
-            //        using (SqlCommand sCmd = new SqlCommand(query, sCon))
-            //        {
-            //            sCmd.ExecuteNonQuery();
-            //            sCon.Close();
-            //            res.StatusFl = true;
-            //            res.Msg = "Success";
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    res = new LoginResponse();
-            //    res.StatusFl = false;
-            //    res.Msg = "Something went wrong. Please try again or Contact Support!";
-            //    //new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, "SetSessionStatus", "Set Session Status", 0, 0);
-            //}
+            res = new LoginResponse();
+            res.Msg = "No Data Found";
+            res.StatusFl = false;
+            try
+            {
+                string sConStr = CryptoEngine.Decrypt(ConfigurationManager.AppSettings["ConnectionString"], true);
+                using (SqlConnection sCon = new SqlConnection(sConStr))
+                {
+                    string s = Convert.ToString(System.Web.HttpContext.Current.Session["EmployeeId"]);
+                    sCon.Open();
+                    string query = "update [dbo].[PROCS_SESSION_MAINTAIN] set END_SESSION=GETDATE(),STATUS='CLOSE'   where LOGIN_ID='" + s + "'";
+                    using (SqlCommand sCmd = new SqlCommand(query, sCon))
+                    {
+                        sCmd.ExecuteNonQuery();
+                        sCon.Close();
+                        res.StatusFl = true;
+                        res.Msg = "Success";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                res = new LoginResponse();
+                res.StatusFl = false;
+                res.Msg = "Something went wrong. Please try again or Contact Support!";
+                //new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, "SetSessionStatus", "Set Session Status", 0, 0);
+            }
             return res;
         }
         #endregion
