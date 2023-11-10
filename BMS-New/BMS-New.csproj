@@ -4716,8 +4716,11 @@
       <DependentUpon>LogOut.aspx</DependentUpon>
     </Compile>
     <Compile Include="Models\BMS\Model\AdminUser.cs" />
+    <Compile Include="Models\BMS\Model\APIUser.cs" />
     <Compile Include="Models\BMS\Model\BaseEntity.cs" />
     <Compile Include="Models\BMS\Model\Category.cs" />
+    <Compile Include="Models\BMS\Model\Committee.cs" />
+    <Compile Include="Models\BMS\Model\CommitteeMember.cs" />
     <Compile Include="Models\BMS\Model\Company.cs" />
     <Compile Include="Models\BMS\Model\CompanyGrooup.cs" />
     <Compile Include="Models\BMS\Model\Designation.cs" />
@@ -4726,17 +4729,20 @@
     <Compile Include="Models\BMS\Model\DocumentSection.cs" />
     <Compile Include="Models\BMS\Model\User.cs" />
     <Compile Include="Models\BMS\Repository\AdminUserRepository.cs" />
+    <Compile Include="Models\BMS\Repository\CommitteeRepository.cs" />
     <Compile Include="Models\BMS\Repository\CompanyGroupRepository.cs" />
     <Compile Include="Models\BMS\Repository\CompanyRepository.cs" />
     <Compile Include="Models\BMS\Repository\DesignationRepository.cs" />
     <Compile Include="Models\BMS\Repository\UserRepository.cs" />
     <Compile Include="Models\BMS\Service\Request\AdminUserRequest.cs" />
+    <Compile Include="Models\BMS\Service\Request\CommitteeRequest.cs" />
     <Compile Include="Models\BMS\Service\Request\CompanyGroupRequest.cs" />
     <Compile Include="Models\BMS\Service\Request\CompanyRequest.cs" />
     <Compile Include="Models\BMS\Service\Request\DesignationRequest.cs" />
     <Compile Include="Models\BMS\Service\Request\UserRequest.cs" />
     <Compile Include="Models\BMS\Service\Response\AdminUserResponse.cs" />
     <Compile Include="Models\BMS\Service\Response\BaseResponse.cs" />
+    <Compile Include="Models\BMS\Service\Response\CommitteeResponse.cs" />
     <Compile Include="Models\BMS\Service\Response\CompanyGroupResponse.cs" />
     <Compile Include="Models\BMS\Service\Response\CompanyResponse.cs" />
     <Compile Include="Models\BMS\Service\Response\DesignationResponse.cs" />

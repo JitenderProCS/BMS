@@ -31,7 +31,7 @@
             </div>
             <!--end::Info-->
             <!--begin::Button-->
-            <a href="#" data-toggle="modal" data-target="#exampleModalSizeLg" class="btn btn-primary font-weight-bolder" onclick="javascript:fnOpenNew();">
+            <a href="#" data-toggle="modal" data-target="#committee_add" class="btn btn-primary font-weight-bolder" onclick="javascript:fnOpenNew();">
                 <span class="svg-icon svg-icon-md">
                     <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -66,7 +66,7 @@
     </table>
 
      <!--begin::Modal-->
-    <div class="modal fade" id="exampleModalSizeLg" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+    <div class="modal fade" id="committee_add" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -78,7 +78,7 @@
                 <div class="modal-body">
                     <!--begin::Group-->
                     <div class="form-group row">
-                        <label id="lblName" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">Company Name <sup class="text-danger">*</sup></label>
+                        <label id="lblName" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">Company Name </label>
                         <div class="col-lg-9 col-xl-9">
                             <label id="CompanyName" runat="server" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">Company Name</label>
                         </div>
@@ -121,7 +121,7 @@
                     </div>
 
                     <div id="Coordinator" class="form-group row">
-                                                <table class="table" id="sample_Users" style="width: 377px;margin-left: 183px;">
+                                                <table class="table" id="sample_Users" style="width: 377px;margin-left: 215px;">
                                                     <thead class="text-uppercase">
                                                         <tr>
                                                             <th style="display: none;"> ID</th>
@@ -138,8 +138,10 @@
                                             </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary font-weight-bold" onclick="javascript:fnAddUpdateUser();">Save changes</button>
+                     <button id="btnSave" type="button" class="btn btn-primary font-weight-bold" data-wizard-type="action-submit" onclick="javascript:fnSaveCommittee();">Submit</button>
+                    <button id="btnCancel" type="button" class="btn btn-primary font-weight-bold" data-dismiss="modal" data-wizard-type="action-close" onclick="javascript:fnCloseModal();">Close</button>
+                    <%--<button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary font-weight-bold" onclick="javascript:fnAddUpdateUser();">Save changes</button>--%>
                 </div>
             </div>
         </div>

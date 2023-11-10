@@ -4,6 +4,7 @@ using BMS_New.Models.BMS.Service.Response;
 using BMS_New.Models.Infrastructure;
 using System;
 using System.Web;
+using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Script.Serialization;
 
@@ -15,6 +16,7 @@ namespace BMS_New.Controllers
         string input;
         JavaScriptSerializer serializer1 = new JavaScriptSerializer();
         UserResponse userResponse = new UserResponse();
+        CommitteeResponse committeeResponse = new CommitteeResponse();
 
         [Route("GetUsersForCommitteeSuperAdmin")]
         [HttpPost]
@@ -47,6 +49,77 @@ namespace BMS_New.Controllers
                 userResponse.Msg = ex.Message;
             }
             return userResponse;
+        }
+
+        [Route("SaveCommittee")]
+        [HttpPost]
+        public CommitteeResponse SaveCommittee()
+        {
+            try
+            {
+                if (HttpContext.Current.Session.Count == 0)
+                {
+                    committeeResponse.StatusFl = false;
+                    committeeResponse.Msg = "SessionExpired";
+                    return committeeResponse;
+                }
+
+                List<Committee> lstUser = new List<Committee>();
+              
+                using (System.IO.StreamReader sr = new System.IO.StreamReader(HttpContext.Current.Request.InputStream))
+                {
+                    input = sr.ReadToEnd();
+                }
+
+                lstUser = serializer1.Deserialize<List<Committee>>(input);
+                Committee committee = new Committee();
+                committee = lstUser[0];
+                committee.createdBy = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
+                committee.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                committee.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
+                CommitteeRequest committeeRequest = new CommitteeRequest(committee);
+                committeeResponse = committeeRequest.Savecommittee();
+            }
+            catch (Exception ex)
+            {
+                new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]), Convert.ToInt32(HttpContext.Current.Session["CompanyId"]));
+                committeeResponse.StatusFl = false;
+                committeeResponse.Msg = ex.Message;
+            }
+            return committeeResponse;
+        }
+
+        [Route("GetUserListForCommittee")]
+        [HttpPost]
+        public CommitteeResponse GetUserListForCommittee()
+        {
+            try
+            {
+                if (HttpContext.Current.Session.Count == 0)
+                {
+                    committeeResponse.StatusFl = false;
+                    committeeResponse.Msg = "SessionExpired";
+                    return committeeResponse;
+                }
+
+                using (System.IO.StreamReader sr = new System.IO.StreamReader(HttpContext.Current.Request.InputStream))
+                {
+                    input = sr.ReadToEnd();
+                }
+                Committee committee = new JavaScriptSerializer().Deserialize<Committee>(input);
+                committee.createdBy = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
+                committee.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                committee.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
+                CommitteeRequest committeeRequest = new CommitteeRequest(committee);
+                committeeResponse = committeeRequest.userlistforcommittee();
+            }
+            catch (Exception ex)
+            {
+                new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]), Convert.ToInt32(HttpContext.Current.Session["CompanyId"]));
+                committeeResponse.StatusFl = false;
+                committeeResponse.Msg = ex.Message;
+            }
+            return committeeResponse;
         }
     }
 }

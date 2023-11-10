@@ -9,6 +9,10 @@ namespace BMS_New.Models.BMS.Model
     {
         public String moduleDatabase { get; set; }
         public string LoginId { set; get; }
+        public String operation { get; set; }
+        public String operation_Dt { get; set; }
+        public string fromDate { get; set; }
+        public string toDate { get; set; }
         public virtual void Validate() { }
         public Boolean ValidateInput()
         {
