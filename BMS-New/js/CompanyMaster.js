@@ -35,6 +35,7 @@ function fnGetCompanyList() {
                     result += '<tr id="tr_' + msg.CompanyList[i].companyId + '">';
                     result += '<td id="tdEdit_' + msg.CompanyList[i].companyId + '"><a data-target="#exampleModalSizeLg" data-toggle="modal" id="a_' + msg.CompanyList[i].companyId + '" class="btn btn-outline dark" onclick=\"javascript:fnEditUser(' + i + ');\">Edit</a></td>';
                     result += '<td id="tdUser_Name_' + msg.CompanyList[i].companyId + '">' + msg.CompanyList[i].CompanyName + '</td>';
+                    result += '<td id="tdUser_Name_' + msg.CompanyList[i].CompanyCode + '">' + msg.CompanyList[i].CompanyCode + '</td>';
                     result += '<td id="tdUser_Name_' + msg.CompanyList[i].CompanyTypeId + '">' + msg.CompanyList[i].CompanyTypeName + '</td>';
                     result += '<td id="tdUser_Name_' + msg.CompanyList[i].CompanyGroupId + '">' + msg.CompanyList[i].CompanyGroupName + '</td>';
                     
@@ -77,6 +78,7 @@ function fnAddUpdateUser() {
     var companyData = new FormData();
     var CompanyColl = [];
     CompanyColl[CompanyColl.length] = new Company($("input[id*='txtCompanyId']").val() == 0 ? 0 : $("input[id*='txtCompanyId']").val(),
+        $("input[id*='txtCompanyCode']").val(),
         $("select[id*='ddlCompanyGroup']").val(),
         $("input[id*='txtCompanyName']").val(),
         $("select[id*='ddlCompanyType']").val(),
@@ -85,7 +87,7 @@ function fnAddUpdateUser() {
 
     companyData.append("Object", JSON.stringify(CompanyColl));
 
-    var comp = new Company();
+    //var comp = new Company();
  
 
     if ($("input[id*='fileUploadImage']").get(0).files.length > 0) {
@@ -132,13 +134,34 @@ function fnAddUpdateUser() {
     }, 10);
 }
 
+function fnCloseModal() {
+    debugger
+    fnClearForm();
+}
+
+function fnClearForm() {
+    $('#txtCompanyCode').val('');
+    $('#ddlCompanyGroup').val(0);
+    $('#txtCompanyName').val('');
+    $('#txtCompanyId').val('');
+    $('#ddlCompanyType').val(0);
+    $('#fileUploadImage').val('');
+  
+    fnRemoveClass(null, 'ComapnyCode');
+    fnRemoveClass(null, 'Company Group');
+    fnRemoveClass(null, 'Company Name');
+    fnRemoveClass(null, 'Company Type');
+    fnRemoveClass(null, 'Upload');
+}
+
 function fnRemoveClass(obj, val) {
     $("#lbl" + val + "").removeClass('requied');
 }
 
-function Company(ID, CompanyGroupId,CompanyName, CompanyTypeId) {
+function Company(ID, CompanyCode, CompanyGroupId,CompanyName, CompanyTypeId) {
     debugger
     this.companyId = ID;
+    this.CompanyCode = CompanyCode;
     this.CompanyGroupId = CompanyGroupId;
     this.CompanyName = CompanyName;
     this.CompanyTypeId = CompanyTypeId;
@@ -174,19 +197,33 @@ function fnEditUser(index) {
     debugger;
     $("span[Id*='spnCompany']").html("Edit Company");
     $('#txtCompanyId').val(objCompany[index].companyId);
+    $('#txtCompanyCode').val(objCompany[index].CompanyCode);
     $("select[id*='ddlCompanyGroup'] option[value='" + objCompany[index].CompanyGroupId + "']").prop("selected", true);
     $('#txtCompanyName').val(objCompany[index].CompanyName);
     $("select[id*='ddlCompanyType'] option[value='" + objCompany[index].CompanyTypeId + "']").prop("selected", true);
-
     if (objCompany[index].uploadAvatar !== undefined && objCompany[index].uploadAvatar !== null && objCompany[index].uploadAvatar.trim() !== '') {
         $("#aUserAvatarImageUploaded").show();
         uploadedFile = objCompany[index].uploadAvatar;
-        $("#aUserAvatarImageUploaded").attr('href', 'BoardMeeting/images/CompanyLogo/' + objCompany[index].uploadAvatar);
-        $("#companyImageUploaded").attr('src', 'BoardMeeting/images/CompanyLogo/' + objCompany[index].uploadAvatar);
+        $("#aUserAvatarImageUploaded").attr('href', '/BoardMeeting/images/CompanyLogo/' + objCompany[index].uploadAvatar);
+        $("#companyImageUploaded").attr('src', '/BoardMeeting/images/CompanyLogo/' + objCompany[index].uploadAvatar);
     }
     else {
         $("#aUserAvatarImageUploaded").hide();
     }
+
+    //if (objCompany[index].uploadAvatar !== undefined && objCompany[index].uploadAvatar !== null && objCompany[index].uploadAvatar.trim() !== '') {
+    //    $("#aUserAvatarImageUploaded").show();
+    //    uploadedFile = objCompany[index].uploadAvatar;
+    //    $("#fileUploadImage").attr('href', '/BoardMeeting/images/CompanyLogo/' + objCompany[index].uploadAvatar);
+    //   // $("#aUserAvatarImageUploaded").attr('href', '/BoardMeeting/images/CompanyLogo/' + objCompany[index].uploadAvatar);
+    //    $("#companyImageUploaded").attr('src', '/BoardMeeting/images/CompanyLogo/' + objCompany[index].uploadAvatar);
+
+        
+
+    //}
+    //else {
+    //    $("#aUserAvatarImageUploaded").hide();
+    //}
 
 }
 

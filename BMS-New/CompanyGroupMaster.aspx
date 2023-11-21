@@ -61,7 +61,7 @@
         <thead>
             <tr>
                 <th></th>
-                <th>Company </th>
+                <th>Company Group </th>
                 <th>LOGO</th>
 
             </tr>

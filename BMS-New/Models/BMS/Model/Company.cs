@@ -9,6 +9,7 @@ namespace BMS_New.Models.BMS.Model
     {
        public Int32 ID { get; set; }
         public Int32 companyId { get; set; }
+        public String CompanyCode { get; set; }
         public String CompanyName { get; set; }
         public Int32 CompanyTypeId { get; set; }
         public String CompanyTypeName { get; set; }

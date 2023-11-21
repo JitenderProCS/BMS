@@ -161,7 +161,7 @@ namespace BMS_New.Controllers
                     input = sr.ReadToEnd();
                 }
                 User user = new JavaScriptSerializer().Deserialize<User>(input);
-                user.createdBy = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
+                user.LoginId = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
                 user.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 user.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
                 //user.moduleId = Convert.ToInt32(HttpContext.Current.Session["ModuleId"]);

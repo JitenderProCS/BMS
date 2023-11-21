@@ -4727,6 +4727,7 @@
     <Compile Include="Models\BMS\Model\Document.cs" />
     <Compile Include="Models\BMS\Model\DocumentLn.cs" />
     <Compile Include="Models\BMS\Model\DocumentSection.cs" />
+    <Compile Include="Models\BMS\Model\Role.cs" />
     <Compile Include="Models\BMS\Model\User.cs" />
     <Compile Include="Models\BMS\Repository\AdminUserRepository.cs" />
     <Compile Include="Models\BMS\Repository\CommitteeRepository.cs" />

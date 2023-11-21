@@ -182,8 +182,8 @@ function fnEditUser(index) {
     if (objGroupCompany[index].uploadAvatar !== undefined && objGroupCompany[index].uploadAvatar !== null && objGroupCompany[index].uploadAvatar.trim() !== '') {
         $("#aUserAvatarImageUploaded").show();
         uploadedFile = objGroupCompany[index].uploadAvatar;
-        $("#aUserAvatarImageUploaded").attr('href', 'BoardMeeting/images/CompanyLogo/' + objGroupCompany[index].uploadAvatar);
-        $("#companyImageUploaded").attr('src', 'BoardMeeting/images/CompanyLogo/' + objGroupCompany[index].uploadAvatar);
+        $("#aUserAvatarImageUploaded").attr('href', '/BoardMeeting/images/CompanyGroupLogo/' + objGroupCompany[index].uploadAvatar);
+        $("#companyImageUploaded").attr('src', '/BoardMeeting/images/CompanyGroupLogo/' + objGroupCompany[index].uploadAvatar);
     }
     else {
         $("#aUserAvatarImageUploaded").hide();

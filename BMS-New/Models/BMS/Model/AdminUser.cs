@@ -34,6 +34,7 @@ namespace BMS_New.Models.BMS.Model
         public Int32 ID { set; get; }
         public string LOGIN_ID { set; get; }
         public Int32 companyId { set; get; }
+        public string CompanyCode { set; get; }
         public string CompanyName { set; get; }
         public string logo { set; get; }
         public Int32 moduleId { set; get; }

@@ -1,5 +1,5 @@
 ﻿//var objDesignation = [];
-//var userlistforcommittee = [];
+var userlistforcommittee = [];
 //var result12 = "";
 function fnOpenNew() {
     $("#Coordinator").hide();
@@ -37,31 +37,20 @@ function initializeDataTable() {
 }
 
 $(document).ready(function () {
+    debugger
     //window.history.forward();
     //function preventBack() { window.history.forward(1); }
 
-    //fnGetCompanyList();
+    //fnListCommittee();
     //fnBindDesignation();
     //fnBindCompanyGroup();
 
     getuserforSuperAdmin();
-    fnGetUserList();
+    GetUserListForCommittee();
 
 });
-
-//$(document).ready(function () {
-//    debugger
-//    window.history.forward();
-//    function preventBack() { window.history.forward(1); }
-
-//   // fnListCommittee();
-//    getuserforSuperAdmin();
-//    $("#txteditID").val("0");
-//    //$('#btnAdd_commi').on('click', function () {
-//    //    fnAddCommittee();
-//    //});    
-//});
 function getuserforSuperAdmin() {
+    debugger
     var webUrl = uri + "/api/Committee/GetUsersForCommitteeSuperAdmin";
     $("input[id*='txtAddSuperAdmin']").autocomplete({
         source: function (request, response) {
@@ -106,15 +95,17 @@ function getuserforSuperAdmin() {
     });
     $('.ui-autocomplete').css({ 'z-index': '2147483647' });
 }
-function fnGetUserList() {
+function GetUserListForCommittee() {
     debugger
     $("#Loader").show();
-    var webUrl = uri + "/api/User/GetUserList";
+    //var webUrl = uri + "/api/User/GetUserList";
+    var webUrl = uri + "/api/Committee/GetUserListForCommittee"; //"api/CommitteeHandler.ashx?caller=GetUserListForCommittee";
     $.ajax({
         type: "POST",
         url: webUrl,
         data: JSON.stringify({
-            status: $("select[id*='ddlUserStatus']").val()
+            /*status: $("select[id*='ddlUserStatus']").val()*/
+            COMPANY_ID: 0
         }),
         contentType: "application/json; charset=utf-8",
         datatype: "json",
@@ -123,11 +114,18 @@ function fnGetUserList() {
             $("#Loader").hide();
             if (msg.StatusFl) {
                 $("#ddlCoordinator").empty().append('<option selected="selected" value="0">Please Select</option>');
-                if (msg.UserList != undefined && msg.UserList != null) {
-                    if (msg.UserList.length > 0) {
-                        for (var i = 0; i < msg.UserList.length; i++) {
-                           /* $("#ddlCoordinator").append($("<option value='" + msg.UserList[i].ID + "," + msg.UserList[i].userFirstName + "," + msg.UserList[i].emailId + "," + msg.UserList[i].role + "'>" + msg.UserList[i].userFirstName + "</option>"));*/
-                            $("#ddlCoordinator").append($("<option></option>").val(msg.UserList[i].ID).html(msg.UserList[i].userFirstName));
+                if (msg.CommitteeList != undefined && msg.CommitteeList != null) {
+                    if (msg.CommitteeList.length > 0) {
+                        for (var i = 0; i < msg.CommitteeList[0].committeeAdmins.length; i++) {
+                            userlistforcommittee.push(msg.CommitteeList[0].committeeAdmins[i]);
+                       /* for (var i = 0; i < msg.UserList.length; i++) {*/
+                            /* $("#ddlCoordinator").append($("<option></option>").val(msg.UserList[i].ID).html(msg.UserList[i].userFirstName));*/
+                            /*$("#ddlCoordinator").append($("<option></option>").val(msg.CommitteeList[0].committeeAdmins[i].ID).html(msg.CommitteeList[0].committeeAdmins[i].userName).html(msg.CommitteeList[0].committeeAdmins[i].emailId));*/
+                            $("#ddlCoordinator").append(
+                                $("<option></option>")
+                                    .val(msg.CommitteeList[0].committeeAdmins[i].ID)
+                                    .text(msg.CommitteeList[0].committeeAdmins[i].userName + " - " + msg.CommitteeList[0].committeeAdmins[i].emailId)
+                            );
                         }
                     }
                 }
@@ -150,27 +148,46 @@ function fnGetUserList() {
 
 function fnAddCoordinator() {
     debugger
-    $("#Coordinator").show();
     if (fnValidateCoordinator()) {
-        var obj = new CoordinatorDetail();
-        var str = "";
-        str += '<tr>';
-        str += '<td style="display:none;">' + obj.ID + '</td>';
-        str += '<td style="display:none;">' + obj.ID + '</td>';
-       /* str += '<td>' + '<input id="chkAll" type="checkbox" onclick="fnCheckAll(this,\'sample_Users\');" />' + '</td>';*/
-       /* str += '<input id="chkAll" type="checkbox" onclick="fnCheckAll(this,\'sample_Users\');" />';*/
-        str += '<td>' + obj.Name + '</td>';
-        //str += '<td>' + obj.emailId + '</td>';
-        //str += '<td>' + obj.role + '</td>';
-        str += '<td><img onclick="javascript:fnDeleteCoordinator(this);" src="../assets/image/Icon/delete.png" style="width:24px;height:24px;" /></td>';
-        str += '</tr>';
-        $("#tbdCoordinatorList").append(str);
+        // Get the selected value from the dropdown
+        var selectedValue = $("#ddlCoordinator").val();
+
+        // Check if the selected value is already in the table
+        if ($("#sample_Users tbody td:first-child").filter(function () {
+            return $(this).text() === selectedValue;
+        }).length > 0) {
+            // Value is already in the table, handle the validation accordingly
+            alert("This coordinator is already selected.");
+            // You may choose to return false or take other actions based on your requirements
+            return false;
+        }
+
+        // Get the corresponding admin object from msg.CommitteeList[0].committeeAdmins
+        var selectedAdmin = userlistforcommittee.find(function (admin) {
+            return admin.ID == selectedValue;
+        });
+
+        // Display the selected admin in the table
+        var tableRow = $("<tr></tr>")
+            .append($("<td style='display: none;'></td>").text(selectedAdmin.ID))
+            .append($("<td></td>").text(selectedAdmin.userName))
+            .append($("<td></td>").text(selectedAdmin.emailId))
+            .append($("<td><img onclick='javascript: fnDeleteCoordinator(this); ' src='../assets/image/Icon/delete.png' style='width: 24px; height: 24px;' /></td>"));
+
+        // Append the row to the table
+        $("#sample_Users tbody").append(tableRow);
+
+        // Reset the dropdown value
         $('#ddlCoordinator').val(0);
     }
     else {
+        // Handle validation failure
         $('#btnadd').removeAttr("data-dismiss");
         return false;
     }
+
+    $("#Coordinator").show();
+
 }
 function fnValidateCoordinator() {
     debugger
@@ -181,7 +198,7 @@ function fnValidateCoordinator() {
 
     if (Coordinator == '0') {
         isValid = false;
-        alert("Please Select Company!");
+        alert("Please Select Meeting Coordinator!");
     }
     else {
         // alert("This is your alert message!");
@@ -193,18 +210,10 @@ function fnValidateCoordinator() {
 
     return isValid;
 }
-function CoordinatorDetail() {
-    debugger
-    this.ID = 0;
-    this.ID = $("#ddlCoordinator").val() == null ? 0 : ($("#ddlCoordinator").val().trim() == "" ? 0 : $("#ddlCoordinator").val());
-    this.Name = $("#ddlCoordinator option:selected").text() == null ? 0 : ($("#ddlCoordinator option:selected").text().trim() == "" ? 0 : $("#ddlCoordinator option:selected").text());
-    //this.emailId = $("#ddlCoordinator option:selected").text() == null ? 0 : ($("#ddlCoordinator option:selected").text().trim() == "" ? 0 : $("#ddlCoordinator option:selected").text());
-    //this.role = $("#ddlCoordinator option:selected").text() == null ? 0 : ($("#ddlCoordinator option:selected").text().trim() == "" ? 0 : $("#ddlCoordinator option:selected").text());
-}
 function fnDeleteCoordinator(cntrl) {
     debugger
-    //deleteDematDetailElement = $(event.currentTarget).closest('tr');
     $(cntrl).closest('tr').remove();
+   // $("#Coordinator").hide();
 }
 function fnCheckAll(source, tbl) {
     if ($(source)[0].checked) {
@@ -233,6 +242,7 @@ function fnClearForm() {
     fnRemoveClass(null, 'Coordinator');
 }
 function fnSaveCommittee() {
+    debugger
     var st = fnValidate();
     if (!st) {
         return false;
@@ -241,40 +251,24 @@ function fnSaveCommittee() {
 
     $("#EditCommittee").modal('hide');
 
-    var UseridList = [];
-    var checkmsg = "";
-    $("table[id*='sample_Users'] > tbody > tr").each(function () {
-        var checked = $(this).find("input[type='checkbox']");
-        if ($(checked)[0].checked) {
-            //UseridList.push($(checked).val());
+    var CommitteeAdmin = [];
+    for (var i = 0; i < $("#tbdCoordinatorList").children().length; i++) {
+        var AE = new Object();
 
-            var checkuserid = $(checked).val();
-            var txtuserid = $("input[id*='emailAddSuperAdmin']").val();
-            var name = $("input[id*='txtAddSuperAdmin']").val();
-            if (checkuserid == txtuserid) {
-                alert("This is already Committee Admin,you can not select this user '" + name + "' in Select Meeting Coordinator(s)");
-                checkmsg = "A";
-                // return false;
-            }
-
-            else {
-                UseridList.push($(checked).val());
-            }
-        }
-    });
-    if (checkmsg == "A") {
-        $("#Loader").hide();
-        return false;
+        AE.ID = $($($("#tbdCoordinatorList").children()[i]).children()[0]).text();
+        AE.userName = $($($("#tbdCoordinatorList").children()[i]).children()[1]).text();;
+        AE.emailId = $($($("#tbdCoordinatorList").children()[i]).children()[2]).text();;
+        CommitteeAdmin.push(AE);
     }
-    var adminColl = [];
-    for (var i = 0; i < UseridList.length; i++) {
-        adminColl[adminColl.length] = new User(UseridList[i], "Both");
-    }
+    //var adminColl = [];
+    //for (var i = 0; i < CommitteeAdmin.length; i++) {
+    //    adminColl[adminColl.length] = new User(CommitteeAdmin[i], "Both");
+    //}
 
-    adminColl[adminColl.length] = new User($("input[id*='emailAddSuperAdmin']").val(), "Committee Admin");
+    //adminColl[adminColl.length] = new User($("input[id*='emailAddSuperAdmin']").val(), "Committee Admin");
 
     var commiteeColl = [];
-    commiteeColl[commiteeColl.length] = new Committee($("input[id*='txteditID']").val(), $("input[id*='txtCommitteeName']").val(), $("input[id*='txtCommitteeAbbr']").val(), adminColl);
+    commiteeColl[commiteeColl.length] = new Committee($("input[id*='txteditID']").val(),$("input[id*='txtCommitteeName']").val(), $("input[id*='txtCommitteeAbbr']").val(),CommitteeAdmin);
 
     var webUrl = uri + "/api/Committee/SaveCommittee"; //"api/CommitteeHandler.ashx?caller=SaveCommittee";
     setTimeout(function () {
@@ -312,8 +306,27 @@ function fnSaveCommittee() {
         })
     }, 10);
 }
+//function User(id, designationName) {
+//    this.ID = id;
+//    this.designation = new Designation(designationName)
+//}
+//function Designation(designationName) {
+//    this.designationName = designationName;
+//}
+function Committee(ID, name, abrr, usercoll) {
+    debugger
+    if (ID == "") {
+        this.ID = 0;
+    }
+    else {
+        this.ID = ID;
+    }
+    this.ID = ID;
+    this.committeeName = name;
+    this.committeeABRR = abrr;
+    this.committeeAdmins = usercoll;
+}
 function fnValidate() {
-    var UseridList = [];
     var obj = "";
 
     var CommitteeName = $("input[id*='txtCommitteeName']").val();
@@ -351,152 +364,69 @@ function fnValidate() {
         return false;
     }
 
-    //$.each($("input[type='checkbox']:checked"), function () {
-    //    UseridList.push($(this).val());
-    //});
-
-    //if (UseridList.length == 0) {
-    //    alert("Please select atleast one Meeting Coordinator");
-    //    return false;
-    //}
-
     return true;
 }
 
 
 
-//function fnListCommittee() {
-//    $("#Loader").show();
-//    var webUrl = uri + "/api/Committee/ListCommittee";
-//    $.ajax({
-//        type: "POST",
-//        url: webUrl,
-//        data: JSON.stringify({
-//            COMPANY_ID: 0
-//        }),
-//        contentType: "application/json; charset=utf-8",
-//        datatype: "json",
-//        async: true,
-//        success: function (msg) {
-//            $("#Loader").hide();
-//            var result = "";
-//            var table = $('#tbl-committee-setup').DataTable();
-//            table.destroy();
-//            $("#tbdCommitteList").html(result);
-//            if (msg.StatusFl) {
-//                for (var i = 0; i < msg.CommitteeList.length; i++) {
-//                    var seq = i + 1;
-//                    result += '<tr id="tr_' + msg.CommitteeList[i].ID + '">';
-//                    result += '<td style="text-align:center;">' + seq + '</td>';
-//                    result += '<td>' + msg.CommitteeList[i].committeeName + '</td>';
-//                    result += '<td>' + msg.CommitteeList[i].committeeABRR + '</td>';
-//                    result += '<td style="text-align:center;">' + msg.CommitteeList[i].NoOfcommitteeMembers + '</td>';
-//                    result += '<td id="tdEdit_' + msg.CommitteeList[i].ID + '">';
-//                    if (msg.CommitteeList[i].isDelete == 0) {
-//                        result += '<a  id="a_' + msg.CommitteeList[i].ID + '" class="btn btn-outline dark" onclick=\"javascript:EditCommittee(' + msg.CommitteeList[i].ID + ');\">Edit</a>';
-//                        result += '&nbsp;&nbsp;';
-//                        result += '<a  id="a_' + msg.CommitteeList[i].ID + '" class="btn btn-outline dark" onclick=\"javascript:Conferm_Delete(' + msg.CommitteeList[i].ID + ');\">Delete</a>';
-//                    }
-//                    else {
-//                        result += '<a  id="a_' + msg.CommitteeList[i].ID + '" class="btn btn-outline dark" onclick=\"javascript:EditCommittee(' + msg.CommitteeList[i].ID + ');\">Edit</a>';
-//                    }
-//                    result += '</td>';
-//                    result += '</tr>';
-//                }
-//                $("#tbdCommitteList").html(result);
-//                initializeDataTable();
-//            }
-//            else {
-//                if (msg.Msg == "SessionExpired") {
-//                    alert("Your session is expired. Please login again to continue");
-//                    window.location.href = "../Login.aspx";
-//                }
-//                else {
-//                    initializeDataTable();
-//                }
-//                return false;
-//            }
-//        },
-//        error: function (response) {
-//            $("#Loader").hide();
-//            alert(response.status + ' ' + response.statusText);
-//        }
-//    });
-//}
-
-function fnAddCommittee() {
+function fnListCommittee() {
+    debugger
     $("#Loader").show();
-    $("input[id*='txteditID']").val(0);
-    $("input[id*='txtCommitteeName']").val("");
-    $("input[id*='txtCommitteeAbbr']").val("");
-    $("input[id*='txtAddSuperAdmin']").val("");
-    $("input[id*='emailAddSuperAdmin']").val("");
-
-    var webUrl = uri + "/api/Committee/GetUserListForCommittee"; //"api/CommitteeHandler.ashx?caller=GetUserListForCommittee";
-    setTimeout(function () {
-        $.ajax({
-            type: "POST",
-            url: webUrl,
-            data: JSON.stringify({
-                COMPANY_ID: 0
-            }),
-            contentType: "application/json; charset=utf-8",
-            datatype: "json",
-            async: true,
-            success: function (msg) {
-                $("#Loader").hide();
-
-                if (!msg.StatusFl) {
-                    if (msg.Msg == "SessionExpired") {
-                        alert("Your session is expired. Please login again to continue");
-                        window.location.href = "../Login.aspx";
-                        return false;
+    var webUrl = uri + "/api/Committee/ListCommittee";
+    $.ajax({
+        type: "POST",
+        url: webUrl,
+        data: JSON.stringify({
+            COMPANY_ID: 0
+        }),
+        contentType: "application/json; charset=utf-8",
+        datatype: "json",
+        async: true,
+        success: function (msg) {
+            $("#Loader").hide();
+            var result = "";
+            var table = $('#tbl-committee-setup').DataTable();
+            table.destroy();
+            $("#tbdCommitteList").html(result);
+            if (msg.StatusFl) {
+                for (var i = 0; i < msg.CommitteeList.length; i++) {
+                    var seq = i + 1;
+                    result += '<tr id="tr_' + msg.CommitteeList[i].ID + '">';
+                    result += '<td style="text-align:center;">' + seq + '</td>';
+                    result += '<td>' + msg.CommitteeList[i].committeeName + '</td>';
+                    result += '<td>' + msg.CommitteeList[i].committeeABRR + '</td>';
+                    result += '<td style="text-align:center;">' + msg.CommitteeList[i].NoOfcommitteeMembers + '</td>';
+                    result += '<td id="tdEdit_' + msg.CommitteeList[i].ID + '">';
+                    if (msg.CommitteeList[i].isDelete == 0) {
+                        result += '<a  id="a_' + msg.CommitteeList[i].ID + '" class="btn btn-outline dark" onclick=\"javascript:EditCommittee(' + msg.CommitteeList[i].ID + ');\">Edit</a>';
+                        result += '&nbsp;&nbsp;';
+                        result += '<a  id="a_' + msg.CommitteeList[i].ID + '" class="btn btn-outline dark" onclick=\"javascript:Conferm_Delete(' + msg.CommitteeList[i].ID + ');\">Delete</a>';
                     }
-                }
-
-                var result = "";
-                result += '<table id="sample_Users" class="TFtable">';
-                result += '<thead>';
-                result += '<th>';
-                result += '<input id="chkAll" type="checkbox" onclick="fnCheckAll(this,\'sample_Users\');" />';
-                result += '</th>';
-                result += '<th>Name</th>';
-                result += '<th>Email</th>';
-                result += '<th>Role</th>';
-                result += '</tr>';
-                result += '</thead>';
-                result += '<tbody id="tbodySeq">';
-
-                if (msg.StatusFl) {
-                    for (var i = 0; i < msg.CommitteeList[0].committeeAdmins.length; i++) {
-                        userlistforcommittee.push(msg.CommitteeList[0].committeeAdmins[i]);
-                        result += '<tr id="tr_' + msg.CommitteeList[0].committeeAdmins[i].ID + '">';
-                        result += '<td>';
-                        result += '<input type="checkbox" class="checkboxes" value="' + msg.CommitteeList[0].committeeAdmins[i].ID + '" onclick="fnUncheckAll(this,\'sample_Users\',\'chkAll\');" />';
-                        result += '</td>';
-                        result += '<td>' + msg.CommitteeList[0].committeeAdmins[i].userName + '</td>';
-                        result += '<td>' + msg.CommitteeList[0].committeeAdmins[i].emailId + '</td>';
-                        result += '<td>' + msg.CommitteeList[0].committeeAdmins[i].role.role + '</td>';
-                        result += '</tr>';
+                    else {
+                        result += '<a  id="a_' + msg.CommitteeList[i].ID + '" class="btn btn-outline dark" onclick=\"javascript:EditCommittee(' + msg.CommitteeList[i].ID + ');\">Edit</a>';
                     }
-                }
-                else {
-                    result += '<tr>';
-                    result += '<td colspan="4">No Admin or Secretial Users Found in System !</td>';
+                    result += '</td>';
                     result += '</tr>';
                 }
-
-                result += '</tbody>';
-                result += '</table>';
-                $("#divUsers").html(result);
-                $("#committee_add").modal('show');
-            },
-            error: function (response) {
-                $("#Loader").hide();
-                alert(response.status + ' ' + response.statusText);
+                $("#tbdCommitteList").html(result);
+                initializeDataTable();
             }
-        });
-    }, 10);
+            else {
+                if (msg.Msg == "SessionExpired") {
+                    alert("Your session is expired. Please login again to continue");
+                    window.location.href = "../Login.aspx";
+                }
+                else {
+                    initializeDataTable();
+                }
+                return false;
+            }
+        },
+        error: function (response) {
+            $("#Loader").hide();
+            alert(response.status + ' ' + response.statusText);
+        }
+    });
 }
 
 //function EditCommittee(ide) {

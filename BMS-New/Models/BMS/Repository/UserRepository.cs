@@ -373,135 +373,114 @@ namespace BMS_New.Models.BMS.Repository
                 {
                     conn.Open();
                     conn.ChangeDatabase(objUser.moduleDatabase);
-                    SqlParameter[] parameters = new SqlParameter[5];
-                parameters[0] = new SqlParameter("@Mode", "GET_USER_LIST");
-                parameters[1] = new SqlParameter("@SET_COUNT", SqlDbType.Int);
-                parameters[1].Direction = ParameterDirection.Output;
-                parameters[2] = new SqlParameter("@COMPANY_ID", objUser.companyId);
-                parameters[3] = new SqlParameter("@CREATED_BY", objUser.createdBy);
-                parameters[4] = new SqlParameter("@STATUS", (objUser.status != "0" ? objUser.status : null));
-
-                //SqlDataReader rdr = SQLHelper.ExecuteReader(SQLHelper.GetConnString(), CommandType.StoredProcedure, "SP_PROCS_INSIDER_USER_PERSONAL_MASTER", objUser.MODULE_DATABASE, parameters);
-
-                DataSet ds = SQLHelper.ExecuteDataset(SQLHelper.GetConnString(), CommandType.StoredProcedure, "SP_PROCS_BMS_USER_MASTER", parameters);
-                DataTable dt = ds.Tables[0];
-                DataTable dtCompaniesList = ds.Tables[1];
-                //UserResponse oUser = new UserResponse();
-                if (dt != null)
-                {
-                    if (dt.Rows.Count > 0)
+                    using (SqlCommand cmd = new SqlCommand("SP_PROCS_BMS_USER_MASTER", conn))
                     {
-                        List<User> lstuser = new List<User>();
-                        foreach (DataRow dr in dt.Rows)
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = 0;
+                        cmd.Parameters.Clear();
+                        cmd.Parameters.Add(new SqlParameter("@MODE", "GET_USER_LIST"));
+                        cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
+                        //cmd.Parameters.Add(new SqlParameter("@USER_LOGIN", objUser.LoginId));
+                        //cmd.Parameters.Add(new SqlParameter("@STATUS", (objUser.status != "0" ? objUser.status : null)));
+                        DataSet ds = new DataSet();
+
+                        using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                         {
-                            User obj = new User();
-                            obj.ID = Convert.ToInt32(dr["ID"]);
-                            obj.salutation = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_SALUTATION"]))) ? Convert.ToString(dr["USER_SALUTATION"]) : String.Empty;
-                            obj.userFirstName = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_FIRST_NAME"]))) ? Convert.ToString(dr["USER_FIRST_NAME"]) : String.Empty;
-                            obj.userMiddleName = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_MIDDLE_NAME"]))) ? Convert.ToString(dr["USER_MIDDLE_NAME"]) : String.Empty;
-                            obj.userLastName = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_LAST_NAME"]))) ? Convert.ToString(dr["USER_LAST_NAME"]) : String.Empty;
-                            obj.emailId = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_EMAIL"]))) ? Convert.ToString(dr["USER_EMAIL"]) : String.Empty;
-                            //obj.ROLE_NAME = (!String.IsNullOrEmpty(Convert.ToString(dr["ROLE"]))) ? Convert.ToString(dr["ROLE"]) : String.Empty;
-                            //obj.role = new Role
-                            //{
-                            //    Id = Convert.ToInt32(dr["USER_ROLE"]),
-                            //    role = (!String.IsNullOrEmpty(Convert.ToString(dr["ROLE"]))) ? Convert.ToString(dr["ROLE"]) : String.Empty
-                            //};
-                            obj.role = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_ROLE"]))) ? Convert.ToString(dr["USER_ROLE"]) : String.Empty;
-                            obj.phone = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_MOBILE"]))) ? Convert.ToString(dr["USER_MOBILE"]) : String.Empty;
-                            obj.address = (!String.IsNullOrEmpty(Convert.ToString(dr["ADDRESS"]))) ? Convert.ToString(dr["ADDRESS"]) : String.Empty;
-                            obj.designation = (!String.IsNullOrEmpty(Convert.ToString(dr["DESIGNATION_NAME"]))) ? Convert.ToString(dr["DESIGNATION_NAME"]) : String.Empty;
-                            obj.department = (!String.IsNullOrEmpty(Convert.ToString(dr["DEPARTMENT_NAME"]))) ? Convert.ToString(dr["DEPARTMENT_NAME"]) : String.Empty;
-                            obj.category = (!String.IsNullOrEmpty(Convert.ToString(dr["CATEGORY_NAME"]))) ? Convert.ToString(dr["CATEGORY_NAME"]) : String.Empty;
-                            obj.tenureStartDate = (!String.IsNullOrEmpty(Convert.ToString(dr["TENURE_START"]))) ? Convert.ToString(dr["TENURE_START"]) : String.Empty;
-                            obj.tenureEndDate = (!String.IsNullOrEmpty(Convert.ToString(dr["TENURE_END"]))) ? Convert.ToString(dr["TENURE_END"]) : String.Empty;
-                            obj.dateOfBirth = (!String.IsNullOrEmpty(Convert.ToString(dr["DATE_OF_BIRTH"]))) ? Convert.ToString(dr["DATE_OF_BIRTH"]) : String.Empty;
-                            obj.nationality = (!String.IsNullOrEmpty(Convert.ToString(dr["NATIONALITY"]))) ? Convert.ToString(dr["NATIONALITY"]) : String.Empty;
-                            obj.userLogin = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_LOGIN"]))) ? Convert.ToString(dr["USER_LOGIN"]) : String.Empty;
-                            //obj.password = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_PWD"]))) ? Convert.ToString(dr["USER_PWD"]) : String.Empty;
-                             obj.password = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_PWD"]))) ? CryptoEngine.Decrypt(Convert.ToString(dr["USER_PWD"]), true) : String.Empty;
-                            obj.status = (!String.IsNullOrEmpty(Convert.ToString(dr["STATUS"]))) ? Convert.ToString(dr["STATUS"]) : String.Empty;
-                            obj.uploadAvatar = (!String.IsNullOrEmpty(Convert.ToString(dr["UPLOAD_AVATAR"]))) ? Convert.ToString(dr["UPLOAD_AVATAR"]) : String.Empty;
-                            obj.profile = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_PROFILE"]))) ? Convert.ToString(dr["USER_PROFILE"]) : String.Empty;
-                           // obj.companyId = Convert.ToInt32(dr["COMPANY_ID"]);
-                            //obj.department = new Department
-                            //{
-                            //    departmentId = Convert.ToInt32(dr["DEPARTMENT_ID"]),
-                            //    departmentName = (!String.IsNullOrEmpty(Convert.ToString(dr["DEPARTMENT_NM"]))) ? Convert.ToString(dr["DEPARTMENT_NM"]) : String.Empty
-                            //};
-                            //obj.designation = new Designation
-                            //{
-                            //    ID = Convert.ToInt32(dr["DESIGNATION_ID"]),
-                            //    designationName = (!String.IsNullOrEmpty(Convert.ToString(dr["DESIGNATION_NAME"]))) ? Convert.ToString(dr["DESIGNATION_NAME"]) : String.Empty
-                            //};
-                            //obj.category = new Category
-                            //{
-                            //    ID = Convert.ToInt32(dr["CATEGORY_ID"]),
-                            //    categoryName = (!String.IsNullOrEmpty(Convert.ToString(dr["CATEGORY_NAME"]))) ? Convert.ToString(dr["CATEGORY_NAME"]) : String.Empty
-                            //};
-                            //for director open
-
-                            obj.txtdp_pan = (!String.IsNullOrEmpty(Convert.ToString(dr["pan_no"]))) ? Convert.ToString(dr["pan_no"]) : String.Empty;
-                            obj.panremark = (!String.IsNullOrEmpty(Convert.ToString(dr["pan_remark"]))) ? Convert.ToString(dr["pan_remark"]) : String.Empty;
-                            obj.txtdin_pan = (!String.IsNullOrEmpty(Convert.ToString(dr["din_no"]))) ? Convert.ToString(dr["din_no"]) : String.Empty;
-                            obj.din_remark = (!String.IsNullOrEmpty(Convert.ToString(dr["din_remark"]))) ? Convert.ToString(dr["din_remark"]) : String.Empty;
-                            obj.ddlcat1 = (!String.IsNullOrEmpty(Convert.ToString(dr["cat1"]))) ? Convert.ToString(dr["cat1"]) : String.Empty;
-                            obj.ddlcat2 = (!String.IsNullOrEmpty(Convert.ToString(dr["cat2"]))) ? Convert.ToString(dr["cat2"]) : String.Empty;
-                            obj.ddlcat3 = (!String.IsNullOrEmpty(Convert.ToString(dr["cat3"]))) ? Convert.ToString(dr["cat3"]) : String.Empty;
-                            obj.ddl17A = (!String.IsNullOrEmpty(Convert.ToString(dr["Listing17_1_A"]))) ? Convert.ToString(dr["Listing17_1_A"]) : String.Empty;
-                            obj.txtdate = (!String.IsNullOrEmpty(Convert.ToString(dr["date_of_passing"]))) ? Convert.ToString(dr["date_of_passing"]) : String.Empty;
-                            obj.no_of_directorship = (!String.IsNullOrEmpty(Convert.ToString(dr["no_of_directorship"]))) ? Convert.ToString(dr["no_of_directorship"]) : String.Empty;
-                            obj.no_of_independent = (!String.IsNullOrEmpty(Convert.ToString(dr["no_of_independent"]))) ? Convert.ToString(dr["no_of_independent"]) : String.Empty;
-                            obj.no_of_membership = (!String.IsNullOrEmpty(Convert.ToString(dr["no_of_membership"]))) ? Convert.ToString(dr["no_of_membership"]) : String.Empty;
-                            obj.no_of_post_of_chairperson = (!String.IsNullOrEmpty(Convert.ToString(dr["no_of_post_of_chairperson"]))) ? Convert.ToString(dr["no_of_post_of_chairperson"]) : String.Empty;
-                            obj.occupation_Area = (!String.IsNullOrEmpty(Convert.ToString(dr["OCCUPATION_AREA"]))) ? Convert.ToString(dr["OCCUPATION_AREA"]) : String.Empty;
-                            obj.educational_Qualification = (!String.IsNullOrEmpty(Convert.ToString(dr["EDUCATIONAL_QUALIFICATION"]))) ? Convert.ToString(dr["EDUCATIONAL_QUALIFICATION"]) : String.Empty;
-                            obj.experience = (!String.IsNullOrEmpty(Convert.ToString(dr["EXPERIENCE"]))) ? Convert.ToString(dr["EXPERIENCE"]) : String.Empty;
-                            obj.gender = (!String.IsNullOrEmpty(Convert.ToString(dr["GENDER"]))) ? Convert.ToString(dr["GENDER"]) : String.Empty;
-                            obj.aadhar_Number = (!String.IsNullOrEmpty(Convert.ToString(dr["AADHAR_NUMBER"]))) ? Convert.ToString(dr["AADHAR_NUMBER"]) : String.Empty;
-                            obj.shareHolding = (!String.IsNullOrEmpty(Convert.ToString(dr["SHAREHOLDING"]))) ? Convert.ToString(dr["SHAREHOLDING"]) : String.Empty;
-                            obj.shareHolding_percentage = (!String.IsNullOrEmpty(Convert.ToString(dr["SHAREHOLDING_PERCENTAGE"]))) ? Convert.ToString(dr["SHAREHOLDING_PERCENTAGE"]) : String.Empty;
-                            //obj.currency_Symbol = (!String.IsNullOrEmpty(Convert.ToString(dr["CURRENCY_SYMBOL"]))) ? Convert.ToString(dr["CURRENCY_SYMBOL"]) : String.Empty;
-                            //obj.sitting_Amount = (!String.IsNullOrEmpty(Convert.ToString(dr["SITTING_AMOUNT"]))) ? Convert.ToString(dr["SITTING_AMOUNT"]) : String.Empty;
-                            //obj.payment_mode = (!String.IsNullOrEmpty(Convert.ToString(dr["PAYMENT_MODE"]))) ? Convert.ToString(dr["PAYMENT_MODE"]) : String.Empty;
-                            //obj.remuneration_Amount = (!String.IsNullOrEmpty(Convert.ToString(dr["REMUNERATION_AMOUNT"]))) ? Convert.ToString(dr["REMUNERATION_AMOUNT"]) : String.Empty;
-                            obj.appointed_Section = (!String.IsNullOrEmpty(Convert.ToString(dr["APPOINTED_SECTION"]))) ? Convert.ToString(dr["APPOINTED_SECTION"]) : String.Empty;
-                            //obj.multi_Companies = (!String.IsNullOrEmpty(Convert.ToString(dr["OTHER_COMPANIES"]))) ? Convert.ToString(dr["OTHER_COMPANIES"]) : String.Empty;
-                            obj.committees_Already_director = (!String.IsNullOrEmpty(Convert.ToString(dr["COMMITTEES_ALREADY_DIRECTOR"]))) ? Convert.ToString(dr["COMMITTEES_ALREADY_DIRECTOR"]) : String.Empty;
-                            obj.membership_Num_Secretarial_User = (!String.IsNullOrEmpty(Convert.ToString(dr["MEMBERSHIP_NUM_SECRETARIAL_USER"]))) ? Convert.ToString(dr["MEMBERSHIP_NUM_SECRETARIAL_USER"]) : String.Empty;
-
-
-                            if (dtCompaniesList.Rows.Count > 0)
-                            {
-                                //if (o.LOGIN_ID == Convert.ToString(dtCompaniesList.Rows[0][0]))
-                                //{
-                                List<string> lstCompaniesList = new List<string>();
-                                string userLoginValue = dr["USER_LOGIN"].ToString();
-                                DataRow[] drKeywords = dtCompaniesList.Select("USER_LOGIN = '" + userLoginValue + "'");
-                                foreach (DataRow item in drKeywords)
-                                {
-                                    string objcomp = item["OTHER_COMPANIES"].ToString();
-                                    lstCompaniesList.Add(objcomp);
-                                }
-                                obj.multi_Companies = lstCompaniesList;
-                                //}
-                            }
-                            lstuser.Add(obj);
-
+                            adapter.Fill(ds);
                         }
+                        DataTable dt = ds.Tables[0];
+                        DataTable dtCompaniesList = ds.Tables[1];
+                        if (dt != null)
+                        {
+                            if (dt.Rows.Count > 0)
+                            {
+                                List<User> lstuser = new List<User>();
+                                foreach (DataRow dr in dt.Rows)
+                                {
+                                    User obj = new User();
+                                    obj.ID = Convert.ToInt32(dr["ID"]);
+                                    obj.salutation = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_SALUTATION"]))) ? Convert.ToString(dr["USER_SALUTATION"]) : String.Empty;
+                                    obj.userFirstName = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_FIRST_NAME"]))) ? Convert.ToString(dr["USER_FIRST_NAME"]) : String.Empty;
+                                    obj.userMiddleName = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_MIDDLE_NAME"]))) ? Convert.ToString(dr["USER_MIDDLE_NAME"]) : String.Empty;
+                                    obj.userLastName = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_LAST_NAME"]))) ? Convert.ToString(dr["USER_LAST_NAME"]) : String.Empty;
+                                    obj.emailId = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_EMAIL"]))) ? Convert.ToString(dr["USER_EMAIL"]) : String.Empty;
+                                    //obj.ROLE_NAME = (!String.IsNullOrEmpty(Convert.ToString(dr["ROLE"]))) ? Convert.ToString(dr["ROLE"]) : String.Empty;
+                                    //obj.role = new Role
+                                    //{
+                                    //    Id = Convert.ToInt32(dr["USER_ROLE"]),
+                                    //    role = (!String.IsNullOrEmpty(Convert.ToString(dr["ROLE"]))) ? Convert.ToString(dr["ROLE"]) : String.Empty
+                                    //};
+                                    obj.role = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_ROLE"]))) ? Convert.ToString(dr["USER_ROLE"]) : String.Empty;
+                                    obj.phone = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_MOBILE"]))) ? Convert.ToString(dr["USER_MOBILE"]) : String.Empty;
+                                    obj.address = (!String.IsNullOrEmpty(Convert.ToString(dr["ADDRESS"]))) ? Convert.ToString(dr["ADDRESS"]) : String.Empty;
+                                    obj.designation = (!String.IsNullOrEmpty(Convert.ToString(dr["DESIGNATION_NAME"]))) ? Convert.ToString(dr["DESIGNATION_NAME"]) : String.Empty;
+                                    obj.department = (!String.IsNullOrEmpty(Convert.ToString(dr["DEPARTMENT_NAME"]))) ? Convert.ToString(dr["DEPARTMENT_NAME"]) : String.Empty;
+                                    obj.category = (!String.IsNullOrEmpty(Convert.ToString(dr["CATEGORY_NAME"]))) ? Convert.ToString(dr["CATEGORY_NAME"]) : String.Empty;
+                                    obj.tenureStartDate = (!String.IsNullOrEmpty(Convert.ToString(dr["TENURE_START"]))) ? Convert.ToString(dr["TENURE_START"]) : String.Empty;
+                                    obj.tenureEndDate = (!String.IsNullOrEmpty(Convert.ToString(dr["TENURE_END"]))) ? Convert.ToString(dr["TENURE_END"]) : String.Empty;
+                                    obj.dateOfBirth = (!String.IsNullOrEmpty(Convert.ToString(dr["DATE_OF_BIRTH"]))) ? Convert.ToString(dr["DATE_OF_BIRTH"]) : String.Empty;
+                                    obj.nationality = (!String.IsNullOrEmpty(Convert.ToString(dr["NATIONALITY"]))) ? Convert.ToString(dr["NATIONALITY"]) : String.Empty;
+                                    obj.userLogin = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_LOGIN"]))) ? Convert.ToString(dr["USER_LOGIN"]) : String.Empty;
+                                    //obj.password = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_PWD"]))) ? Convert.ToString(dr["USER_PWD"]) : String.Empty;
+                                    obj.password = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_PWD"]))) ? CryptoEngine.Decrypt(Convert.ToString(dr["USER_PWD"]), true) : String.Empty;
+                                    obj.status = (!String.IsNullOrEmpty(Convert.ToString(dr["STATUS"]))) ? Convert.ToString(dr["STATUS"]) : String.Empty;
+                                    obj.uploadAvatar = (!String.IsNullOrEmpty(Convert.ToString(dr["UPLOAD_AVATAR"]))) ? Convert.ToString(dr["UPLOAD_AVATAR"]) : String.Empty;
+                                    obj.profile = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_PROFILE"]))) ? Convert.ToString(dr["USER_PROFILE"]) : String.Empty;
+                                    obj.txtdp_pan = (!String.IsNullOrEmpty(Convert.ToString(dr["pan_no"]))) ? Convert.ToString(dr["pan_no"]) : String.Empty;
+                                    obj.panremark = (!String.IsNullOrEmpty(Convert.ToString(dr["pan_remark"]))) ? Convert.ToString(dr["pan_remark"]) : String.Empty;
+                                    obj.txtdin_pan = (!String.IsNullOrEmpty(Convert.ToString(dr["din_no"]))) ? Convert.ToString(dr["din_no"]) : String.Empty;
+                                    obj.din_remark = (!String.IsNullOrEmpty(Convert.ToString(dr["din_remark"]))) ? Convert.ToString(dr["din_remark"]) : String.Empty;
+                                    obj.ddlcat1 = (!String.IsNullOrEmpty(Convert.ToString(dr["cat1"]))) ? Convert.ToString(dr["cat1"]) : String.Empty;
+                                    obj.ddlcat2 = (!String.IsNullOrEmpty(Convert.ToString(dr["cat2"]))) ? Convert.ToString(dr["cat2"]) : String.Empty;
+                                    obj.ddlcat3 = (!String.IsNullOrEmpty(Convert.ToString(dr["cat3"]))) ? Convert.ToString(dr["cat3"]) : String.Empty;
+                                    obj.ddl17A = (!String.IsNullOrEmpty(Convert.ToString(dr["Listing17_1_A"]))) ? Convert.ToString(dr["Listing17_1_A"]) : String.Empty;
+                                    obj.txtdate = (!String.IsNullOrEmpty(Convert.ToString(dr["date_of_passing"]))) ? Convert.ToString(dr["date_of_passing"]) : String.Empty;
+                                    obj.no_of_directorship = (!String.IsNullOrEmpty(Convert.ToString(dr["no_of_directorship"]))) ? Convert.ToString(dr["no_of_directorship"]) : String.Empty;
+                                    obj.no_of_independent = (!String.IsNullOrEmpty(Convert.ToString(dr["no_of_independent"]))) ? Convert.ToString(dr["no_of_independent"]) : String.Empty;
+                                    obj.no_of_membership = (!String.IsNullOrEmpty(Convert.ToString(dr["no_of_membership"]))) ? Convert.ToString(dr["no_of_membership"]) : String.Empty;
+                                    obj.no_of_post_of_chairperson = (!String.IsNullOrEmpty(Convert.ToString(dr["no_of_post_of_chairperson"]))) ? Convert.ToString(dr["no_of_post_of_chairperson"]) : String.Empty;
+                                    obj.occupation_Area = (!String.IsNullOrEmpty(Convert.ToString(dr["OCCUPATION_AREA"]))) ? Convert.ToString(dr["OCCUPATION_AREA"]) : String.Empty;
+                                    obj.educational_Qualification = (!String.IsNullOrEmpty(Convert.ToString(dr["EDUCATIONAL_QUALIFICATION"]))) ? Convert.ToString(dr["EDUCATIONAL_QUALIFICATION"]) : String.Empty;
+                                    obj.experience = (!String.IsNullOrEmpty(Convert.ToString(dr["EXPERIENCE"]))) ? Convert.ToString(dr["EXPERIENCE"]) : String.Empty;
+                                    obj.gender = (!String.IsNullOrEmpty(Convert.ToString(dr["GENDER"]))) ? Convert.ToString(dr["GENDER"]) : String.Empty;
+                                    obj.aadhar_Number = (!String.IsNullOrEmpty(Convert.ToString(dr["AADHAR_NUMBER"]))) ? Convert.ToString(dr["AADHAR_NUMBER"]) : String.Empty;
+                                    obj.shareHolding = (!String.IsNullOrEmpty(Convert.ToString(dr["SHAREHOLDING"]))) ? Convert.ToString(dr["SHAREHOLDING"]) : String.Empty;
+                                    obj.shareHolding_percentage = (!String.IsNullOrEmpty(Convert.ToString(dr["SHAREHOLDING_PERCENTAGE"]))) ? Convert.ToString(dr["SHAREHOLDING_PERCENTAGE"]) : String.Empty;
+                                    obj.appointed_Section = (!String.IsNullOrEmpty(Convert.ToString(dr["APPOINTED_SECTION"]))) ? Convert.ToString(dr["APPOINTED_SECTION"]) : String.Empty;
+                                    obj.committees_Already_director = (!String.IsNullOrEmpty(Convert.ToString(dr["COMMITTEES_ALREADY_DIRECTOR"]))) ? Convert.ToString(dr["COMMITTEES_ALREADY_DIRECTOR"]) : String.Empty;
+                                    obj.membership_Num_Secretarial_User = (!String.IsNullOrEmpty(Convert.ToString(dr["MEMBERSHIP_NUM_SECRETARIAL_USER"]))) ? Convert.ToString(dr["MEMBERSHIP_NUM_SECRETARIAL_USER"]) : String.Empty;
 
-                        _userResponse.UserList = lstuser;
-                        _userResponse.StatusFl = true;
-                        _userResponse.Msg = "Data has been fetched successfully !";
+
+                                    if (dtCompaniesList.Rows.Count > 0)
+                                    {
+                                        List<string> lstCompaniesList = new List<string>();
+                                        string userLoginValue = dr["USER_LOGIN"].ToString();
+                                        DataRow[] drKeywords = dtCompaniesList.Select("USER_LOGIN = '" + userLoginValue + "'");
+                                        foreach (DataRow item in drKeywords)
+                                        {
+                                            string objcomp = item["OTHER_COMPANIES"].ToString();
+                                            lstCompaniesList.Add(objcomp);
+                                        }
+                                        obj.multi_Companies = lstCompaniesList;
+                                    }
+                                    lstuser.Add(obj);
+
+                                }
+
+                                _userResponse.UserList = lstuser;
+                                _userResponse.StatusFl = true;
+                                _userResponse.Msg = "Success";
+                            }
+                        }
+                        else
+                        {
+                            _userResponse.StatusFl = false;
+                            _userResponse.Msg = "No data found !";
+                        }
+                        return _userResponse;
                     }
-                }
-                else
-                {
-                    _userResponse.StatusFl = false;
-                    _userResponse.Msg = "No data found !";
-                }
                     conn.Close();
-                    return _userResponse;
                 }
             }
             catch (Exception ex)
@@ -513,6 +492,158 @@ namespace BMS_New.Models.BMS.Repository
             }
             return _userResponse;
         }
+
+        //public UserResponse GetUserList(User objUser)
+        //{
+        //    _userResponse = new UserResponse();
+        //    _userResponse.StatusFl = false;
+        //    _userResponse.Msg = "No Data Found!";
+        //    try
+        //    {
+        //        using (SqlConnection conn = new SqlConnection(connectionString))
+        //        {
+        //            conn.Open();
+        //            conn.ChangeDatabase(objUser.moduleDatabase);
+        //            SqlParameter[] parameters = new SqlParameter[3];
+        //        parameters[0] = new SqlParameter("@Mode", "GET_USER_LIST");
+        //        parameters[1] = new SqlParameter("@SET_COUNT", SqlDbType.Int);
+        //        parameters[1].Direction = ParameterDirection.Output;
+        //        parameters[2] = new SqlParameter("@COMPANY_ID", objUser.companyId);
+        //        //parameters[3] = new SqlParameter("@CREATED_BY", objUser.createdBy);
+        //        //parameters[3] = new SqlParameter("@STATUS", (objUser.status != "0" ? objUser.status : null));
+
+        //        //SqlDataReader rdr = SQLHelper.ExecuteReader(SQLHelper.GetConnString(), CommandType.StoredProcedure, "SP_PROCS_INSIDER_USER_PERSONAL_MASTER", objUser.MODULE_DATABASE, parameters);
+
+        //        DataSet ds = SQLHelper.ExecuteDataset(SQLHelper.GetConnString(), CommandType.StoredProcedure, "SP_PROCS_BMS_USER_MASTER", parameters);
+        //        DataTable dt = ds.Tables[1];
+        //        DataTable dtCompaniesList = ds.Tables[1];
+        //        //UserResponse oUser = new UserResponse();
+        //        if (dt != null)
+        //        {
+        //            if (dt.Rows.Count > 0)
+        //            {
+        //                List<User> lstuser = new List<User>();
+        //                foreach (DataRow dr in dt.Rows)
+        //                {
+        //                    User obj = new User();
+        //                    obj.ID = Convert.ToInt32(dr["ID"]);
+        //                    obj.salutation = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_SALUTATION"]))) ? Convert.ToString(dr["USER_SALUTATION"]) : String.Empty;
+        //                    obj.userFirstName = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_FIRST_NAME"]))) ? Convert.ToString(dr["USER_FIRST_NAME"]) : String.Empty;
+        //                    obj.userMiddleName = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_MIDDLE_NAME"]))) ? Convert.ToString(dr["USER_MIDDLE_NAME"]) : String.Empty;
+        //                    obj.userLastName = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_LAST_NAME"]))) ? Convert.ToString(dr["USER_LAST_NAME"]) : String.Empty;
+        //                    obj.emailId = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_EMAIL"]))) ? Convert.ToString(dr["USER_EMAIL"]) : String.Empty;
+        //                    //obj.ROLE_NAME = (!String.IsNullOrEmpty(Convert.ToString(dr["ROLE"]))) ? Convert.ToString(dr["ROLE"]) : String.Empty;
+        //                    //obj.role = new Role
+        //                    //{
+        //                    //    Id = Convert.ToInt32(dr["USER_ROLE"]),
+        //                    //    role = (!String.IsNullOrEmpty(Convert.ToString(dr["ROLE"]))) ? Convert.ToString(dr["ROLE"]) : String.Empty
+        //                    //};
+        //                    obj.role = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_ROLE"]))) ? Convert.ToString(dr["USER_ROLE"]) : String.Empty;
+        //                    obj.phone = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_MOBILE"]))) ? Convert.ToString(dr["USER_MOBILE"]) : String.Empty;
+        //                    obj.address = (!String.IsNullOrEmpty(Convert.ToString(dr["ADDRESS"]))) ? Convert.ToString(dr["ADDRESS"]) : String.Empty;
+        //                    obj.designation = (!String.IsNullOrEmpty(Convert.ToString(dr["DESIGNATION_NAME"]))) ? Convert.ToString(dr["DESIGNATION_NAME"]) : String.Empty;
+        //                    obj.department = (!String.IsNullOrEmpty(Convert.ToString(dr["DEPARTMENT_NAME"]))) ? Convert.ToString(dr["DEPARTMENT_NAME"]) : String.Empty;
+        //                    obj.category = (!String.IsNullOrEmpty(Convert.ToString(dr["CATEGORY_NAME"]))) ? Convert.ToString(dr["CATEGORY_NAME"]) : String.Empty;
+        //                    obj.tenureStartDate = (!String.IsNullOrEmpty(Convert.ToString(dr["TENURE_START"]))) ? Convert.ToString(dr["TENURE_START"]) : String.Empty;
+        //                    obj.tenureEndDate = (!String.IsNullOrEmpty(Convert.ToString(dr["TENURE_END"]))) ? Convert.ToString(dr["TENURE_END"]) : String.Empty;
+        //                    obj.dateOfBirth = (!String.IsNullOrEmpty(Convert.ToString(dr["DATE_OF_BIRTH"]))) ? Convert.ToString(dr["DATE_OF_BIRTH"]) : String.Empty;
+        //                    obj.nationality = (!String.IsNullOrEmpty(Convert.ToString(dr["NATIONALITY"]))) ? Convert.ToString(dr["NATIONALITY"]) : String.Empty;
+        //                    obj.userLogin = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_LOGIN"]))) ? Convert.ToString(dr["USER_LOGIN"]) : String.Empty;
+        //                    //obj.password = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_PWD"]))) ? Convert.ToString(dr["USER_PWD"]) : String.Empty;
+        //                     obj.password = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_PWD"]))) ? CryptoEngine.Decrypt(Convert.ToString(dr["USER_PWD"]), true) : String.Empty;
+        //                    obj.status = (!String.IsNullOrEmpty(Convert.ToString(dr["STATUS"]))) ? Convert.ToString(dr["STATUS"]) : String.Empty;
+        //                    obj.uploadAvatar = (!String.IsNullOrEmpty(Convert.ToString(dr["UPLOAD_AVATAR"]))) ? Convert.ToString(dr["UPLOAD_AVATAR"]) : String.Empty;
+        //                    obj.profile = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_PROFILE"]))) ? Convert.ToString(dr["USER_PROFILE"]) : String.Empty;
+        //                   // obj.companyId = Convert.ToInt32(dr["COMPANY_ID"]);
+        //                    //obj.department = new Department
+        //                    //{
+        //                    //    departmentId = Convert.ToInt32(dr["DEPARTMENT_ID"]),
+        //                    //    departmentName = (!String.IsNullOrEmpty(Convert.ToString(dr["DEPARTMENT_NM"]))) ? Convert.ToString(dr["DEPARTMENT_NM"]) : String.Empty
+        //                    //};
+        //                    //obj.designation = new Designation
+        //                    //{
+        //                    //    ID = Convert.ToInt32(dr["DESIGNATION_ID"]),
+        //                    //    designationName = (!String.IsNullOrEmpty(Convert.ToString(dr["DESIGNATION_NAME"]))) ? Convert.ToString(dr["DESIGNATION_NAME"]) : String.Empty
+        //                    //};
+        //                    //obj.category = new Category
+        //                    //{
+        //                    //    ID = Convert.ToInt32(dr["CATEGORY_ID"]),
+        //                    //    categoryName = (!String.IsNullOrEmpty(Convert.ToString(dr["CATEGORY_NAME"]))) ? Convert.ToString(dr["CATEGORY_NAME"]) : String.Empty
+        //                    //};
+        //                    //for director open
+
+        //                    obj.txtdp_pan = (!String.IsNullOrEmpty(Convert.ToString(dr["pan_no"]))) ? Convert.ToString(dr["pan_no"]) : String.Empty;
+        //                    obj.panremark = (!String.IsNullOrEmpty(Convert.ToString(dr["pan_remark"]))) ? Convert.ToString(dr["pan_remark"]) : String.Empty;
+        //                    obj.txtdin_pan = (!String.IsNullOrEmpty(Convert.ToString(dr["din_no"]))) ? Convert.ToString(dr["din_no"]) : String.Empty;
+        //                    obj.din_remark = (!String.IsNullOrEmpty(Convert.ToString(dr["din_remark"]))) ? Convert.ToString(dr["din_remark"]) : String.Empty;
+        //                    obj.ddlcat1 = (!String.IsNullOrEmpty(Convert.ToString(dr["cat1"]))) ? Convert.ToString(dr["cat1"]) : String.Empty;
+        //                    obj.ddlcat2 = (!String.IsNullOrEmpty(Convert.ToString(dr["cat2"]))) ? Convert.ToString(dr["cat2"]) : String.Empty;
+        //                    obj.ddlcat3 = (!String.IsNullOrEmpty(Convert.ToString(dr["cat3"]))) ? Convert.ToString(dr["cat3"]) : String.Empty;
+        //                    obj.ddl17A = (!String.IsNullOrEmpty(Convert.ToString(dr["Listing17_1_A"]))) ? Convert.ToString(dr["Listing17_1_A"]) : String.Empty;
+        //                    obj.txtdate = (!String.IsNullOrEmpty(Convert.ToString(dr["date_of_passing"]))) ? Convert.ToString(dr["date_of_passing"]) : String.Empty;
+        //                    obj.no_of_directorship = (!String.IsNullOrEmpty(Convert.ToString(dr["no_of_directorship"]))) ? Convert.ToString(dr["no_of_directorship"]) : String.Empty;
+        //                    obj.no_of_independent = (!String.IsNullOrEmpty(Convert.ToString(dr["no_of_independent"]))) ? Convert.ToString(dr["no_of_independent"]) : String.Empty;
+        //                    obj.no_of_membership = (!String.IsNullOrEmpty(Convert.ToString(dr["no_of_membership"]))) ? Convert.ToString(dr["no_of_membership"]) : String.Empty;
+        //                    obj.no_of_post_of_chairperson = (!String.IsNullOrEmpty(Convert.ToString(dr["no_of_post_of_chairperson"]))) ? Convert.ToString(dr["no_of_post_of_chairperson"]) : String.Empty;
+        //                    obj.occupation_Area = (!String.IsNullOrEmpty(Convert.ToString(dr["OCCUPATION_AREA"]))) ? Convert.ToString(dr["OCCUPATION_AREA"]) : String.Empty;
+        //                    obj.educational_Qualification = (!String.IsNullOrEmpty(Convert.ToString(dr["EDUCATIONAL_QUALIFICATION"]))) ? Convert.ToString(dr["EDUCATIONAL_QUALIFICATION"]) : String.Empty;
+        //                    obj.experience = (!String.IsNullOrEmpty(Convert.ToString(dr["EXPERIENCE"]))) ? Convert.ToString(dr["EXPERIENCE"]) : String.Empty;
+        //                    obj.gender = (!String.IsNullOrEmpty(Convert.ToString(dr["GENDER"]))) ? Convert.ToString(dr["GENDER"]) : String.Empty;
+        //                    obj.aadhar_Number = (!String.IsNullOrEmpty(Convert.ToString(dr["AADHAR_NUMBER"]))) ? Convert.ToString(dr["AADHAR_NUMBER"]) : String.Empty;
+        //                    obj.shareHolding = (!String.IsNullOrEmpty(Convert.ToString(dr["SHAREHOLDING"]))) ? Convert.ToString(dr["SHAREHOLDING"]) : String.Empty;
+        //                    obj.shareHolding_percentage = (!String.IsNullOrEmpty(Convert.ToString(dr["SHAREHOLDING_PERCENTAGE"]))) ? Convert.ToString(dr["SHAREHOLDING_PERCENTAGE"]) : String.Empty;
+        //                    //obj.currency_Symbol = (!String.IsNullOrEmpty(Convert.ToString(dr["CURRENCY_SYMBOL"]))) ? Convert.ToString(dr["CURRENCY_SYMBOL"]) : String.Empty;
+        //                    //obj.sitting_Amount = (!String.IsNullOrEmpty(Convert.ToString(dr["SITTING_AMOUNT"]))) ? Convert.ToString(dr["SITTING_AMOUNT"]) : String.Empty;
+        //                    //obj.payment_mode = (!String.IsNullOrEmpty(Convert.ToString(dr["PAYMENT_MODE"]))) ? Convert.ToString(dr["PAYMENT_MODE"]) : String.Empty;
+        //                    //obj.remuneration_Amount = (!String.IsNullOrEmpty(Convert.ToString(dr["REMUNERATION_AMOUNT"]))) ? Convert.ToString(dr["REMUNERATION_AMOUNT"]) : String.Empty;
+        //                    obj.appointed_Section = (!String.IsNullOrEmpty(Convert.ToString(dr["APPOINTED_SECTION"]))) ? Convert.ToString(dr["APPOINTED_SECTION"]) : String.Empty;
+        //                    //obj.multi_Companies = (!String.IsNullOrEmpty(Convert.ToString(dr["OTHER_COMPANIES"]))) ? Convert.ToString(dr["OTHER_COMPANIES"]) : String.Empty;
+        //                    obj.committees_Already_director = (!String.IsNullOrEmpty(Convert.ToString(dr["COMMITTEES_ALREADY_DIRECTOR"]))) ? Convert.ToString(dr["COMMITTEES_ALREADY_DIRECTOR"]) : String.Empty;
+        //                    obj.membership_Num_Secretarial_User = (!String.IsNullOrEmpty(Convert.ToString(dr["MEMBERSHIP_NUM_SECRETARIAL_USER"]))) ? Convert.ToString(dr["MEMBERSHIP_NUM_SECRETARIAL_USER"]) : String.Empty;
+
+
+        //                    if (dtCompaniesList.Rows.Count > 0)
+        //                    {
+        //                        //if (o.LOGIN_ID == Convert.ToString(dtCompaniesList.Rows[0][0]))
+        //                        //{
+        //                        List<string> lstCompaniesList = new List<string>();
+        //                        string userLoginValue = dr["USER_LOGIN"].ToString();
+        //                        DataRow[] drKeywords = dtCompaniesList.Select("USER_LOGIN = '" + userLoginValue + "'");
+        //                        foreach (DataRow item in drKeywords)
+        //                        {
+        //                            string objcomp = item["OTHER_COMPANIES"].ToString();
+        //                            lstCompaniesList.Add(objcomp);
+        //                        }
+        //                        obj.multi_Companies = lstCompaniesList;
+        //                        //}
+        //                    }
+        //                    lstuser.Add(obj);
+
+        //                }
+
+        //                _userResponse.UserList = lstuser;
+        //                _userResponse.StatusFl = true;
+        //                _userResponse.Msg = "Data has been fetched successfully !";
+        //            }
+        //        }
+        //        else
+        //        {
+        //            _userResponse.StatusFl = false;
+        //            _userResponse.Msg = "No data found !";
+        //        }
+        //            conn.Close();
+        //            return _userResponse;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _userResponse = new UserResponse();
+        //        _userResponse.StatusFl = false;
+        //        _userResponse.Msg = "Something went wrong. Please try again or Contact Support!";
+        //        //new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
+        //    }
+        //    return _userResponse;
+        //}
 
         //public UserResponse GetAllUsersRole(User objUser)
         //{

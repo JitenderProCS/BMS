@@ -127,7 +127,7 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Add(new SqlParameter("@MODE", "GET_User_List"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
                         cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
-                        cmd.Parameters.Add(new SqlParameter("@CREATE_BY", objUser.CREATED_BY));
+                        cmd.Parameters.Add(new SqlParameter("@LOGIN_ID", objUser.LoginId));
                         cmd.Parameters.Add(new SqlParameter("@USER_AUTHENTICATION", (objUser.authentication == "0" ? objUser.authentication : null)));
                         DataSet ds = new DataSet();
 

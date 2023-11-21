@@ -14,7 +14,7 @@
         margin: 90px auto;
         padding: 10px;
         border: 4px solid #ccc;
-        background-color: white;
+        background-color: #dfe0e1;
         text-align: left;
     }
 
@@ -56,7 +56,7 @@
 
      
 </head>
-<body style="background:#BDBDBD;">
+<body style="background:#9496a1;">
    <form id="form1" runat="server">
     <div class="change-password-container">
     <h2 style="color: #578ebe;text-align: center;">Change Password</h2>

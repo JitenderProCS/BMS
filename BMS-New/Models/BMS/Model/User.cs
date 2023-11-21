@@ -27,6 +27,7 @@ namespace BMS_New.Models.BMS.Model
         public Int32 Sequence { get; set; }
         public string salutation { get; set; }
         public string userName { get; set; }
+        //public Role role { get; set; }
         public string userFirstName { get; set; }
         public string userMiddleName { get; set; }
         public string userLastName { get; set; }

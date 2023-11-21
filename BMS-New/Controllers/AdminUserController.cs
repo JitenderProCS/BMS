@@ -201,7 +201,7 @@ namespace DMS.Controllers
                 AdminUser user = new JavaScriptSerializer().Deserialize<AdminUser>(input);
                 // meetingVenue.createdBy = Convert.ToString(HttpContext.Current.Session["EMPLOYEE_ID"]);
                 user.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
-                user.CREATED_BY = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
+               // user.LoginId = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
                 //user.moduleId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 AdminUserRequest gReqUserList = new AdminUserRequest(user);
                 userResponse = gReqUserList.GetUserList();

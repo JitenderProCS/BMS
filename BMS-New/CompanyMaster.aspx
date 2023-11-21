@@ -67,6 +67,7 @@
             <tr>
                 <th></th>
                 <th>Company </th>
+                <th>Company Code </th>
                 <th>Company Type </th>
                 <th>Company Group</th>
                 <th>LOGO</th>
@@ -88,13 +89,20 @@
                     </button>
                 </div>
                 <div class="modal-body">
-
+                      <!--begin::Group-->
+                    <div class="form-group row">
+                        <label id="lblCompanyCode" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">Company Code <sup class="text-danger">*</sup></label>
+                        <div class="col-lg-9 col-xl-9">
+                            <input id="txtCompanyCode" placeholder="Enter Company Code" class="form-control form-control-solid form-control-lg" name="name" type="text" value="" onkeypress="javascript:fnRemoveClass(this,'ComapnyCode');" autocomplete="off" maxlength="100" />
+                        </div>
+                    </div>
+                    <!--end::Group-->
                     <!--dropdown start-->
                     <div id="divCompanyGroup" class="form-group row">
 
                         <label id="lblCompanyGroup" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">Company Group <sup class="text-danger">*</sup></label>
                         <div class="col-lg-9 col-xl-9">
-                            <select id="ddlCompanyGroup" class="form-control" onchange="javascript:fnRemoveClass(this,'Designation');">
+                            <select id="ddlCompanyGroup" class="form-control" onchange="javascript:fnRemoveClass(this,'Company Group');">
                             </select>
                         </div>
                     </div>
@@ -104,7 +112,7 @@
                     <div class="form-group row">
                         <label id="lblName" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">Company Name <sup class="text-danger">*</sup></label>
                         <div class="col-lg-9 col-xl-9">
-                            <input id="txtCompanyName" placeholder="Enter name" class="form-control form-control-solid form-control-lg" name="name" type="text" value="" onkeypress="javascript:fnRemoveClass(this,'Name');" autocomplete="off" maxlength="100" />
+                            <input id="txtCompanyName" placeholder="Enter name" class="form-control form-control-solid form-control-lg" name="name" type="text" value="" onkeypress="javascript:fnRemoveClass(this,'Company Name');" autocomplete="off" maxlength="100" />
                             <input id="txtCompanyId" type="hidden" value="0" />
                         </div>
                     </div>
@@ -114,7 +122,7 @@
 
                         <label id="lblCompanyType" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">Company Type <sup class="text-danger">*</sup></label>
                         <div class="col-lg-9 col-xl-9">
-                            <select id="ddlCompanyType" class="form-control" onchange="javascript:fnRemoveClass(this,'Designation');">
+                            <select id="ddlCompanyType" class="form-control" onchange="javascript:fnRemoveClass(this,'Company Type');">
                             </select>
                         </div>
                     </div>
@@ -134,7 +142,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-light-primary font-weight-bold" onclick="javascript:fnCloseModal();" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary font-weight-bold" onclick="javascript:fnAddUpdateUser();">Save changes</button>
                 </div>
             </div>

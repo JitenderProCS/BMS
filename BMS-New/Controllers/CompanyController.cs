@@ -56,7 +56,7 @@ namespace BMS_New.Controllers
                     objCompany = lstCompany[0];
                    // objCompany.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                     objCompany.createdBy = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
-                   // objCompany.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
+                    //objCompany.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
                    // objCompany.moduleId = Convert.ToInt32(HttpContext.Current.Session["ModuleId"]);
 
                     if (HttpContext.Current.Request.Files.Count > 0)
@@ -131,8 +131,10 @@ namespace BMS_New.Controllers
                 }
                 Company company = new JavaScriptSerializer().Deserialize<Company>(input);
                 Company objcom = new Company();
-               var Id = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
-                objcom.companyId = Convert.ToInt32(Id);
+               //var Id = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                var createdby = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
+                //objcom.companyId = Convert.ToInt32(Id);
+                objcom.LoginId = Convert.ToString(createdby);
                 //meetingVenue.createdBy = Convert.ToString(HttpContext.Current.Session["EMPLOYEE_ID"]);
                 //user.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 //  user.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);

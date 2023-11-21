@@ -127,8 +127,8 @@
                                                             <th style="display: none;"> ID</th>
                                                           <%-- <th> <input id="chkAll" type="checkbox" onclick="fnCheckAll(this,\'sample_Users\');" /></th>--%>
                                                             <th>Name</th>
-                                                          <%--  <th>Email</th>
-                                                            <th>Role</th>--%>
+                                                            <th>Email</th>
+                                                           <%-- <th>Role</th>--%>
                                                             <th>ACTION</th>
                                                         </tr>
                                                     </thead>

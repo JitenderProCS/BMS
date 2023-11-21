@@ -13,6 +13,7 @@ namespace BMS_New.Models.Login.Modal
         public string GroupLogo { set; get; }
 
         public Int32 CompanyId { set; get; }
+        public string CompanyCode { set; get; }
         public string CompanyNm { set; get; }
         public string CompanyLogo { set; get; }
 
