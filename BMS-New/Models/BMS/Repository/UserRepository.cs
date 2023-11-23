@@ -411,7 +411,7 @@ namespace BMS_New.Models.BMS.Repository
                                     //    Id = Convert.ToInt32(dr["USER_ROLE"]),
                                     //    role = (!String.IsNullOrEmpty(Convert.ToString(dr["ROLE"]))) ? Convert.ToString(dr["ROLE"]) : String.Empty
                                     //};
-                                    obj.role = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_ROLE"]))) ? Convert.ToString(dr["USER_ROLE"]) : String.Empty;
+                                    obj.role = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_ROLE1"]))) ? Convert.ToString(dr["USER_ROLE1"]) : String.Empty;
                                     obj.phone = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_MOBILE"]))) ? Convert.ToString(dr["USER_MOBILE"]) : String.Empty;
                                     obj.address = (!String.IsNullOrEmpty(Convert.ToString(dr["ADDRESS"]))) ? Convert.ToString(dr["ADDRESS"]) : String.Empty;
                                     obj.designation = (!String.IsNullOrEmpty(Convert.ToString(dr["DESIGNATION_NAME"]))) ? Convert.ToString(dr["DESIGNATION_NAME"]) : String.Empty;
@@ -645,6 +645,72 @@ namespace BMS_New.Models.BMS.Repository
         //    return _userResponse;
         //}
 
+        public UserResponse GetAllUsersRole(User objUser)
+        {
+            _userResponse = new UserResponse
+            {
+                StatusFl = false,
+                Msg = "No Data Found!"
+            };
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    conn.ChangeDatabase(objUser.moduleDatabase);
+
+                    using (SqlCommand cmd = new SqlCommand("SP_PROCS_BMS_USER_MASTER", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = 0;
+                        cmd.Parameters.AddWithValue("@Mode", "Get_All_Users_Role");
+                        cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
+                        DataSet ds = new DataSet();
+
+                        using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                        {
+                            adapter.Fill(ds);
+                        }
+                        DataTable dt = ds.Tables[0];
+                        //using (SqlDataReader rdr = cmd.ExecuteReader())
+                        //{
+                        //    if (rdr.HasRows)
+                        //    {
+                        //        List<Role> lstrole = new List<Role>();
+
+                        //        while (rdr.Read())
+                        //        {
+                        //            Role obj = new Role
+                        //            {
+                        //                Id = Convert.ToInt32(rdr["ID"]),
+                        //                role = rdr["ROLE"] != DBNull.Value ? Convert.ToString(rdr["ROLE"]) : string.Empty
+                        //            };
+                        //            lstrole.Add(obj);
+                        //        }
+
+                        //        objUser.role = lstrole;
+                        //        _userResponse.AddObject(objUser);
+                        //        _userResponse.StatusFl = true;
+                        //        _userResponse.Msg = "Data has been fetched successfully!";
+                        //    }
+                        //}
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                // new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
+
+                // Update the response message
+                _userResponse.Msg = "Something went wrong. Please try again or contact support!";
+            }
+
+            return _userResponse;
+        }
+
+
         //public UserResponse GetAllUsersRole(User objUser)
         //{
         //    _userResponse = new UserResponse();
@@ -655,7 +721,7 @@ namespace BMS_New.Models.BMS.Repository
         //        using (SqlConnection conn = new SqlConnection(connectionString))
         //        {
         //            conn.Open();
-        //            //conn.ChangeDatabase(objUser.moduleDatabase);
+        //            conn.ChangeDatabase(objUser.moduleDatabase);
         //            using (SqlCommand cmd = new SqlCommand("SP_PROCS_BMS_USER_MASTER", conn))
         //            {
         //                cmd.CommandType = CommandType.StoredProcedure;
@@ -666,18 +732,18 @@ namespace BMS_New.Models.BMS.Repository
         //                SqlDataReader rdr = cmd.ExecuteReader();
         //                if (rdr.HasRows)
         //                {
+
+        //                    List<Role> lstrole = new List<Role>();
+
         //                    while (rdr.Read())
         //                    {
-        //                        User obj = new User();
-        //                        //obj.ID = Convert.ToInt32(rdr.GetValue(0));
-        //                        //obj.role = new Role
-        //                        //{
-        //                        //    Id = Convert.ToInt32(rdr.GetValue(0)),
-        //                        //    role = Convert.ToString(rdr.GetValue(1))
-        //                        //};
-        //                        //obj.ROLE_NAME = Convert.ToString(rdr.GetValue(1));
-        //                        _userResponse.AddObject(obj);
+        //                        Role obj = new Role();
+        //                        obj.Id = Convert.ToInt32(rdr["ID"]);
+        //                        obj.role = (!String.IsNullOrEmpty(Convert.ToString(rdr["ROLE"]))) ? Convert.ToString(rdr["ROLE"]) : String.Empty;
+        //                        lstrole.Add(obj);
         //                    }
+        //                    objUser.role = lstrole;
+        //                    _userResponse.AddObject(objUser);
         //                    _userResponse.StatusFl = true;
         //                    _userResponse.Msg = "Data has been fetched successfully !";
         //                }

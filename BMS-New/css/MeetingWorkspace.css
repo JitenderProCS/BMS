@@ -1,0 +1,104 @@
+﻿body {
+}
+
+.required-red {
+    color: red;
+}
+
+.TFtable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .TFtable th {
+        padding: 7px;
+        border: #dddddd 1px solid;
+    }
+
+    .TFtable td {
+        padding: 7px;
+        border: #dddddd 1px solid;
+    }
+    /* provide some minimal visual accomodation for IE8 and below */
+    .TFtable tr {
+        background: #f2f4f7;
+        font-size: 12px;
+    }
+        /*  Define the background color for all the ODD background rows  */
+        .TFtable tr:nth-child(odd) {
+            background: #f2f4f7;
+        }
+        /*  Define the background color for all the EVEN background rows  */
+        .TFtable tr:nth-child(even) {
+            background: #fff;
+        }
+
+.TFtable2 {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .TFtable2 td {
+        padding: 7px;
+        /*border: #dddddd 1px solid;*/
+    }
+    /* provide some minimal visual accomodation for IE8 and below */
+    .TFtable2 tr {
+        background: #f2f4f7;
+        font-size: 12px;
+        border: #dddddd 1px solid;
+    }
+        /*  Define the background color for all the ODD background rows  */
+        .TFtable2 tr:nth-child(odd) {
+            background: #f2f4f7;
+        }
+        /*  Define the background color for all the EVEN background rows  */
+        .TFtable2 tr:nth-child(even) {
+            background: #fff;
+        }
+
+.TFtable1 {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .TFtable1 th {
+        padding: 7px;
+        border: #dddddd 1px solid;
+    }
+
+    .TFtable1 td {
+        padding: 7px;
+        border: #dddddd 1px solid;
+    }
+    /* provide some minimal visual accomodation for IE8 and below */
+    .TFtable1 tr {
+        font-size: 12px;
+    }
+
+    .TFtable1 th {
+        background: #f2f4f7;
+        font-size: 12px;
+    }
+
+/*table.dataTable thead .sorting_asc
+        {
+            background:none !important;
+            cursor: none !important;
+        }
+
+        table.dataTable thead .sorting
+        {
+            background: none !important;
+            cursor: none !important;
+        }*/
+
+/*.alert {
+    font-size: 1.3em;
+    padding: 1em;
+    text-align: center;
+    white-space: nowrap;
+    width: auto;
+    word-wrap: normal;
+    z-index: 999999;
+}*/

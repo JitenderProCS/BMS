@@ -64,6 +64,23 @@
         <tbody id="tbdCommitteList">
         </tbody>
     </table>
+    <!-----begin :: Edit Modal------>
+    <div class="modal fade in" id="EditCommittee" tabindex="-1" role="dialog" aria-hidden="True">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="True"></button>
+                    <h4 class="modal-title"><b>Are you sure, you want to Save This Committee?</b></h4>
+                </div>
+                <div class="modal-footer">
+                    <input id="txteditID" type="hidden" value="0" />
+                    <button class="btn dark btn-outline" data-dismiss="modal" onclick="Conferm_Edit_Close()">NO</button>
+                    <button id="btneditConfirm" class="btn red" onclick="javascript:fnSaveCommittee();">YES</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!---------end:: Model---------->
 
      <!--begin::Modal-->
     <div class="modal fade" id="committee_add" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
@@ -84,14 +101,15 @@
                         </div>
                     </div>
                     <!--end::Group-->
+                     <!--begin::Group-->
                     <div class="form-group row">
-
                         <label id="lblCommitteeName" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">Select Committee </label>
                         <div class="col-lg-9 col-xl-9">
                             <input type="text" class="form-control form-control-solid form-control-lg" placeholder="Enter text" id="txtCommitteeName" autocomplete="off" onkeypress="javascript:fnRemoveClass(this,'CommitteeName');" />
                             <input type="text" class="form-control form-control-solid form-control-lg" placeholder="Enter text" id="txtCommitteeid" style="display: none" />
                         </div>
                     </div>
+                     <!--end::Group-->
                     <!--begin::Group-->
                      <div class="form-group row">
                         <label id="lblCommitteeABRR" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">Committee Abbreviation </label>
@@ -99,27 +117,52 @@
                             <input type="text" class="form-control form-control-solid form-control-lg" placeholder="Enter text (Max 7 Char)" id="txtCommitteeAbbr" autocomplete="off" onkeypress="javascript:fnRemoveClass(this,'CommitteeABRR');" />
                         </div>
                     </div>
+                     <!--end::Group-->
                     <!--begin::Group-->
+                     <div class="form-group row">
+                        <label id="lblMembers" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">No. of Members </label>
+                        <div class="col-lg-9 col-xl-9">
+                            <input type="number" value="" class="form-control form-control-solid form-control-lg" placeholder="Enter Number" id="txtMembers" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="2" autocomplete="off" onkeypress="javascript:fnRemoveClass(this,'Members');" />
+                        </div>
+                    </div>
+                     <!--end::Group-->
+                    <!--begin::Group-->
+                     <div class="form-group row">
+                        <label id="lblIndependentDir" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">No. of Independent Director </label>
+                        <div class="col-lg-9 col-xl-9">
+                            <input type="number" value="" class="form-control form-control-solid form-control-lg" placeholder="Enter Number" id="txtIndependentDir" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="2" autocomplete="off" onkeypress="javascript:fnRemoveClass(this,'IndependentDirector');" />
+                        </div>
+                    </div>
+                    <!--end::Group-->
+                    <!--begin::Group-->
+                     <div class="form-group row">
+                        <label id="lblWomenDir" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">No. of Women Director </label>
+                        <div class="col-lg-9 col-xl-9">
+                            <input type="number" value="" class="form-control form-control-solid form-control-lg" placeholder="Enter Number" id="txtWomenDir" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="2" autocomplete="off" onkeypress="javascript:fnRemoveClass(this,'WomenDirector');" />
+                        </div>
+                    </div>
+                     <!--end::Group-->
 
                   <!--begin::Group-->
                      <div class="form-group row">
-                        <label id="lblCommitteeSuperAdmin" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">Committee Admin </label>
+                        <label id="lblChairman" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">Chairman/Chairperson </label>
                         <div class="col-lg-9 col-xl-9">
                             <input type="text" class="form-control form-control-solid form-control-lg" placeholder="Enter text" id="txtAddSuperAdmin" autocomplete="off" onkeypress="javascript:fnRemoveClass(this,'CommitteeSuperAdmin');" />
                              <input type="text" class="form-control form-control-solid form-control-lg" placeholder="Enter text" id="emailAddSuperAdmin" style="display: none" />
                         </div>
                     </div>
-                    <!--begin::Group-->
+                 <!--end::Group-->
+                      <!--begin::Group-->
                     <div class="form-group row" >
-
-                        <label id="lblCoordinator" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">Select Meeting Coordinator(s)</label>
+                        <label id="lblCoordinator" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">Add Meeting Member(s)</label>
                         <div class="form-group row" style="margin-left:13.5px">
                               <select id="ddlCoordinator" style="width: 350px;" class="form-control form-control-lg form-control-solid col" onchange="javascript:fnRemoveClass(this,'Coordinator');">
                                </select>&nbsp; &nbsp;
-                             <button id="btnadd" class="btn btn-primary " onclick=" javascript:fnAddCoordinator();" type="button">Add</button>
+                             <button id="btnadd" class="btn btn-primary " onclick=" javascript:fnAddMembers();" type="button">Add</button>
                         </div>
                     </div>
-
+                      <!--end::Group-->
+                      <!--begin::Group-->
                     <div id="Coordinator" class="form-group row">
                                                 <table class="table" id="sample_Users" style="width: 377px;margin-left: 215px;">
                                                     <thead class="text-uppercase">
@@ -136,6 +179,38 @@
                                                     </tbody>
                                                 </table>
                                             </div>
+                     <!--end::Group-->
+                       <!--begin::Group-->
+                    <div class="form-group row" >
+                        <label id="lblSelectCoordinator" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">Select Meeting Coordinator(s)</label>
+                        <div class="form-group row" style="margin-left:11.5px">
+                              <select id="ddlSelectCoordinator" style="width: 300px;" class="form-control form-control-lg form-control-solid col" onchange="javascript:fnRemoveClass(this,'SelectCoordinator');">
+                               </select>&nbsp;
+                             <select id="ddlSelectRole" class="form-control form-control-lg form-control-solid col" onchange="javascript:fnRemoveClass(this,'SelectRole');">
+                               </select>&nbsp; &nbsp;
+                             <button id="btnaddCoordinator" class="btn btn-primary " onclick=" javascript:fnSelectCoordinator();" type="button">Add</button>
+                        </div>
+                    </div>
+                      <!--end::Group-->
+                      <!--begin::Group-->
+                    <div id="SelectCoordinator" class="form-group row">
+                                                <table class="table" id="Select_Coordinator" style="width: 377px;margin-left: 215px;">
+                                                    <thead class="text-uppercase">
+                                                        <tr>
+                                                            <th style="display: none;"> ID</th>
+                                                          <%-- <th> <input id="chkAll" type="checkbox" onclick="fnCheckAll(this,\'sample_Users\');" /></th>--%>
+                                                            <th>Name</th>
+                                                            <th>Email</th>
+                                                            <th>Role</th>
+                                                            <th>ACTION</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="tbdSelectCoordinatorList">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                     <!--end::Group-->
+                        
                 </div>
                 <div class="modal-footer">
                      <button id="btnSave" type="button" class="btn btn-primary font-weight-bold" data-wizard-type="action-submit" onclick="javascript:fnSaveCommittee();">Submit</button>

@@ -77,20 +77,20 @@ namespace BMS_New.Models.BMS.Service.Request
         }
 
 
-        //public UserResponse GetAllUsersRole()
-        //{
-        //    try
-        //    {
-        //        _userRepo = new UserRepository();
-        //        return _userRepo.GetAllUsersRole(_user);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        //new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
-        //        return null;
-        //    }
+        public UserResponse GetAllUsersRole()
+        {
+            try
+            {
+                _userRepo = new UserRepository();
+                return _userRepo.GetAllUsersRole(_user);
+            }
+            catch (Exception ex)
+            {
+                //new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
+                return null;
+            }
 
-        //}
+        }
 
         public UserResponse GetEmailList()
         {

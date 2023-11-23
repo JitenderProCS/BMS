@@ -1,9 +1,10 @@
 ﻿var objUser = [];
 var uploadedFile = null;
 var arrmultiCompanies = new Array();
+var multicompanies = [];
 
 $(document).ready(function () {
-
+    debugger
     window.history.forward();
     function preventBack() { window.history.forward(1); }
 
@@ -16,8 +17,9 @@ $(document).ready(function () {
     $("input[id*='txtTenureenddate']").val(output);
     $("input[id*='txtDateofbirth']").val(output);
 
-    //getAllUsersRole();
+   
     fnGetUserList();
+    getAllUsersRole();
     //fnBindDepartment();
     //fnBindDesignation();
     //fnBindCategory();
@@ -189,6 +191,7 @@ function valueChangeddin() {
 //}
 
 function getdiv() {
+    debugger
     var roleid = $("select[id*='ddlRole']").val().trim();
     if (roleid == 'Director') {
         $("#directorprofile").show();
@@ -1221,8 +1224,7 @@ function fnGetUserEmailList() {
 }
 
 //Companies of directorship 4-october
-var multicompanies = [];
-debugger
+
 $('#btnSave').on('click', function (e) {
     e.preventDefault();
     multicompanies.push($(this).data('#txtOtherCompanies'));

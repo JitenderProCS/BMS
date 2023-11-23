@@ -210,33 +210,32 @@ namespace BMS_New.Controllers
             return userResponse;
         }
 
-        //[Route("GetAllUsersRole")]
-        //[HttpGet]
-        //[SwaggerOperation(Tags = new[] { "User APIs" })]
-        //public UserResponse GetAllUsersRole()
-        //{
-        //    try
-        //    {
-        //        if (HttpContext.Current.Session.Count == 0)
-        //        {
-        //            userResponse.StatusFl = false;
-        //            userResponse.Msg = "SessionExpired";
-        //            return userResponse;
-        //        }
+        [Route("GetAllUsersRole")]
+        [HttpGet]
+        public UserResponse GetAllUsersRole()
+        {
+            try
+            {
+                if (HttpContext.Current.Session.Count == 0)
+                {
+                    userResponse.StatusFl = false;
+                    userResponse.Msg = "SessionExpired";
+                    return userResponse;
+                }
 
-        //        User user = new User();
-        //        //user.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
-        //        UserRequest cReq = new UserRequest(user);
-        //        userResponse = cReq.GetAllUsersRole();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        //new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]), Convert.ToInt32(HttpContext.Current.Session["CompanyId"]));
-        //        userResponse.StatusFl = false;
-        //        userResponse.Msg = ex.Message;
-        //    }
-        //    return userResponse;
-        //}
+                User user = new User();
+                user.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
+                UserRequest cReq = new UserRequest(user);
+                userResponse = cReq.GetAllUsersRole();
+            }
+            catch (Exception ex)
+            {
+                //new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]), Convert.ToInt32(HttpContext.Current.Session["CompanyId"]));
+                userResponse.StatusFl = false;
+                userResponse.Msg = ex.Message;
+            }
+            return userResponse;
+        }
 
         [Route("GetAllUser")]
         [HttpPost]

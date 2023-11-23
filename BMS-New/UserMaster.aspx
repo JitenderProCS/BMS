@@ -276,13 +276,14 @@
                                                             </label>
                                                             
                                                             <div class="col-xl-9 col-lg-9">
-                                                                <select id="ddlRole" class="form-control form-control-lg form-control-solid" onchange="getdiv(this); fnRemoveClass(this,'Role');" name="language">
+                                                                <select id="ddlRole" class="form-control form-control-lg form-control-solid col" onchange="getdiv(this); fnRemoveClass(this,'Role');">
+                                                               </select>
+                                                              <%--  <select id="ddlRole" class="form-control form-control-lg form-control-solid" onchange="getdiv(this); fnRemoveClass(this,'Role');" name="language">
                                                                     <option value="0">Please Select . . .</option>
                                                                     <option value="Admin">Admin</option>
                                                                     <option value="Director">Director</option>
                                                                     <option value="Invitee">Meeting Co-Ordinator</option>
-                                                                    
-                                                                </select>
+                                                                </select>--%>
                                                             </div>
                                                         </div>
                                                         <!--end::Group-->

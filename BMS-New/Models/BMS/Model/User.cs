@@ -8,21 +8,6 @@ namespace BMS_New.Models.BMS.Model
 {
     public class User : BaseEntity
     {
-        //public string UserNm { set; get; }
-        //public string UserLogin { set; get; }
-        //public string UserEmail { set; get; }
-        //public string UserPwd { set; get; }
-        //public string UserMobile { set; get; }
-        //public string Status { set; get; }
-        //public int RoleId { set; get; }
-        //public string RoleNm { set; get; }
-        //public int DeptId { set; get; }
-        //public string DeptNm { set; get; }
-        //public int DesigId { set; get; }
-        //public string DesigNm { set; get; }
-        //public string ReactionTm { set; get; }
-        //public string UserRemark { set; get; }
-
         public Int32 ID { get; set; }
         public Int32 Sequence { get; set; }
         public string salutation { get; set; }
@@ -56,11 +41,12 @@ namespace BMS_New.Models.BMS.Model
         public string createdOn { get; set; }
         public string modifiedBy { get; set; }
         public string modifiedOn { get; set; }
+        public Role role1 { get; set; }
         //public Committee committee { get; set; }
         public string role { get; set; }
         public bool isChecked { get; set; }
         public int CHECKED { get; set; }
-        //public Designation designation { get; set; }
+        public Designation committeedesignation { get; set; }
         //public Category category { get; set; }
         public string designation { get; set; }
         public string category { get; set; }
