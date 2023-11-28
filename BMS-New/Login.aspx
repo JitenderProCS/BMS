@@ -253,8 +253,8 @@
     <!--begin::Page Scripts(used by this page)-->
     <script src="assets/js/pages/custom/login/login-general.js"></script>
     <!--end::Page Scripts-->
-    <script src="js/Login.js"></script>
-    <script src="js/sha512.js"></script>
-    <script src="js/Global.js"></script>
+    <script src="BoardMeeting/js/sha512.js"></script>
+    <script src="BoardMeeting/js/Global.js"></script>
+    <script src="BoardMeeting/js/Login.js"></script>
 </body>
 </html>

@@ -41,13 +41,13 @@ namespace BMS_New.Models.BMS.Model
         public string createdOn { get; set; }
         public string modifiedBy { get; set; }
         public string modifiedOn { get; set; }
-        public Role role1 { get; set; }
+        public Role role { get; set; }
         //public Committee committee { get; set; }
-        public string role { get; set; }
+        //public string role { get; set; }
         public bool isChecked { get; set; }
         public int CHECKED { get; set; }
         public Designation committeedesignation { get; set; }
-        //public Category category { get; set; }
+        //public List<CommitteeMember> committeeMembers { get; set; }
         public string designation { get; set; }
         public string category { get; set; }
         public Int32 version { get; set; }

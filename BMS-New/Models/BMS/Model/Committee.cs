@@ -9,6 +9,7 @@ namespace BMS_New.Models.BMS.Model
     {
         public Int32 ID { get; set; }
         /***Add By Jitender**********/
+        public Int32 sequence { get; set; }
         public String NoOfMembers { get; set; }
         public String NoOfIndependentDirector { get; set; }
         public String NoOfWomenDirector { get; set; }
@@ -20,7 +21,8 @@ namespace BMS_New.Models.BMS.Model
         public User superAdmin { get; set; }
         //public List<string> committeeAdmins1 { get; set; }
         public List<User> committeeAdmins { get; set; }
-        public List<Role> roles { get; set; }
+        public List<CommitteeRole> committeerole { get; set; }
+        //public List<Role> roles { get; set; }
         public List<CommitteeMember> committeeMembers { get; set; }
         public Int32 companyId { get; set; }
         public String createdBy { get; set; }

@@ -56,8 +56,8 @@ namespace BMS_New.Models.BMS.Repository
                             cmd.Parameters.Add(new SqlParameter("@USER_MIDDLE_NAME", objUser.userMiddleName));
                             cmd.Parameters.Add(new SqlParameter("@USER_LAST_NAME", objUser.userLastName));
                             cmd.Parameters.Add(new SqlParameter("@EMAIL_ID", objUser.emailId));
-                            //cmd.Parameters.Add(new SqlParameter("@ROLE", objUser.role.Id));
-                            cmd.Parameters.Add(new SqlParameter("@ROLE", objUser.role));
+                            cmd.Parameters.Add(new SqlParameter("@ROLE", objUser.role.Id));
+                            //cmd.Parameters.Add(new SqlParameter("@ROLE", objUser.role));
                             //cmd.Parameters.Add(new SqlParameter("@PHONE_NO", objUser.phone));
                             cmd.Parameters.Add(new SqlParameter("@MOBILE_NO", objUser.phone));
                             cmd.Parameters.Add(new SqlParameter("@ADDRESS", objUser.address));
@@ -144,6 +144,7 @@ namespace BMS_New.Models.BMS.Repository
                             //cmd.Parameters.Add(new SqlParameter("@DEPARTMENT_ID", objUser.department.departmentId));
                             //cmd.Parameters.Add(new SqlParameter("@DESIGNATION_ID", objUser.designation.ID));
                             //cmd.Parameters.Add(new SqlParameter("@CATEGORY_ID", objUser.category.ID));
+                            cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
                             cmd.Parameters.Add(new SqlParameter("@DEPARTMENT_NAME", objUser.department));
                             cmd.Parameters.Add(new SqlParameter("@DESIGNATION_NAME", objUser.designation));
                             cmd.Parameters.Add(new SqlParameter("@CATEGORY_NAME", objUser.category));
@@ -405,13 +406,12 @@ namespace BMS_New.Models.BMS.Repository
                                     obj.userMiddleName = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_MIDDLE_NAME"]))) ? Convert.ToString(dr["USER_MIDDLE_NAME"]) : String.Empty;
                                     obj.userLastName = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_LAST_NAME"]))) ? Convert.ToString(dr["USER_LAST_NAME"]) : String.Empty;
                                     obj.emailId = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_EMAIL"]))) ? Convert.ToString(dr["USER_EMAIL"]) : String.Empty;
-                                    //obj.ROLE_NAME = (!String.IsNullOrEmpty(Convert.ToString(dr["ROLE"]))) ? Convert.ToString(dr["ROLE"]) : String.Empty;
-                                    //obj.role = new Role
-                                    //{
-                                    //    Id = Convert.ToInt32(dr["USER_ROLE"]),
-                                    //    role = (!String.IsNullOrEmpty(Convert.ToString(dr["ROLE"]))) ? Convert.ToString(dr["ROLE"]) : String.Empty
-                                    //};
-                                    obj.role = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_ROLE1"]))) ? Convert.ToString(dr["USER_ROLE1"]) : String.Empty;
+                                    obj.role = new Role
+                                    {
+                                        Id = Convert.ToInt32(dr["USER_ROLE"]),
+                                        role = (!String.IsNullOrEmpty(Convert.ToString(dr["ROLE"]))) ? Convert.ToString(dr["ROLE"]) : String.Empty
+                                    };
+                                   // obj.role = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_ROLE1"]))) ? Convert.ToString(dr["USER_ROLE1"]) : String.Empty;
                                     obj.phone = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_MOBILE"]))) ? Convert.ToString(dr["USER_MOBILE"]) : String.Empty;
                                     obj.address = (!String.IsNullOrEmpty(Convert.ToString(dr["ADDRESS"]))) ? Convert.ToString(dr["ADDRESS"]) : String.Empty;
                                     obj.designation = (!String.IsNullOrEmpty(Convert.ToString(dr["DESIGNATION_NAME"]))) ? Convert.ToString(dr["DESIGNATION_NAME"]) : String.Empty;
@@ -647,120 +647,122 @@ namespace BMS_New.Models.BMS.Repository
 
         public UserResponse GetAllUsersRole(User objUser)
         {
-            _userResponse = new UserResponse
-            {
-                StatusFl = false,
-                Msg = "No Data Found!"
-            };
-
+            _userResponse = new UserResponse();
+            _userResponse.StatusFl = false;
+            _userResponse.Msg = "No Data Found!";
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
                     conn.ChangeDatabase(objUser.moduleDatabase);
-
                     using (SqlCommand cmd = new SqlCommand("SP_PROCS_BMS_USER_MASTER", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandTimeout = 0;
-                        cmd.Parameters.AddWithValue("@Mode", "Get_All_Users_Role");
+                        cmd.Parameters.Clear();
+                        cmd.Parameters.Add(new SqlParameter("@Mode", "Get_All_Users_Role"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-                        DataSet ds = new DataSet();
-
-                        using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                        SqlDataReader rdr = cmd.ExecuteReader();
+                        if (rdr.HasRows)
                         {
-                            adapter.Fill(ds);
+                            while (rdr.Read())
+                            {
+                                User obj = new User();
+                                //obj.ID = Convert.ToInt32(rdr.GetValue(0));
+                                obj.role = new Role
+                                {
+                                    Id = Convert.ToInt32(rdr.GetValue(0)),
+                                    role = Convert.ToString(rdr.GetValue(1))
+                                };
+                                //obj.ROLE_NAME = Convert.ToString(rdr.GetValue(1));
+                                _userResponse.AddObject(obj);
+                            }
+                            _userResponse.StatusFl = true;
+                            _userResponse.Msg = "Data has been fetched successfully !";
                         }
-                        DataTable dt = ds.Tables[0];
-                        //using (SqlDataReader rdr = cmd.ExecuteReader())
-                        //{
-                        //    if (rdr.HasRows)
-                        //    {
-                        //        List<Role> lstrole = new List<Role>();
-
-                        //        while (rdr.Read())
-                        //        {
-                        //            Role obj = new Role
-                        //            {
-                        //                Id = Convert.ToInt32(rdr["ID"]),
-                        //                role = rdr["ROLE"] != DBNull.Value ? Convert.ToString(rdr["ROLE"]) : string.Empty
-                        //            };
-                        //            lstrole.Add(obj);
-                        //        }
-
-                        //        objUser.role = lstrole;
-                        //        _userResponse.AddObject(objUser);
-                        //        _userResponse.StatusFl = true;
-                        //        _userResponse.Msg = "Data has been fetched successfully!";
-                        //    }
-                        //}
+                        rdr.Close();
                     }
+                    conn.Close();
                 }
             }
             catch (Exception ex)
             {
-                // Log the exception if needed
-                // new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
-
-                // Update the response message
-                _userResponse.Msg = "Something went wrong. Please try again or contact support!";
+                _userResponse = new UserResponse();
+                _userResponse.StatusFl = false;
+                _userResponse.Msg = "Something went wrong. Please try again or Contact Support!";
+                new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
             }
-
             return _userResponse;
         }
 
-
         //public UserResponse GetAllUsersRole(User objUser)
         //{
-        //    _userResponse = new UserResponse();
-        //    _userResponse.StatusFl = false;
-        //    _userResponse.Msg = "No Data Found!";
+        //    _userResponse = new UserResponse
+        //    {
+        //        StatusFl = false,
+        //        Msg = "No Data Found!"
+        //    };
+
         //    try
         //    {
         //        using (SqlConnection conn = new SqlConnection(connectionString))
         //        {
         //            conn.Open();
         //            conn.ChangeDatabase(objUser.moduleDatabase);
+
         //            using (SqlCommand cmd = new SqlCommand("SP_PROCS_BMS_USER_MASTER", conn))
         //            {
         //                cmd.CommandType = CommandType.StoredProcedure;
         //                cmd.CommandTimeout = 0;
-        //                cmd.Parameters.Clear();
-        //                cmd.Parameters.Add(new SqlParameter("@Mode", "Get_All_Users_Role"));
+        //                cmd.Parameters.AddWithValue("@Mode", "Get_All_Users_Role");
         //                cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-        //                SqlDataReader rdr = cmd.ExecuteReader();
-        //                if (rdr.HasRows)
+        //                DataSet ds = new DataSet();
+
+        //                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
         //                {
-
-        //                    List<Role> lstrole = new List<Role>();
-
-        //                    while (rdr.Read())
-        //                    {
-        //                        Role obj = new Role();
-        //                        obj.Id = Convert.ToInt32(rdr["ID"]);
-        //                        obj.role = (!String.IsNullOrEmpty(Convert.ToString(rdr["ROLE"]))) ? Convert.ToString(rdr["ROLE"]) : String.Empty;
-        //                        lstrole.Add(obj);
-        //                    }
-        //                    objUser.role = lstrole;
-        //                    _userResponse.AddObject(objUser);
-        //                    _userResponse.StatusFl = true;
-        //                    _userResponse.Msg = "Data has been fetched successfully !";
+        //                    adapter.Fill(ds);
         //                }
-        //                rdr.Close();
+        //                DataTable dt = ds.Tables[0];
+        //                using (SqlDataReader rdr = cmd.ExecuteReader())
+        //                {
+        //                    if (rdr.HasRows)
+        //                    {
+        //                        List<User> lstuser = new List<User>();
+
+        //                        while (rdr.Read())
+        //                        {
+        //                            Role obj = new Role
+        //                            {
+        //                                Id = Convert.ToInt32(rdr["ID"]),
+        //                                role = rdr["ROLE"] != DBNull.Value ? Convert.ToString(rdr["ROLE"]) : string.Empty
+        //                            };
+        //                            lstuser.Add(obj);
+        //                        }
+
+        //                        objUser.role = lstuser;
+        //                        _userResponse.AddObject(objUser);
+        //                        _userResponse.StatusFl = true;
+        //                        _userResponse.Msg = "Data has been fetched successfully!";
+        //                    }
+        //                }
         //            }
-        //            conn.Close();
         //        }
         //    }
         //    catch (Exception ex)
         //    {
-        //        _userResponse = new UserResponse();
-        //        _userResponse.StatusFl = false;
-        //        _userResponse.Msg = "Something went wrong. Please try again or Contact Support!";
-        //        //new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
+        //        // Log the exception if needed
+        //        // new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
+
+        //        // Update the response message
+        //        _userResponse.Msg = "Something went wrong. Please try again or contact support!";
         //    }
+
         //    return _userResponse;
         //}
+
+
+
 
         public UserResponse GetEmailList(User objUser)
         {
@@ -1235,7 +1237,7 @@ namespace BMS_New.Models.BMS.Repository
                             {
                                 User obj = new User();
                                 obj.ID = Convert.ToInt32(rdr["ID"]);
-                                obj.userName = (!String.IsNullOrEmpty(Convert.ToString(rdr["USER_NM"]))) ? Convert.ToString(rdr["USER_NM"]) : String.Empty;
+                                obj.userName = (!String.IsNullOrEmpty(Convert.ToString(rdr["NAME"]))) ? Convert.ToString(rdr["NAME"]) : String.Empty;
                                 obj.emailId = (!String.IsNullOrEmpty(Convert.ToString(rdr["EMAIL_ID"]))) ? Convert.ToString(rdr["EMAIL_ID"]) : String.Empty;
                                 _userResponse.AddObject(obj);
                             }

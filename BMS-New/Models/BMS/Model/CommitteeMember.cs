@@ -18,6 +18,7 @@ namespace BMS_New.Models.BMS.Model
         public string createdon { get; set; }
         public string committeeModifiedDate { get; set; }
         public string remarks { get; set; }
+        public List<CommitteeRole> committeerole { get; set; }
         public string finalApprover { get; set; }
         public override void Validate()
         {

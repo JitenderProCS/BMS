@@ -118,7 +118,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="About.aspx" />
     <Content Include="assets\css\bootstrap-summernote\components-editors.min.js" />
     <Content Include="assets\css\bootstrap-summernote\lang\summernote-ar-AR.js" />
     <Content Include="assets\css\bootstrap-summernote\lang\summernote-ar-AR.min.js" />
@@ -4258,26 +4257,41 @@
     <Content Include="assets\plugins\global\plugins.bundle.js.LICENSE.txt" />
     <Content Include="bin\BMS-New.dll" />
     <Content Include="bin\BMS-New.pdb" />
+    <Content Include="BoardMeeting\About.aspx" />
+    <Content Include="BoardMeeting\CommitteeComposition.aspx" />
+    <Content Include="BoardMeeting\CommitteeMaster.aspx" />
+    <Content Include="BoardMeeting\CompanyGroupMaster.aspx" />
+    <Content Include="BoardMeeting\CompanyMaster.aspx" />
+    <Content Include="BoardMeeting\Contact.aspx" />
+    <Content Include="BoardMeeting\Dashboard.aspx" />
+    <Content Include="BoardMeeting\DesignationMaster.aspx" />
     <Content Include="BoardMeeting\images\CompanyGroupLogo\DocumentManagement.png" />
     <Content Include="BoardMeeting\images\CompanyGroupLogo\InsiderTrading.png" />
     <Content Include="BoardMeeting\images\CompanyGroupLogo\TCS_2023_10_20_05_41_22_582.png" />
     <Content Include="BoardMeeting\images\CompanyLogo\images_2023_10_20_07_20_34_819.png" />
     <Content Include="BoardMeeting\images\CompanyLogo\TCS_2023_10_20_06_49_54_877.png" />
+    <Content Include="BoardMeeting\js\ChangePassword.js" />
+    <Content Include="BoardMeeting\js\Committee.js" />
+    <Content Include="BoardMeeting\js\CommitteeComposition.js" />
+    <Content Include="BoardMeeting\js\CompanyGroup.js" />
+    <Content Include="BoardMeeting\js\CompanyMaster.js" />
+    <Content Include="BoardMeeting\js\Designation.js" />
+    <Content Include="BoardMeeting\js\Global.js" />
+    <Content Include="BoardMeeting\js\Login.js" />
+    <Content Include="BoardMeeting\js\sha512.js" />
+    <Content Include="BoardMeeting\js\User.js" />
+    <Content Include="BoardMeeting\js\UserAdmin.js" />
+    <Content Include="BoardMeeting\UserAdminMaster.aspx" />
+    <Content Include="BoardMeeting\UserMaster.aspx" />
+    <Content Include="BoardMeeting\UserMasterForAdmin.aspx" />
     <Content Include="ChangePassword.aspx" />
-    <Content Include="CommitteeComposition.aspx" />
-    <Content Include="CommitteeMaster.aspx" />
-    <Content Include="CompanyGroupMaster.aspx" />
-    <Content Include="CompanyMaster.aspx" />
-    <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="css\Dashboard.css" />
-    <Content Include="Dashboard.aspx" />
     <Content Include="Default.aspx" />
-    <Content Include="DesignationMaster.aspx" />
     <Content Include="EncryptDecrypt.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -4549,19 +4563,9 @@
     <Content Include="assets\plugins\global\plugins.bundle.css.map" />
     <Content Include="assets\plugins\global\plugins.bundle.js.map" />
     <Content Include="assets\plugins\global\summernote-bs4.js.map" />
-    <Content Include="BMSMaster.Master" />
+    <Content Include="BoardMeeting\BMSMaster.Master" />
+    <Content Include="BoardMeeting\Site.Master" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
-    <Content Include="js\ChangePassword.js" />
-    <Content Include="js\Committee.js" />
-    <Content Include="js\CommitteeComposition.js" />
-    <Content Include="js\CompanyGroup.js" />
-    <Content Include="js\CompanyMaster.js" />
-    <Content Include="js\Designation.js" />
-    <Content Include="js\Global.js" />
-    <Content Include="js\Login.js" />
-    <Content Include="js\sha512.js" />
-    <Content Include="js\User.js" />
-    <Content Include="js\UserAdmin.js" />
     <Content Include="Login.aspx" />
     <Content Include="LogOut.aspx" />
     <Content Include="Scripts\bootstrap.js" />
@@ -4592,11 +4596,7 @@
     <Content Include="Scripts\WebForms\WebForms.js" />
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
-    <Content Include="Site.Master" />
     <Content Include="testpage.aspx" />
-    <Content Include="UserAdminMaster.aspx" />
-    <Content Include="UserMaster.aspx" />
-    <Content Include="UserMasterForAdmin.aspx" />
     <Content Include="UserMasterForAdmin1.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
@@ -4605,21 +4605,98 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="About.aspx.cs">
-      <DependentUpon>About.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="About.aspx.designer.cs">
-      <DependentUpon>About.aspx</DependentUpon>
-    </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="BMSMaster.Master.cs">
+    <Compile Include="BoardMeeting\About.aspx.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardMeeting\About.aspx.designer.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BoardMeeting\BMSMaster.Master.cs">
       <DependentUpon>BMSMaster.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="BMSMaster.Master.designer.cs">
+    <Compile Include="BoardMeeting\BMSMaster.Master.designer.cs">
       <DependentUpon>BMSMaster.Master</DependentUpon>
+    </Compile>
+    <Compile Include="BoardMeeting\CommitteeComposition.aspx.cs">
+      <DependentUpon>CommitteeComposition.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardMeeting\CommitteeComposition.aspx.designer.cs">
+      <DependentUpon>CommitteeComposition.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BoardMeeting\CommitteeMaster.aspx.cs">
+      <DependentUpon>CommitteeMaster.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardMeeting\CommitteeMaster.aspx.designer.cs">
+      <DependentUpon>CommitteeMaster.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BoardMeeting\CompanyGroupMaster.aspx.cs">
+      <DependentUpon>CompanyGroupMaster.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardMeeting\CompanyGroupMaster.aspx.designer.cs">
+      <DependentUpon>CompanyGroupMaster.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BoardMeeting\CompanyMaster.aspx.cs">
+      <DependentUpon>CompanyMaster.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardMeeting\CompanyMaster.aspx.designer.cs">
+      <DependentUpon>CompanyMaster.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BoardMeeting\Contact.aspx.cs">
+      <DependentUpon>Contact.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardMeeting\Contact.aspx.designer.cs">
+      <DependentUpon>Contact.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BoardMeeting\Dashboard.aspx.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardMeeting\Dashboard.aspx.designer.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BoardMeeting\DesignationMaster.aspx.cs">
+      <DependentUpon>DesignationMaster.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardMeeting\DesignationMaster.aspx.designer.cs">
+      <DependentUpon>DesignationMaster.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BoardMeeting\Site.Master.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardMeeting\Site.Master.designer.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="BoardMeeting\UserAdminMaster.aspx.cs">
+      <DependentUpon>UserAdminMaster.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardMeeting\UserAdminMaster.aspx.designer.cs">
+      <DependentUpon>UserAdminMaster.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BoardMeeting\UserMaster.aspx.cs">
+      <DependentUpon>UserMaster.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardMeeting\UserMaster.aspx.designer.cs">
+      <DependentUpon>UserMaster.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BoardMeeting\UserMasterForAdmin.aspx.cs">
+      <DependentUpon>UserMasterForAdmin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardMeeting\UserMasterForAdmin.aspx.designer.cs">
+      <DependentUpon>UserMasterForAdmin.aspx</DependentUpon>
     </Compile>
     <Compile Include="ChangePassword.aspx.cs">
       <DependentUpon>ChangePassword.aspx</DependentUpon>
@@ -4628,41 +4705,6 @@
     <Compile Include="ChangePassword.aspx.designer.cs">
       <DependentUpon>ChangePassword.aspx</DependentUpon>
     </Compile>
-    <Compile Include="CommitteeComposition.aspx.cs">
-      <DependentUpon>CommitteeComposition.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CommitteeComposition.aspx.designer.cs">
-      <DependentUpon>CommitteeComposition.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CommitteeMaster.aspx.cs">
-      <DependentUpon>CommitteeMaster.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CommitteeMaster.aspx.designer.cs">
-      <DependentUpon>CommitteeMaster.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CompanyGroupMaster.aspx.cs">
-      <DependentUpon>CompanyGroupMaster.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CompanyGroupMaster.aspx.designer.cs">
-      <DependentUpon>CompanyGroupMaster.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CompanyMaster.aspx.cs">
-      <DependentUpon>CompanyMaster.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CompanyMaster.aspx.designer.cs">
-      <DependentUpon>CompanyMaster.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Contact.aspx.cs">
-      <DependentUpon>Contact.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contact.aspx.designer.cs">
-      <DependentUpon>Contact.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Controllers\AdminUserController.cs" />
     <Compile Include="Controllers\CommitteeController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
@@ -4670,26 +4712,12 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\UserCompanyModuleSelectionController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Dashboard.aspx.cs">
-      <DependentUpon>Dashboard.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Dashboard.aspx.designer.cs">
-      <DependentUpon>Dashboard.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="DesignationMaster.aspx.cs">
-      <DependentUpon>DesignationMaster.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesignationMaster.aspx.designer.cs">
-      <DependentUpon>DesignationMaster.aspx</DependentUpon>
     </Compile>
     <Compile Include="EncryptDecrypt.aspx.cs">
       <DependentUpon>EncryptDecrypt.aspx</DependentUpon>
@@ -4721,6 +4749,7 @@
     <Compile Include="Models\BMS\Model\Category.cs" />
     <Compile Include="Models\BMS\Model\Committee.cs" />
     <Compile Include="Models\BMS\Model\CommitteeMember.cs" />
+    <Compile Include="Models\BMS\Model\CommitteeRole.cs" />
     <Compile Include="Models\BMS\Model\Company.cs" />
     <Compile Include="Models\BMS\Model\CompanyGrooup.cs" />
     <Compile Include="Models\BMS\Model\Designation.cs" />
@@ -4760,13 +4789,6 @@
     <Compile Include="Models\Login\Service\Response\LoginResponse.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.6.1.AssemblyAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Site.Master.cs">
-      <DependentUpon>Site.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Site.Master.designer.cs">
-      <DependentUpon>Site.Master</DependentUpon>
-    </Compile>
     <Compile Include="Site.Mobile.Master.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -4780,27 +4802,6 @@
     </Compile>
     <Compile Include="testpage.aspx.designer.cs">
       <DependentUpon>testpage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UserAdminMaster.aspx.cs">
-      <DependentUpon>UserAdminMaster.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserAdminMaster.aspx.designer.cs">
-      <DependentUpon>UserAdminMaster.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UserMaster.aspx.cs">
-      <DependentUpon>UserMaster.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserMaster.aspx.designer.cs">
-      <DependentUpon>UserMaster.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UserMasterForAdmin.aspx.cs">
-      <DependentUpon>UserMasterForAdmin.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserMasterForAdmin.aspx.designer.cs">
-      <DependentUpon>UserMasterForAdmin.aspx</DependentUpon>
     </Compile>
     <Compile Include="UserMasterForAdmin1.aspx.cs">
       <DependentUpon>UserMasterForAdmin1.aspx</DependentUpon>
