@@ -9,10 +9,9 @@ namespace BMS_New.Models.BMS.Model
     {
         public Int32 ID { get; set; }
         /***Add By Jitender**********/
-        public Int32 sequence { get; set; }
-        public String NoOfMembers { get; set; }
-        public String NoOfIndependentDirector { get; set; }
-        public String NoOfWomenDirector { get; set; }
+        public Int32 NoOfMembers { get; set; }
+        public Int32 NoOfIndependentDirector { get; set; }
+        public Int32 NoOfWomenDirector { get; set; }
         /**********End***************/
         public String committeeName { get; set; }
         public String committeeABRR { get; set; }
@@ -24,12 +23,13 @@ namespace BMS_New.Models.BMS.Model
         public List<CommitteeRole> committeerole { get; set; }
         //public List<Role> roles { get; set; }
         public List<CommitteeMember> committeeMembers { get; set; }
-        public Int32 companyId { get; set; }
         public String createdBy { get; set; }
         public String createdOn { get; set; }
         public String modifiedBy { get; set; }
         public String modifiedOn { get; set; }
         public String NoOfcommitteeMembers { get; set; }
+        public String CntIndependentDirector { get; set; }
+        public String CntWomenDirector { get; set; }
         //public String moduleDatabase { set; get; }
         public String companyName { get; set; }
        // public CRLibrary crLibrary { get; set; }

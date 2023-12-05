@@ -39,7 +39,7 @@ namespace BMS_New.Controllers
                 Designation designation = new JavaScriptSerializer().Deserialize<Designation>(input);
                 //designation.createdBy = Convert.ToString(HttpContext.Current.Session["EMPLOYEE_ID"]);
                 designation.createdBy = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
-                //designation.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                designation.CompanyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 designation.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
                 DesignationRequest gReqDesignationList = new DesignationRequest(designation);
                 designationResponse = gReqDesignationList.GetDesignationList();
@@ -76,7 +76,7 @@ namespace BMS_New.Controllers
                 Designation objDesignation = new Designation();
                 objDesignation = lstDesignation[0];
                 objDesignation.createdBy = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
-                objDesignation.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                objDesignation.CompanyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 objDesignation.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
                 DesignationRequest designationReq = new DesignationRequest(objDesignation);
                 designationResponse = designationReq.SaveDesignation();

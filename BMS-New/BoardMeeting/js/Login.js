@@ -47,6 +47,7 @@ function unValidCredential(Msg) {
 }
 
 function GoToDashBoard(companyId, CompanyNm, CompanyLogo, ModuleId, ModuleNm, ModuleFolder, ModuleDataBase, EmployeeId, Mobile) {
+    debugger
     var webUrl = uri + "/api/UserCompanyModuleSelection/SetSession";
     $.ajax({
         type: "POST",
@@ -77,14 +78,14 @@ function SwitchDashBoard(selectedValue) {
     const selectedValues = selectedValue.split(',');
     const data = [];
     var rowData = {
-        companyId: selectedValues[0],
+        CompanyId: selectedValues[0],
         CompanyName: selectedValues[1],
         logo: selectedValues[2],
         moduleId: selectedValues[3],
         moduleName: selectedValues[4],
         modulefolder: selectedValues[5],
         //ModuleDataBase: selectedValues[6],
-        LOGIN_ID: selectedValues[7],
+        LoginId: selectedValues[7],
         Mobile: selectedValues[8]
     };
 

@@ -1,6 +1,7 @@
 ﻿using BMS_New.Models.BMS.Model;
 using BMS_New.Models.BMS.Repository;
 using BMS_New.Models.BMS.Service.Response;
+using BMS_New.Models.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,33 +82,33 @@ namespace BMS_New.Models.BMS.Service.Request
             }
         }
 
-        //public DesignationResponse GetDesignation()
-        //{
-        //    try
-        //    {
-        //        _designationRepo = new DesignationRepository();
-        //        return _designationRepo.GetDesignation(_designation);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        //new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
-        //        return null;
-        //    }
-        //}
+        public DesignationResponse GetDesignation()
+        {
+            try
+            {
+                _designationRepo = new DesignationRepository();
+                return _designationRepo.GetDesignation(_designation);
+            }
+            catch (Exception ex)
+            {
+                //new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
+                return null;
+            }
+        }
 
-        //public DesignationResponse GetCategory()
-        //{
-        //    try
-        //    {
-        //        _designationRepo = new DesignationRepository();
-        //        return _designationRepo.GetCategory(_category);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
-        //        return null;
-        //    }
-        //}
+        public DesignationResponse GetCategory()
+        {
+            try
+            {
+                _designationRepo = new DesignationRepository();
+                return _designationRepo.GetCategory(_category);
+            }
+            catch (Exception ex)
+            {
+                new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
+                return null;
+            }
+        }
 
 
         //public DesignationResponse getDesignationAuditRecord()

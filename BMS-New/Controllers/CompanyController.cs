@@ -133,8 +133,8 @@ namespace BMS_New.Controllers
                 Company objcom = new Company();
                //var Id = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 var createdby = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
-                //objcom.companyId = Convert.ToInt32(Id);
-                objcom.LoginId = Convert.ToString(createdby);
+                //objcom.CompanyId = Convert.ToInt32(Id);
+                objcom.createdBy = Convert.ToString(createdby);
                 //meetingVenue.createdBy = Convert.ToString(HttpContext.Current.Session["EMPLOYEE_ID"]);
                 //user.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 //  user.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);

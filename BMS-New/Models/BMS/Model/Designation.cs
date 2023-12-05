@@ -9,8 +9,8 @@ namespace BMS_New.Models.BMS.Model
     {
         public Int32 ID { get; set; }
         public Int32 Sequence { get; set; }
-        public string designationName { get; set; }
-        public Int32 companyId { get; set; }
+        public String designationName { get; set; }
+        //public Int32 companyId { get; set; }
         public String createdBy { get; set; }
         public String createdOn { get; set; }
         public string modifiedBy { get; set; }

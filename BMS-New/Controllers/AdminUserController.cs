@@ -52,7 +52,7 @@ namespace DMS.Controllers
                 {
                     AdminUser objUser = new AdminUser();
                     objUser = lstUser[0];
-                    objUser.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                    objUser.CompanyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                     objUser.CREATED_BY = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
                     //objUser.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
                     //objUser.moduleId = Convert.ToInt32(HttpContext.Current.Session["ModuleId"]);
@@ -130,7 +130,7 @@ namespace DMS.Controllers
                 Company Objcomp = new Company();
                 //meetingVenue.createdBy = Convert.ToString(HttpContext.Current.Session["EMPLOYEE_ID"]);
                 var id = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
-                Objcomp.companyId = Convert.ToInt32( id);
+                Objcomp.CompanyId = Convert.ToInt32( id);
                 //  user.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
                 // user.moduleId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 CompanyRequest gReqCompanyList = new CompanyRequest(Objcomp);
@@ -200,7 +200,7 @@ namespace DMS.Controllers
                 }
                 AdminUser user = new JavaScriptSerializer().Deserialize<AdminUser>(input);
                 // meetingVenue.createdBy = Convert.ToString(HttpContext.Current.Session["EMPLOYEE_ID"]);
-                user.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                user.CompanyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                // user.LoginId = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
                 //user.moduleId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 AdminUserRequest gReqUserList = new AdminUserRequest(user);

@@ -38,6 +38,7 @@ function initializeDataTable() {
 }
 
 function fnGetDesignationList() {
+    debugger
     $("#Loader").show();
     var webUrl = uri + "/api/Designation/GetDesignationList"; //"api/DesignationHandler.ashx?caller=GetDesignationList";
     $.ajax({
@@ -95,6 +96,7 @@ function fnSaveDesignation() {
 }
 
 function fnAddUpdateDesignation() {
+    debugger
     $("#Loader").show();
 
     var DesignationColl = [];

@@ -8,6 +8,7 @@ using System.IO;
 using BMS_New.Models.BMS.Service.Response;
 using BMS_New.Models.BMS.Service.Request;
 using BMS_New.Models.BMS.Model;
+using BMS_New.Models.Infrastructure;
 
 namespace BMS_New.Controllers
 {
@@ -49,7 +50,7 @@ namespace BMS_New.Controllers
                 {
                     User objUser = new User();
                     objUser = lstUser[0];
-                    objUser.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                    objUser.CompanyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                     objUser.createdBy = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
                     objUser.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
                     objUser.moduleId = Convert.ToInt32(HttpContext.Current.Session["ModuleId"]);
@@ -70,7 +71,7 @@ namespace BMS_New.Controllers
                             HttpPostedFile file = files[i];
                             String ext = Path.GetExtension(file.FileName);
                             String name = String.Empty;
-                            if (file.FileName.Length > 20)
+                            if (file.FileName.Length < 20)
                             {
                                 name = Path.GetFileNameWithoutExtension(file.FileName).Replace(".", "").Substring(0, 20);
                             }
@@ -128,7 +129,7 @@ namespace BMS_New.Controllers
                 User objUser = new User();
                 objUser = lstUser[0];
                 // objUser.createdBy = Convert.ToString(HttpContext.Current.Session["EMPLOYEE_ID"]);
-                objUser.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                objUser.CompanyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 //objUser.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
                 UserRequest UserReq = new UserRequest(objUser);
                 userResponse = UserReq.DeleteUser();
@@ -162,7 +163,7 @@ namespace BMS_New.Controllers
                 }
                 User user = new JavaScriptSerializer().Deserialize<User>(input);
                 user.LoginId = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
-                user.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                user.CompanyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 user.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
                 //user.moduleId = Convert.ToInt32(HttpContext.Current.Session["ModuleId"]);
                 UserRequest gReqUserList = new UserRequest(user);
@@ -175,6 +176,64 @@ namespace BMS_New.Controllers
                 userResponse.Msg = ex.Message;
             }
             return userResponse;
+        }
+
+        [Route("GetDesignation")]
+        [HttpGet]
+        public DesignationResponse GetDesignation()
+        {
+            DesignationResponse _designationRes = new DesignationResponse();
+            try
+            {
+                if (HttpContext.Current.Session.Count == 0)
+                {
+                    _designationRes.StatusFl = false;
+                    _designationRes.Msg = "SessionExpired";
+                    return _designationRes;
+                }
+                Designation objDesignation = new Designation();
+                objDesignation.CompanyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                objDesignation.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
+
+                DesignationRequest cReq = new DesignationRequest(objDesignation);
+                _designationRes = cReq.GetDesignation();
+            }
+            catch (Exception ex)
+            {
+                new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]), Convert.ToInt32(HttpContext.Current.Session["CompanyId"]));
+                _designationRes.StatusFl = false;
+                _designationRes.Msg = ex.Message;
+            }
+            return _designationRes;
+        }
+
+        [Route("GetCategory")]
+        [HttpGet]
+        public DesignationResponse GetCategory()
+        {
+            DesignationResponse _designationRes = new DesignationResponse();
+            try
+            {
+                if (HttpContext.Current.Session.Count == 0)
+                {
+                    _designationRes.StatusFl = false;
+                    _designationRes.Msg = "SessionExpired";
+                    return _designationRes;
+                }
+                Category objCategory = new Category();
+                objCategory.CompanyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                objCategory.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
+
+                DesignationRequest cReq = new DesignationRequest(objCategory);
+                _designationRes = cReq.GetCategory();
+            }
+            catch (Exception ex)
+            {
+                new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]), Convert.ToInt32(HttpContext.Current.Session["CompanyId"]));
+                _designationRes.StatusFl = false;
+                _designationRes.Msg = ex.Message;
+            }
+            return _designationRes;
         }
 
         [Route("GetUserEmailList")]
@@ -196,7 +255,7 @@ namespace BMS_New.Controllers
                     input = sr.ReadToEnd();
                 }
                 User user = new JavaScriptSerializer().Deserialize<User>(input);
-                user.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                user.CompanyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 //user.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
                 UserRequest gReqEmailList = new UserRequest(user);
                 userResponse = gReqEmailList.GetEmailList();
@@ -239,7 +298,6 @@ namespace BMS_New.Controllers
 
         [Route("GetAllUser")]
         [HttpPost]
-        //[SwaggerOperation(Tags = new[] { "User APIs" })]
         public UserResponse GetAllUserByCompany()
         {
             try
@@ -257,7 +315,7 @@ namespace BMS_New.Controllers
                 }
                 User user = new JavaScriptSerializer().Deserialize<User>(input);
                 //  meetingVenue.createdBy = Convert.ToString(HttpContext.Current.Session["EMPLOYEE_ID"]);
-                user.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                user.CompanyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 //user.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
                 // user.moduleId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 UserRequest gReqUserList = new UserRequest(user);

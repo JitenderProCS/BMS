@@ -35,7 +35,7 @@ namespace BMS_New.Models.BMS.Repository
                             cmd.Parameters.Clear();
                             cmd.Parameters.Add(new SqlParameter("@MODE", "INSERT_UPDATE"));
                             cmd.Parameters.Add(new SqlParameter("@ACTION_TYPE", "INSERT"));
-                            cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", _company.companyId));
+                            cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", _company.CompanyId));
                             cmd.Parameters.Add(new SqlParameter("@COMPANY_GROUP_ID", _company.CompanyGroupId));
                             cmd.Parameters.Add(new SqlParameter("@COMPANY_TYPE_ID", _company.CompanyTypeId));
                             cmd.Parameters.Add(new SqlParameter("@EMPLOYEE_ID", _company.createdBy));
@@ -46,7 +46,7 @@ namespace BMS_New.Models.BMS.Repository
                             cmd.Parameters.Add(new SqlParameter("@COMPANY_LOGO", _company.uploadAvatar));
                             cmd.ExecuteNonQuery();
 
-                        _company.companyId = Convert.ToInt32(cmd.Parameters["@SET_COUNT"].Value);
+                        _company.CompanyId = Convert.ToInt32(cmd.Parameters["@SET_COUNT"].Value);
                         _companyResponse.StatusFl = true;
                         _companyResponse.Msg = "Data has been saved successfully !";
                        // _companyResponse.companys = _company;
@@ -85,7 +85,7 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Clear();
                         cmd.Parameters.Add(new SqlParameter("@MODE", "INSERT_UPDATE"));
                         cmd.Parameters.Add(new SqlParameter("@ACTION_TYPE", "UPDATE"));
-                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", _company.companyId));
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", _company.CompanyId));
                         cmd.Parameters.Add(new SqlParameter("@COMPANY_TYPE_ID", _company.CompanyTypeId));
                         cmd.Parameters.Add(new SqlParameter("@EMPLOYEE_ID", _company.createdBy));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
@@ -94,7 +94,7 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Add(new SqlParameter("@COMPANY_LOGO", _company.uploadAvatar));
                         cmd.ExecuteNonQuery();
 
-                        _company.companyId = Convert.ToInt32(cmd.Parameters["@SET_COUNT"].Value);
+                        _company.CompanyId = Convert.ToInt32(cmd.Parameters["@SET_COUNT"].Value);
                         _companyResponse.StatusFl = true;
                         _companyResponse.Msg = "Data has been saved successfully !";
                        // _companyResponse.Department = _company;
@@ -133,7 +133,8 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Add(new SqlParameter("@MODE", "GET_COMPANIES"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
                         //cmd.Parameters.Add(new SqlParameter("@COMPANY_CODE", objCompany.CompanyCode));
-                        cmd.Parameters.Add(new SqlParameter("@LOGIN_ID", objCompany.LoginId));
+                        //cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objCompany.CompanyId));
+                        cmd.Parameters.Add(new SqlParameter("@LOGIN_ID", objCompany.createdBy));
                         // cmd.Parameters.Add(new SqlParameter("@STATUS", (objCompany.status != "0" ? objUser.status : null)));
                         SqlDataReader rdr = cmd.ExecuteReader();
                         if (rdr.HasRows)
@@ -142,7 +143,7 @@ namespace BMS_New.Models.BMS.Repository
                             {
                                 Company obj = new Company();
 
-                                obj.companyId = Convert.ToInt32(rdr["COMPANY_ID"]);
+                                obj.CompanyId = Convert.ToInt32(rdr["COMPANY_ID"]);
                                 obj.CompanyTypeId = Convert.ToInt32(rdr["COMPANY_TYPE_ID"]);
                                 obj.CompanyGroupId = Convert.ToInt32(rdr["GROUP_ID"]);
                                 obj.CompanyCode = (!String.IsNullOrEmpty(Convert.ToString(rdr["COMPANY_CODE"]))) ? Convert.ToString(rdr["COMPANY_CODE"]) : String.Empty;
@@ -193,7 +194,7 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Clear();
                         cmd.Parameters.Add(new SqlParameter("@MODE", "GET_COMPANIES"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objCompany.companyId));
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objCompany.CompanyId));
                         // cmd.Parameters.Add(new SqlParameter("@STATUS", (objCompany.status != "0" ? objUser.status : null)));
                         SqlDataReader rdr = cmd.ExecuteReader();
                         if (rdr.HasRows)
@@ -202,7 +203,7 @@ namespace BMS_New.Models.BMS.Repository
                             {
                                 Company obj = new Company();
 
-                                obj.companyId = Convert.ToInt32(rdr["COMPANY_ID"]);
+                                obj.CompanyId = Convert.ToInt32(rdr["COMPANY_ID"]);
                                 obj.CompanyTypeId = Convert.ToInt32(rdr["COMPANY_TYPE_ID"]);
                                 obj.CompanyGroupId = Convert.ToInt32(rdr["GROUP_ID"]);
                                 obj.CompanyName = (!String.IsNullOrEmpty(Convert.ToString(rdr["COMPANY_NM"]))) ? Convert.ToString(rdr["COMPANY_NM"]) : String.Empty;

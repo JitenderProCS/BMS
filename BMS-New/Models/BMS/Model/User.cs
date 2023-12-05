@@ -10,79 +10,76 @@ namespace BMS_New.Models.BMS.Model
     {
         public Int32 ID { get; set; }
         public Int32 Sequence { get; set; }
-        public string salutation { get; set; }
-        public string userName { get; set; }
+        public String salutation { get; set; }
+        public String userLogin { get; set; }
+        public String userName { get; set; }
         //public Role role { get; set; }
-        public string userFirstName { get; set; }
-        public string userMiddleName { get; set; }
-        public string userLastName { get; set; }
-        public string emailId { get; set; }
-        public string phone { get; set; }
-        public string address { get; set; }
-        public string tenureStartDate { get; set; }
-        public string tenureEndDate { get; set; }
-        public string dateOfBirth { get; set; }
-        public string nationality { get; set; }
-        public string userLogin { get; set; }
-        public string password { get; set; }
-        public string status { get; set; }
+        public String userFirstName { get; set; }
+        public String userMiddleName { get; set; }
+        public String userLastName { get; set; }
+        public String emailId { get; set; }
+        public String phone { get; set; }
+        public String address { get; set; }
+        public String tenureStartDate { get; set; }
+        public String tenureEndDate { get; set; }
+        public String dateOfBirth { get; set; }
+        public String nationality { get; set; }
+        public String password { get; set; }
+        public String status { get; set; }
 
 
         //2 Prop for D
-        public string UserRemark { set; get; }
-        public string ReactionTm { set; get; }
-        public string comments { get; set; }
-        public string reviewedOn { get; set; }
+        public String UserRemark { set; get; }
+        public String ReactionTm { set; get; }
+        public String comments { get; set; }
+        public String reviewedOn { get; set; }
         public List<string> lstMemberCommunicationAttachment { get; set; }
         public string uploadAvatar { get; set; }
-        public Int32 companyId { get; set; }
+        //public Int32 companyId { get; set; }
         public Int32 moduleId { get; set; }
-        public string createdBy { get; set; }
-        public string createdOn { get; set; }
-        public string modifiedBy { get; set; }
-        public string modifiedOn { get; set; }
+        public String createdBy { get; set; }
+        public String createdOn { get; set; }
+        public String modifiedBy { get; set; }
+        public String modifiedOn { get; set; }
         public Role role { get; set; }
         //public Committee committee { get; set; }
         //public string role { get; set; }
         public bool isChecked { get; set; }
         public int CHECKED { get; set; }
-        public Designation committeedesignation { get; set; }
+        public Designation designation { get; set; }
+        //public Designation committeedesignation { get; set; }
         //public List<CommitteeMember> committeeMembers { get; set; }
-        public string designation { get; set; }
-        public string category { get; set; }
+        //public string designation { get; set; }
+        public String category { get; set; }
         public Int32 version { get; set; }
-        public string profile { get; set; }
-        public string attendanceStatus { get; set; }
+        public String profile { get; set; }
+        public String attendanceStatus { get; set; }
         public string markedByDirectorOn { get; set; }
         //public Int32 score { get; set; }
         public decimal score { get; set; }
         public string questionRemark { get; set; }
-        //public Department department { get; set; }
-        public string department { get; set; }
+        public Department department { get; set; }
+        //public string department { get; set; }
 
         //add more field for director open
-        public string txtdp_pan { get; set; }
-        public string panremark { get; set; }
-        public string txtdin_pan { get; set; }
-        public string din_remark { get; set; }
-        public string ddlcat1 { get; set; }
-        public string ddlcat2 { get; set; }
-        public string ddlcat3 { get; set; }
-        public string ddl17A { get; set; }
-        public string txtdate { get; set; }
-        public string no_of_directorship { get; set; }
-        public string no_of_independent { get; set; }
-        public string no_of_membership { get; set; }
-        public string no_of_post_of_chairperson { get; set; }
-        public string occupation_Area { get; set; }
-        public string educational_Qualification { get; set; }
-        public string experience { get; set; }
-        public string gender { get; set; }
-        public string aadhar_Number { get; set; }
-        public string shareHolding { get; set; }
-        public string shareHolding_percentage { get; set; }
-        public string currency_Symbol { get; set; }
-        public string sitting_Amount { get; set; }
+        public String txtdp_pan { get; set; }
+        public String panremark { get; set; }
+        public String txtdin_pan { get; set; }
+        public String din_remark { get; set; }
+        public String txtdate { get; set; }
+        public String no_of_directorship { get; set; }
+        public String no_of_independent { get; set; }
+        public String no_of_membership { get; set; }
+        public String no_of_post_of_chairperson { get; set; }
+        public String occupation_Area { get; set; }
+        public String educational_Qualification { get; set; }
+        public String experience { get; set; }
+        public String gender { get; set; }
+        public String aadhar_Number { get; set; }
+        public String shareHolding { get; set; }
+        public String shareHolding_percentage { get; set; }
+        public String currency_Symbol { get; set; }
+        public String sitting_Amount { get; set; }
         public string payment_mode { get; set; }
         public string remuneration_Amount { get; set; }
         public string appointed_Section { get; set; }
@@ -90,8 +87,8 @@ namespace BMS_New.Models.BMS.Model
         //public IEnumerable<companyList> multi_Companies { get; set; }
         public List<string> multi_Companies { get; set; }
         public string keyCompany { get; set; }
-        public string committees_Already_director { get; set; }
-        public string membership_Num_Secretarial_User { get; set; }
+        public String committees_Already_director { get; set; }
+        public String membership_Num_Secretarial_User { get; set; }
 
         //add more field for director close
 
@@ -116,8 +113,10 @@ namespace BMS_New.Models.BMS.Model
         public string exitTime { get; set; }
 
         public string meetingId { get; set; }
+
+
     }
-    public class companyList
+    public class companyList: BaseEntity
     {
         public string Companies { get; set; }
     }

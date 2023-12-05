@@ -13,12 +13,12 @@ namespace BMS_New.Models.BMS.Model
         //public string salutation { get; set; }
         public string userName { get; set; }
         public string emailId { get; set; }
-        public string userLogin { get; set; }
+        //public string userLogin { get; set; }
         public string password { get; set; }
         public string phone { get; set; }
         public string authentication { get; set; }
         //public Company company { get; set; }
-        public Int32  companyId { get; set; }
+       // public Int32  companyId { get; set; }
         public string CompanyName { get; set; }
         public Int32 moduleId { get; set; }
         public String moduleName { get; set; }
@@ -32,8 +32,8 @@ namespace BMS_New.Models.BMS.Model
     public class CompanyAccess : BaseEntity
     {
         public Int32 ID { set; get; }
-        public string LOGIN_ID { set; get; }
-        public Int32 companyId { set; get; }
+        //public string LOGIN_ID { set; get; }
+        //public Int32 companyId { set; get; }
         public string CompanyCode { set; get; }
         public string CompanyName { set; get; }
         public string logo { set; get; }

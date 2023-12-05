@@ -35,7 +35,7 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Add(new SqlParameter("@MODE", "CHECK"));
                         cmd.Parameters.Add(new SqlParameter("@ACTION_TYPE", "INSERT"));
                         //cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objDesignation.companyId));
-                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", 1));
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objDesignation.CompanyId));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
                         Int32 obj = Convert.ToInt32(cmd.Parameters["@SET_COUNT"].Value);
@@ -47,7 +47,7 @@ namespace BMS_New.Models.BMS.Repository
                             cmd.Parameters.Add(new SqlParameter("@MODE", "INSERT_UPDATE"));
                             cmd.Parameters.Add(new SqlParameter("@ACTION_TYPE", "INSERT"));
                             //cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objDesignation.companyId));
-                            cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", 1));
+                            cmd.Parameters.Add(new SqlParameter("@COMPANY_ID",objDesignation.CompanyId));
                             cmd.Parameters.Add(new SqlParameter("@EMPLOYEE_ID", objDesignation.createdBy));
                             cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
                             cmd.Parameters.Add(new SqlParameter("@DESIGNATION_NAME", objDesignation.designationName));
@@ -197,7 +197,7 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Add(new SqlParameter("@MODE", "GET_DESIGNATION_LIST"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
                         //cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objDesignation.companyId));
-                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID",1));
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objDesignation.CompanyId));
                         SqlDataReader rdr = cmd.ExecuteReader();
                         if (rdr.HasRows)
                         {
@@ -208,7 +208,7 @@ namespace BMS_New.Models.BMS.Repository
                                 obj.designationName = (!String.IsNullOrEmpty(Convert.ToString(rdr["DESIGNATION_NAME"]))) ? Convert.ToString(rdr["DESIGNATION_NAME"]) : String.Empty;
                                 obj.createdBy = Convert.ToString(rdr["CREATE_BY"]);
                                 obj.createdOn = Convert.ToString(rdr["CREATED_ON"]);
-                                obj.companyId = Convert.ToInt32(rdr["COMPANY_ID"]);
+                                obj.CompanyId = Convert.ToInt32(rdr["COMPANY_ID"]);
                                 _designationResponse.AddObject(obj);
                             }
                             _designationResponse.StatusFl = true;
@@ -229,105 +229,105 @@ namespace BMS_New.Models.BMS.Repository
             return _designationResponse;
         }
 
-        //public DesignationResponse GetDesignation(Designation objDesignation)
-        //{
-        //    _designationResponse = new DesignationResponse();
-        //    _designationResponse.StatusFl = false;
-        //    _designationResponse.Msg = "No Data Found!";
-        //    try
-        //    {
-        //        using (SqlConnection conn = new SqlConnection(connectionString))
-        //        {
-        //            conn.Open();
-        //            //conn.ChangeDatabase(objDesignation.moduleDatabase);
-        //            conn.ChangeDatabase("PROCS_BOARD_MEETING");
+        public DesignationResponse GetDesignation(Designation objDesignation)
+        {
+            _designationResponse = new DesignationResponse();
+            _designationResponse.StatusFl = false;
+            _designationResponse.Msg = "No Data Found!";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    conn.ChangeDatabase(objDesignation.moduleDatabase);
+                    //conn.ChangeDatabase("PROCS_BOARD_MEETING");
 
-        //            using (SqlCommand cmd = new SqlCommand("SP_PROCS_BMS_DESIGNATION", conn))
-        //            {
-        //                cmd.CommandType = CommandType.StoredProcedure;
-        //                cmd.CommandTimeout = 0;
-        //                cmd.Parameters.Clear();
-        //                cmd.Parameters.Add(new SqlParameter("@MODE", "GET_DESIGNATION_FOR_USER_MASTER"));
-        //                cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-        //                cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objDesignation.companyId));
-        //                SqlDataReader rdr = cmd.ExecuteReader();
-        //                if (rdr.HasRows)
-        //                {
-        //                    while (rdr.Read())
-        //                    {
-        //                        Designation obj = new Designation();
-        //                        obj.ID = Convert.ToInt32(rdr["ID"]);
-        //                        obj.designationName = Convert.ToString(rdr["DESIGNATION_NAME"]);
-        //                        _designationResponse.AddObject(obj);
-        //                    }
-        //                    _designationResponse.StatusFl = true;
-        //                    _designationResponse.Msg = "Data has been fetched successfully !";
-        //                }
-        //                rdr.Close();
-        //            }
-        //            conn.Close();
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _designationResponse = new DesignationResponse();
-        //        _designationResponse.StatusFl = false;
-        //        _designationResponse.Msg = "Something went wrong. Please try again or Contact Support!";
-        //       // new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
-        //    }
-        //    return _designationResponse;
-        //}
+                    using (SqlCommand cmd = new SqlCommand("SP_PROCS_BMS_DESIGNATION", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = 0;
+                        cmd.Parameters.Clear();
+                        cmd.Parameters.Add(new SqlParameter("@MODE", "GET_DESIGNATION_FOR_USER_MASTER"));
+                        cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objDesignation.CompanyId));
+                        SqlDataReader rdr = cmd.ExecuteReader();
+                        if (rdr.HasRows)
+                        {
+                            while (rdr.Read())
+                            {
+                                Designation obj = new Designation();
+                                obj.ID = Convert.ToInt32(rdr["ID"]);
+                                obj.designationName = Convert.ToString(rdr["DESIGNATION_NAME"]);
+                                _designationResponse.AddObject(obj);
+                            }
+                            _designationResponse.StatusFl = true;
+                            _designationResponse.Msg = "Data has been fetched successfully !";
+                        }
+                        rdr.Close();
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                _designationResponse = new DesignationResponse();
+                _designationResponse.StatusFl = false;
+                _designationResponse.Msg = "Something went wrong. Please try again or Contact Support!";
+                // new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
+            }
+            return _designationResponse;
+        }
 
-        //public DesignationResponse GetCategory(Category objCategory)
-        //{
-        //    _designationResponse = new DesignationResponse();
-        //    _designationResponse.StatusFl = false;
-        //    _designationResponse.Msg = "No Data Found!";
-        //    try
-        //    {
-        //        using (SqlConnection conn = new SqlConnection(connectionString))
-        //        {
-        //            conn.Open();
-        //            conn.ChangeDatabase(objCategory.moduleDatabase);
-        //            using (SqlCommand cmd = new SqlCommand("SP_PROCS_BMS_DESIGNATION", conn))
-        //            {
-        //                cmd.CommandType = CommandType.StoredProcedure;
-        //                cmd.CommandTimeout = 0;
-        //                cmd.Parameters.Clear();
-        //                cmd.Parameters.Add(new SqlParameter("@MODE", "GET_CATEGORY_FOR_USER_MASTER"));
-        //                cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-        //                cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objCategory.companyId));
-        //                SqlDataReader rdr = cmd.ExecuteReader();
-        //                if (rdr.HasRows)
-        //                {
-        //                    Category obj = null;
-        //                    List<Category> lstCategory = new List<Category>();
-        //                    while (rdr.Read())
-        //                    {
-        //                        obj = new Category();
-        //                        obj.ID = Convert.ToInt32(rdr["CATEGORY_ID"]);
-        //                        obj.categoryName = Convert.ToString(rdr["CATEGORY_NAME"]);
-        //                        lstCategory.Add(obj);
-        //                    }
-        //                    _designationResponse.CategoryList = new List<Category>();
-        //                    _designationResponse.CategoryList = lstCategory;
-        //                    _designationResponse.StatusFl = true;
-        //                    _designationResponse.Msg = "Data has been fetched successfully !";
-        //                }
-        //                rdr.Close();
-        //            }
-        //            conn.Close();
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _designationResponse = new DesignationResponse();
-        //        _designationResponse.StatusFl = false;
-        //        _designationResponse.Msg = "Something went wrong. Please try again or Contact Support!";
-        //        new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
-        //    }
-        //    return _designationResponse;
-        //}
+        public DesignationResponse GetCategory(Category objCategory)
+        {
+            _designationResponse = new DesignationResponse();
+            _designationResponse.StatusFl = false;
+            _designationResponse.Msg = "No Data Found!";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    conn.ChangeDatabase(objCategory.moduleDatabase);
+                    using (SqlCommand cmd = new SqlCommand("SP_PROCS_BMS_DESIGNATION", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = 0;
+                        cmd.Parameters.Clear();
+                        cmd.Parameters.Add(new SqlParameter("@MODE", "GET_CATEGORY_FOR_USER_MASTER"));
+                        cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objCategory.CompanyId));
+                        SqlDataReader rdr = cmd.ExecuteReader();
+                        if (rdr.HasRows)
+                        {
+                            Category obj = null;
+                            List<Category> lstCategory = new List<Category>();
+                            while (rdr.Read())
+                            {
+                                obj = new Category();
+                                obj.ID = Convert.ToInt32(rdr["CATEGORY_ID"]);
+                                obj.categoryName = Convert.ToString(rdr["CATEGORY_NAME"]);
+                                lstCategory.Add(obj);
+                            }
+                            _designationResponse.CategoryList = new List<Category>();
+                            _designationResponse.CategoryList = lstCategory;
+                            _designationResponse.StatusFl = true;
+                            _designationResponse.Msg = "Data has been fetched successfully !";
+                        }
+                        rdr.Close();
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                _designationResponse = new DesignationResponse();
+                _designationResponse.StatusFl = false;
+                _designationResponse.Msg = "Something went wrong. Please try again or Contact Support!";
+                new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
+            }
+            return _designationResponse;
+        }
 
         #region "Date Conversion"
 

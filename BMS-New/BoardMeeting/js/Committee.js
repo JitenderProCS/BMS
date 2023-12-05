@@ -49,7 +49,7 @@ $(document).ready(function () {
     //window.history.forward();
     //function preventBack() { window.history.forward(1); }
 
-    //fnListCommittee();
+    fnListCommittee();
     //fnBindDesignation();
   
    
@@ -62,7 +62,6 @@ $(document).ready(function () {
 });
 
 function GetCommitteeRole() {
-    debugger
     $("#Loader").show();
     
     var webUrl = uri + "/api/Committee/GetCommitteeRole"; //"api/CommitteeHandler.ashx?caller=GetUserListForCommittee";
@@ -114,7 +113,6 @@ function GetCommitteeRole() {
     });
 }
 function getuserforSuperAdmin() {
-    debugger
     var webUrl = uri + "/api/Committee/GetUsersForCommitteeSuperAdmin";
     $("input[id*='txtAddSuperAdmin']").autocomplete({
         source: function (request, response) {
@@ -140,7 +138,8 @@ function getuserforSuperAdmin() {
                         response($.map(data.UserList, function (item) {
                             return {
                                 label: item.userName + " (" + item.emailId + ")",
-                                val: item.ID
+                               // val: item.ID
+                                val: item.userLogin
                             }
                         }))
                     }
@@ -154,6 +153,7 @@ function getuserforSuperAdmin() {
         select: function (e, i) {
             debugger
             $("input[id*='emailAddSuperAdmin']").val(i.item.val);
+           // $("input[id*='emailAddSuperAdmin']").val(i.item.userLogin);
 
         },
         minLength: 3
@@ -193,7 +193,8 @@ function GetUserListForCommittee() {
                             /*$("#ddlCoordinator").append($("<option></option>").val(msg.CommitteeList[0].committeeAdmins[i].ID).html(msg.CommitteeList[0].committeeAdmins[i].userName).html(msg.CommitteeList[0].committeeAdmins[i].emailId));*/
                             $("#ddlCoordinator").append(
                                 $("<option></option>")
-                                    .val(msg.CommitteeList[0].committeeAdmins[i].ID)
+                                    //.val(msg.CommitteeList[0].committeeAdmins[i].ID)
+                                    .val(msg.CommitteeList[0].committeeAdmins[i].userLogin)
                                     .text(msg.CommitteeList[0].committeeAdmins[i].userName + " - " + msg.CommitteeList[0].committeeAdmins[i].emailId)
                             );
                         }
@@ -218,7 +219,6 @@ function GetUserListForCommittee() {
 }
 
 function GetCommitteeCoordinatorList() {
-    debugger
     $("#Loader").show();
     var webUrl = uri + "/api/Committee/GetCommitteeCoordinatorList"; //"api/CommitteeHandler.ashx?caller=GetUserListForCommittee";
     $.ajax({
@@ -244,7 +244,8 @@ function GetCommitteeCoordinatorList() {
                             /*$("#ddlCoordinator").append($("<option></option>").val(msg.CommitteeList[0].committeeAdmins[i].ID).html(msg.CommitteeList[0].committeeAdmins[i].userName).html(msg.CommitteeList[0].committeeAdmins[i].emailId));*/
                             $("#ddlSelectCoordinator").append(
                                 $("<option></option>")
-                                    .val(msg.CommitteeList[0].committeeAdmins[i].ID)
+                                    //.val(msg.CommitteeList[0].committeeAdmins[i].ID)
+                                    .val(msg.CommitteeList[0].committeeAdmins[i].userLogin)
                                     .text(msg.CommitteeList[0].committeeAdmins[i].userName + " - " + msg.CommitteeList[0].committeeAdmins[i].emailId)
                             );
                         }
@@ -331,13 +332,13 @@ function fnAddMembers() {
 
         // Get the corresponding admin object from userlistforcommittee based on selectedCoordinator
         var selectedAdmin = userlistforcommittee.find(function (admin) {
-            return admin.ID == selectedCoordinator;
+            return admin.userLogin == selectedCoordinator;
         });
 
 
         // Display the selected admin in the table
         var tableRow = $("<tr></tr>")
-            .append($("<td id='UserId' style='display: none;'></td>").text(selectedAdmin.ID))
+            .append($("<td id='UserId' style='display: none;'></td>").text(selectedAdmin.userLogin))
             .append($("<td></td>").text(selectedAdmin.userName))
             .append($("<td></td>").text(selectedAdmin.emailId))
             .append($("<td id='Sequence'></td>").text(selectedSequence))
@@ -522,9 +523,9 @@ function fnValidateSelectCoordinator() {
 function CoordinatorDetail() {
     debugger
     this.ID = 0;
-    this.UserID = $("#ddlSelectCoordinator").val() == null ? 0 : ($("#ddlSelectCoordinator").val().trim() == "" ? 0 : $("#ddlSelectCoordinator").val());
+    this.userLogin = $("#ddlSelectCoordinator").val() == null ? 0 : ($("#ddlSelectCoordinator").val().trim() == "" ? 0 : $("#ddlSelectCoordinator").val());
     this.userName = $("#ddlSelectCoordinator option:selected").text() == null ? 0 : ($("#ddlSelectCoordinator option:selected").text().trim() == "" ? 0 : $("#ddlSelectCoordinator option:selected").text());
-    this.Id = $("#ddlSelectRole").val() == null ? 0 : ($("#ddlSelectRole").val().trim() == "" ? 0 : $("#ddlSelectRole").val());
+    this.CommitteeRoleId = $("#ddlSelectRole").val() == null ? 0 : ($("#ddlSelectRole").val().trim() == "" ? 0 : $("#ddlSelectRole").val());
     this.committeerole = $("#ddlSelectRole option:selected").text() == null ? 0 : ($("#ddlSelectRole option:selected").text().trim() == "" ? 0 : $("#ddlSelectRole option:selected").text());
     
 }
@@ -535,9 +536,9 @@ function fnSelectCoordinator() {
         var str = "";
         str += '<tr>';
         str += '<td style="display:none;">' + obj.ID + '</td>';
-        str += '<td style="display:none;">' + obj.UserID + '</td>';
+        str += '<td style="display:none;">' + obj.userLogin + '</td>';
         str += '<td>' + obj.userName + '</td>';
-        str += '<td style="display:none;">' + obj.Id + '</td>';
+        str += '<td style="display:none;">' + obj.CommitteeRoleId + '</td>';
         str += '<td>' + obj.committeerole + '</td>';
         str += '<td><img onclick="javascript:fnDeleteCoordinators(this);" src="../assets/image/Icon/delete.png" style="width:24px;height:24px;" /></td>';
         str += '</tr>';
@@ -595,59 +596,59 @@ function fnSaveCommittee() {
     $("#Loader").show();
     $("#EditCommittee").modal('hide');
 
-    //var UseridList = [];
-    //$("table[id*='sample_Users'] > tbody > tr").each(function () {
-    //    var UserID = $(this).find("td[id*='UserId']").text();
-    //    //var Sequence = $(this).find("td[id*='Sequence']").text();
-    //    var txtuserid = $("input[id*='emailAddSuperAdmin']").val();
-    //    var name = $("input[id*='txtAddSuperAdmin']").val();
-
-    //    if (UserID == txtuserid) {
-    //        alert("This is already Committee Chairman, you cannot select this user '" + name + "' in Select Committee Member(s)");
-    //    } else {
-    //         UseridList.push(UserID);
-    //        //UseridList.push($(UserID).text());
-    //    }
-    //});
-
-    var UseridList = [];
+    var CommitteeMemberlist = [];
     for (var i = 0; i < $("#tbdCoordinatorList").children().length; i++) {
         var O = new Object();
         var txtuserid = $("input[id*='emailAddSuperAdmin']").val();
 
-        O.UserID = $($($("#tbdCoordinatorList").children()[i]).children()[0]).text();
+        O.userLogin = $($($("#tbdCoordinatorList").children()[i]).children()[0]).text();
         O.Sequence = $($($("#tbdCoordinatorList").children()[i]).children()[3]).text();;
         if (O.UserID == txtuserid) {
-            alert("This is already Committee Chairman, you cannot select this user '" + name + "' in Select Committee Member(s)");
+            alert("This is already Committee Chairman, you cannot select this user '" + userName + "' in Select Committee Member(s)");
+            // checkmsg = "A";
         } else {
-            UseridList.push(O);
+            CommitteeMemberlist.push(O);
             //UseridList.push($(UserID).text());
         }
-        //AE.Name = $($($("#tbdCoordinatorList").children()[i]).children()[2]).text();;
-        //AE.emailId = $($($("#tbdCoordinatorList").children()[i]).children()[3]).text();;
-       
-       // UseridList.push(AE);
     }
+
+    var membersColl = [];
+    for (var i = 0; i < CommitteeMemberlist.length; i++) {
+        var selectedValue = CommitteeMemberlist[i];
+
+        //membersColl.push(new CommitteeMember(selectedValue, "Members"));
+        //adminColl[adminColl.length] = new CommitteeMember(UseridList[i], "Members");
+       // membersColl[membersColl.length] = new CommitteeMember(CommitteeMemberlist[i], "Members");
+        //membersColl.push(new CommitteeMember(CommitteeMember[i].UserID, CommitteeMember[i].Sequence, "Members"));
+        var committeeMember = new CommitteeMember(selectedValue.userLogin, selectedValue.Sequence, "Member","0");
+
+        membersColl.push(committeeMember);
+    }
+
+    membersColl.push(new CommitteeMember($("input[id*='emailAddSuperAdmin']").val(),"0", "Chairman","0"));
+
+
 
     var CoordinatoridList = [];
     for (var i = 0; i < $("#tbdSelectCoordinatorList").children().length; i++) {
         var AE = new Object();
 
-       // AE.ID = $($($("#tbdSelectCoordinatorList").children()[i]).children()[0]).text();
-        AE.UserID = $($($("#tbdSelectCoordinatorList").children()[i]).children()[1]).text();;
+        // AE.ID = $($($("#tbdSelectCoordinatorList").children()[i]).children()[0]).text();
+        AE.userLogin = $($($("#tbdSelectCoordinatorList").children()[i]).children()[1]).text();;
         //AE.userName = $($($("#tbdSelectCoordinatorList").children()[i]).children()[2]).text();;
-        AE.Id = $($($("#tbdSelectCoordinatorList").children()[i]).children()[3]).text();;
-       // AE.committeerole = $($($("#tbdSelectCoordinatorList").children()[i]).children()[4]).text();;
+        AE.CommitteeRoleId = $($($("#tbdSelectCoordinatorList").children()[i]).children()[3]).text();;
+        // AE.committeerole = $($($("#tbdSelectCoordinatorList").children()[i]).children()[4]).text();;
         CoordinatoridList.push(AE);
     }
 
+    for (var i = 0; i < CoordinatoridList.length; i++) {
+        var selectedValue1 = CoordinatoridList[i];
+        var committeeMember = new CommitteeMember(selectedValue1.userLogin, "0", "", selectedValue1.CommitteeRoleId);
 
-    var adminColl = [];
-    for (var i = 0; i < UseridList.length; i++) {
-        adminColl[adminColl.length] = new User(UseridList[i], "Members");
+        membersColl.push(committeeMember);
+        //adminColl[adminColl.length] = new CommitteeMember(UseridList[i], "Members");
+        //membersColl.push(new CommitteeMember(CoordinatoridList[0].UserLogin, CoordinatoridList[0].Id));
     }
-
-    adminColl.push(new User($("input[id*='emailAddSuperAdmin']").val(), "Chairman"));
 
     var commiteeColl = [
         new Committee(
@@ -657,8 +658,8 @@ function fnSaveCommittee() {
             $("input[id*='txtMembers']").val(),
             $("input[id*='txtIndependentDir']").val(),
             $("input[id*='txtWomenDir']").val(),
-            adminColl,
-            CoordinatoridList
+            membersColl
+            //CoordinatoridList
         )
     ];
 
@@ -694,108 +695,18 @@ function fnSaveCommittee() {
 }
 
 
-//function fnSaveCommittee() {
-//    debugger
-//    var st = fnValidate();
-//    if (!st) {
-//        return false;
-//    }
-//    $("#Loader").show();
-
-//    $("#EditCommittee").modal('hide');
-
-//    //var CommitteeAdmin = [];
-//    //for (var i = 0; i < $("#tbdCoordinatorList").children().length; i++) {
-//    //    var txtuserid = $("input[id*='emailAddSuperAdmin']").val();
-//    //    var name = $("input[id*='txtAddSuperAdmin']").val();
-//    //    //var AE = new Object();
-
-//    //    /*AE.ID = $($($("#tbdCoordinatorList").children()[i]).children()[0]).text();*/
-//    //    //AE.userName = $($($("#tbdCoordinatorList").children()[i]).children()[1]).text();;
-//    //    //AE.emailId = $($($("#tbdCoordinatorList").children()[i]).children()[2]).text();;
-//    //    ID = $($($("#tbdCoordinatorList").children()[i]).children()[0]).text();
-//    //    if (ID == txtuserid) {
-//    //        alert("This is already Committee Admin,you can not select this user '" + name + "' in Select Meeting Coordinator(s)");
-//    //        checkmsg = "A";
-//    //        // return false;
-//    //    }
-
-//    //    else {
-//    //        CommitteeAdmin.push(ID);
-//    //    }
-//    //}
-//    var UseridList = [];
-//    $("table[id*='sample_Users'] > tbody > tr").each(function () {
-//        var UserID = $(this).find("td[id*='UserId']").text();
-//        var txtuserid = $("input[id*='emailAddSuperAdmin']").val();
-//        var name = $("input[id*='txtAddSuperAdmin']").val();
-
-//        if (UserID == txtuserid) {
-//            alert("This is already Committee Admin, you cannot select this user '" + name + "' in Select Meeting Coordinator(s)");
-//            checkmsg = "A";
-//        } else {
-//            // Push the UserID into the UseridList array
-//            UseridList.push(UserID);
-//        }
-//    });
-
-
-//    var adminColl = [];
-//    for (var i = 0; i < UseridList.length; i++) {
-//        adminColl[adminColl.length] = new User(UseridList[i], "Both");
-//    }
-
-//    adminColl[adminColl.length] = new User($("input[id*='emailAddSuperAdmin']").val(), "Committee Admin");
-
-//    var commiteeColl = [];
-//    commiteeColl[commiteeColl.length] = new Committee($("input[id*='txteditID']").val(), $("input[id*='txtCommitteeName']").val(), $("input[id*='txtCommitteeAbbr']").val(), adminColl);
-
-//    var webUrl = uri + "/api/Committee/SaveCommittee"; 
-//    setTimeout(function () {
-//        $.ajax({
-//            type: 'POST',
-//            url: webUrl,
-//            data: JSON.stringify(commiteeColl),
-//            contentType: "application/json; charset=utf-8",
-//            datatype: "json",
-//            async: false,
-//            success: function (msg) {
-//                $("#Loader").hide();
-//                if (!msg.StatusFl) {
-//                    if (msg.Msg == "SessionExpired") {
-//                        alert("Your session is expired. Please login again to continue");
-//                        window.location.href = "../Login.aspx";
-//                        return false;
-//                    }
-//                    else {
-//                        alert(msg.Msg);
-//                        return false;
-//                    }
-//                }
-//                else {
-//                    $("#committee_add").modal('hide');
-//                    alert(msg.Msg);
-//                    fnListCommittee();
-//                }
-//            },
-//            error: function (error) {
-//                $("#Loader").hide();
-//                $('#btnSave').removeAttr("data-dismiss");
-//                alert(error.status + ' ' + error.statusText);
-//            }
-//        })
-//    }, 10);
-//}
-function User(id, designationName) {
-    this.ID = id;
-    //this.Sequence = new CommitteeMemberSequence;
-    this.committeedesignation = new Designation(designationName)
+function CommitteeMember(UserLogin, Sequence, CommitteeDesignationName, CommitteeRoleId )
+{
+    //this.ID = ID;
+    this.UserLogin = UserLogin;
+    this.Sequence = Sequence;
+    this.CommitteeDesignationName = CommitteeDesignationName;
+    this.CommitteeRoleId = CommitteeRoleId;
+ 
 
 }
-function Designation(designationName) {
-    this.designationName = designationName;
-}
-function Committee(ID, name, abrr, NoOfMembers, NoOfIndependentDirector, NoOfWomenDirector, usercoll, CoordinatoridList) {
+
+function Committee(ID, name, abrr, NoOfMembers, NoOfIndependentDirector, NoOfWomenDirector, usercoll) {
     if (ID == "") {
         this.ID = 0;
     }
@@ -808,9 +719,7 @@ function Committee(ID, name, abrr, NoOfMembers, NoOfIndependentDirector, NoOfWom
     this.NoOfMembers = NoOfMembers;
     this.NoOfIndependentDirector = NoOfIndependentDirector;
     this.NoOfWomenDirector = NoOfWomenDirector;
-    //this.committeeSuperAdmins = SuperAdmin;
-    this.committeeAdmins = usercoll;
-    this.committeerole = CoordinatoridList;
+    this.committeeMembers = usercoll;
 }
 function fnValidate() {
     var obj = "";
@@ -911,6 +820,8 @@ function fnListCommittee() {
                     result += '<td>' + msg.CommitteeList[i].committeeName + '</td>';
                     result += '<td>' + msg.CommitteeList[i].committeeABRR + '</td>';
                     result += '<td style="text-align:center;">' + msg.CommitteeList[i].NoOfcommitteeMembers + '</td>';
+                    result += '<td style="text-align:center;">' + msg.CommitteeList[i].CntIndependentDirector + '</td>';
+                    result += '<td style="text-align:center;">' + msg.CommitteeList[i].CntWomenDirector + '</td>';
                     result += '<td id="tdEdit_' + msg.CommitteeList[i].ID + '">';
                     if (msg.CommitteeList[i].isDelete == 0) {
                         result += '<a  id="a_' + msg.CommitteeList[i].ID + '" class="btn btn-outline dark" onclick=\"javascript:EditCommittee(' + msg.CommitteeList[i].ID + ');\">Edit</a>';
@@ -944,114 +855,118 @@ function fnListCommittee() {
     });
 }
 
-//function EditCommittee(ide) {
-//    $("#Loader").show();
-//    $('#lblCommitteeName').removeClass('requied');
-//    $('#lblCommitteeABRR').removeClass('requied');
-//    $('#lblCommitteeSuperAdmin').removeClass('requied');
-//    $("span[id*='spnCommittee']").html("Edit Committee");
-//    $("#txteditID").val(ide);
-//    $("#EditCommittee").hide();
+function EditCommittee(ide) {
+    debugger
+    $("#Loader").show();
+    $('#lblCommitteeName').removeClass('requied');
+    $('#lblCommitteeABRR').removeClass('requied');
+    $('#lblCommitteeSuperAdmin').removeClass('requied');
+    $("span[id*='spnCommittee']").html("Edit Committee");
+    $("#txteditID").val(ide);
+    $("#EditCommittee").hide();
 
-//    var webUrl = uri + "/api/Committee/EditCommittee"; //"api/CommitteeHandler.ashx?caller=EditCommittee";
-//    setTimeout(function () {
-//        $.ajax({
-//            type: "POST",
-//            url: webUrl,
-//            data: JSON.stringify({
-//                ID: ide
-//            }),
-//            contentType: "application/json; charset=utf-8",
-//            datatype: "json",
-//            async: true,
-//            success: function (msg) {
-//                $("#Loader").hide();
-//                if (msg.StatusFl) {
-//                    var result = "";
-//                    $("input[id*='txtCommitteeName']").val(msg.CommitteeList[0].committeeName);
-//                    $("input[id*='txtCommitteeAbbr']").val(msg.CommitteeList[0].committeeABRR);
-//                    if (msg.CommitteeList[0].superAdmin != null) {
-//                        if (msg.CommitteeList[0].superAdmin != undefined) {
-//                            $("input[id*='emailAddSuperAdmin']").val(msg.CommitteeList[0].superAdmin.ID);
-//                            $("input[id*='txtAddSuperAdmin']").val(msg.CommitteeList[0].superAdmin.userName);
-//                        }
-//                    }
+    var webUrl = uri + "/api/Committee/EditCommittee"; //"api/CommitteeHandler.ashx?caller=EditCommittee";
+    setTimeout(function () {
+        $.ajax({
+            type: "POST",
+            url: webUrl,
+            data: JSON.stringify({
+                ID: ide
+            }),
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            async: true,
+            success: function (msg) {
+                $("#Loader").hide();
+                if (msg.StatusFl) {
+                    var result = "";
+                    $("input[id*='txtCommitteeName']").val(msg.CommitteeList[0].committeeName);
+                    $("input[id*='txtCommitteeAbbr']").val(msg.CommitteeList[0].committeeABRR);
+                    $("input[id*='txtMembers']").val(msg.CommitteeList[0].NoOfMembers);
+                    $("input[id*='txtIndependentDir']").val(msg.CommitteeList[0].NoOfIndependentDirector);
+                    $("input[id*='txtWomenDir']").val(msg.CommitteeList[0].NoOfWomenDirector);
+                    if (msg.CommitteeList[0].superAdmin != null) {
+                        if (msg.CommitteeList[0].superAdmin != undefined) {
+                            $("input[id*='emailAddSuperAdmin']").val(msg.CommitteeList[0].superAdmin.ID);
+                            $("input[id*='txtAddSuperAdmin']").val(msg.CommitteeList[0].superAdmin.userName);
+                        }
+                    }
 
-//                    var result = "";
-//                    result += '<table id="sample_Users" class="TFtable">';
-//                    result += '<thead>';
-//                    result += '<th>';
-//                    result += '<input id="chkAll" type="checkbox" onclick="fnCheckAll(this,\'sample_Users\');" />';
-//                    result += '</th>';
-//                    result += '<th>Name</th>';
-//                    result += '<th>Email</th>';
-//                    result += '<th>Role</th>';
-//                    result += '</tr>';
-//                    result += '</thead>';
-//                    result += '<tbody id="tbodySeq">';
+                    var result = "";
+                    result += '<table id="sample_Users" class="TFtable">';
+                    result += '<thead>';
+                    result += '<th>';
+                    result += '<input id="chkAll" type="checkbox" onclick="fnCheckAll(this,\'sample_Users\');" />';
+                    result += '</th>';
+                    result += '<th>Name</th>';
+                    result += '<th>Email</th>';
+                    result += '<th>Role</th>';
+                    result += '</tr>';
+                    result += '</thead>';
+                    result += '<tbody id="tbodySeq">';
 
-//                    for (var i = 0; i < msg.CommitteeList[0].committeeAdmins.length; i++) {
-//                        userlistforcommittee.push(msg.CommitteeList[0].committeeAdmins[i]);
-//                        result += '<tr id="tr_' + msg.CommitteeList[0].committeeAdmins[i].ID + '">';
-//                        result += '<td>';
-//                        if (msg.CommitteeList[0].committeeAdmins[i].CHECKED == 1) {
-//                            result += '<input type="checkbox" class="checkboxes" checked="true" value="' + msg.CommitteeList[0].committeeAdmins[i].ID + '" onclick="fnUncheckAll(this,\'sample_Users\',\'chkAll\');" />';
-//                        }
-//                        else {
-//                            result += '<input type="checkbox" class="checkboxes" value="' + msg.CommitteeList[0].committeeAdmins[i].ID + '" onclick="fnUncheckAll(this,\'sample_Users\',\'chkAll\');" />';
-//                        }
-//                        result += '</td>';
-//                        result += '<td>' + msg.CommitteeList[0].committeeAdmins[i].userName + '</td>';
-//                        result += '<td>' + msg.CommitteeList[0].committeeAdmins[i].emailId + '</td>';
-//                        result += '<td>' + msg.CommitteeList[0].committeeAdmins[i].role.role + '</td>';
-//                        result += '</tr>';
-//                    }
-//                    result += '</tbody>';
-//                    result += '</table>';
+                    for (var i = 0; i < msg.CommitteeList[0].committeeAdmins.length; i++) {
+                        userlistforcommittee.push(msg.CommitteeList[0].committeeAdmins[i]);
+                        result += '<tr id="tr_' + msg.CommitteeList[0].committeeAdmins[i].ID + '">';
+                        result += '<td>';
+                        if (msg.CommitteeList[0].committeeAdmins[i].CHECKED == 1) {
+                            result += '<input type="checkbox" class="checkboxes" checked="true" value="' + msg.CommitteeList[0].committeeAdmins[i].ID + '" onclick="fnUncheckAll(this,\'sample_Users\',\'chkAll\');" />';
+                        }
+                        else {
+                            result += '<input type="checkbox" class="checkboxes" value="' + msg.CommitteeList[0].committeeAdmins[i].ID + '" onclick="fnUncheckAll(this,\'sample_Users\',\'chkAll\');" />';
+                        }
+                        result += '</td>';
+                        result += '<td>' + msg.CommitteeList[0].committeeAdmins[i].userName + '</td>';
+                        result += '<td>' + msg.CommitteeList[0].committeeAdmins[i].emailId + '</td>';
+                        result += '<td>' + msg.CommitteeList[0].committeeAdmins[i].role.role + '</td>';
+                        result += '</tr>';
+                    }
+                    result += '</tbody>';
+                    result += '</table>';
 
-//                    $("#divUsers").html(result);
+                    $("#divUsers").html(result);
 
-//                    //for (var i = 0; i < msg.CommitteeList[0].committeeAdmins.length; i++) {
-//                    //    userlistforcommittee.push(msg.CommitteeList[0].committeeAdmins[i]);
-//                    //    result += '<tr id="tr_' + msg.CommitteeList[0].committeeAdmins[i].ID + '">';
-//                    //    var CH = msg.CommitteeList[0].committeeAdmins[i].CHECKED;
-//                    //    if (CH == 1) {
-//                    //        result += '<td><label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input type="checkbox" checked class="checkboxes" value="' + msg.CommitteeList[0].committeeAdmins[i].ID + '" /><span></span></label></td>';
-//                    //    }
-//                    //    else {
-//                    //        result += '<td><label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input type="checkbox"  class="checkboxes" value="' + msg.CommitteeList[0].committeeAdmins[i].ID + '" /><span></span></label></td>';
-//                    //    }
-//                    //    result += '<td>' + msg.CommitteeList[0].committeeAdmins[i].userName + '</td>';
-//                    //    result += '<td>' + msg.CommitteeList[0].committeeAdmins[i].emailId + '</td>';
-//                    //    result += '<td>' + msg.CommitteeList[0].committeeAdmins[i].role.role + '</td>';
-//                    //    result += '</tr>';
-//                    //}
+                    //for (var i = 0; i < msg.CommitteeList[0].committeeAdmins.length; i++) {
+                    //    userlistforcommittee.push(msg.CommitteeList[0].committeeAdmins[i]);
+                    //    result += '<tr id="tr_' + msg.CommitteeList[0].committeeAdmins[i].ID + '">';
+                    //    var CH = msg.CommitteeList[0].committeeAdmins[i].CHECKED;
+                    //    if (CH == 1) {
+                    //        result += '<td><label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input type="checkbox" checked class="checkboxes" value="' + msg.CommitteeList[0].committeeAdmins[i].ID + '" /><span></span></label></td>';
+                    //    }
+                    //    else {
+                    //        result += '<td><label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input type="checkbox"  class="checkboxes" value="' + msg.CommitteeList[0].committeeAdmins[i].ID + '" /><span></span></label></td>';
+                    //    }
+                    //    result += '<td>' + msg.CommitteeList[0].committeeAdmins[i].userName + '</td>';
+                    //    result += '<td>' + msg.CommitteeList[0].committeeAdmins[i].emailId + '</td>';
+                    //    result += '<td>' + msg.CommitteeList[0].committeeAdmins[i].role.role + '</td>';
+                    //    result += '</tr>';
+                    //}
 
-//                    //var table = $('#sample_1_2').DataTable();
-//                    //table.destroy();
-//                    //$("#user_detail").html(result);
-//                    //initializeDataTable();
-//                    $("#committee_add").modal('show');
-//                }
-//                else {
-//                    if (msg.Msg == "SessionExpired") {
-//                        alert("Your session is expired. Please login again to continue");
-//                        window.location.href = "../Login.aspx";
-//                        return false;
-//                    }
-//                    else {
-//                        alert(msg.Msg);
-//                        return false;
-//                    }
-//                }
-//            },
-//            error: function (response) {
-//                $("#Loader").hide();
-//                alert(response.status + ' ' + response.statusText);
-//            }
-//        });
-//    }, 10);
-//}
+                    //var table = $('#sample_1_2').DataTable();
+                    //table.destroy();
+                    //$("#user_detail").html(result);
+                    //initializeDataTable();
+                    $("#committee_add").modal('show');
+                }
+                else {
+                    if (msg.Msg == "SessionExpired") {
+                        alert("Your session is expired. Please login again to continue");
+                        window.location.href = "../Login.aspx";
+                        return false;
+                    }
+                    else {
+                        alert(msg.Msg);
+                        return false;
+                    }
+                }
+            },
+            error: function (response) {
+                $("#Loader").hide();
+                alert(response.status + ' ' + response.statusText);
+            }
+        });
+    }, 10);
+}
 
 
 //function Conferm_save() {

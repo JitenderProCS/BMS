@@ -19,8 +19,8 @@ $(document).ready(function () {
 
     getAllUsersRole();
     fnGetUserList();
-    //fnBindDepartment();
-    //fnBindDesignation();
+    fnBindDepartment();
+    fnBindDesignation();
     //fnBindCategory();
 
     $("input[id*='txtEmail']").prop("disabled", false).val("");
@@ -32,8 +32,9 @@ $(document).ready(function () {
 });
 
 function fnBindDepartment() {
+    debugger
     $("#Loader").show();
-    var webUrl = uri + "/api/BMSDepartment/GetDepartmentsForUser";
+    var webUrl = uri + "/api/Department/GetDepartmentsForUser";
     $.ajax({
         type: "POST",
         url: webUrl,
@@ -73,6 +74,7 @@ function fnBindDepartment() {
 }
 
 function fnBindDesignation() {
+    debugger
     $("#Loader").show();
     var webUrl = uri + "/api/User/GetDesignation";
     $.ajax({
@@ -214,15 +216,15 @@ function getdiv() {
     }
 }
 
-function get2nddiv() {
-    var ddl17A_id = $("select[id*='ContentPlaceHolder1_ddl17A']").val().trim();
-    if (ddl17A_id == "YES") {
-        $("#dateandfileupload").show();
-    }
-    else {
-        $("#dateandfileupload").hide();
-    }
-}
+//function get2nddiv() {
+//    var ddl17A_id = $("select[id*='ContentPlaceHolder1_ddl17A']").val().trim();
+//    if (ddl17A_id == "YES") {
+//        $("#dateandfileupload").show();
+//    }
+//    else {
+//        $("#dateandfileupload").hide();
+//    }
+//}
 
 function initializeDataTable() {
     var table = $('#tbl-User-setup').DataTable({
@@ -341,31 +343,7 @@ function fnAddUpdateUser() {
         AE = $($($($("#tbdCompany").children()[i]).children()[0]).children()[0]).val();
         multicompanies.push(AE);
     }
-    //function AccessDetail() {
-    //    debugger
-    //    this.Company = $("#txtOtherCompanies").val() == null ? 0 : ($("#txtOtherCompanies").val().trim() == "" ? 0 : $("#txtOtherCompanies").val());
-    //        }
-
-    //$('#tblmultiCompanies tbody tr').each(function (index, row) {
-    //    var data = {
-    //        Companies: $(row).find('#txtOtherCompanies').val(),
-    //    };
-    //    multicompanies.push(data);
-
-    //});
-
-    //var multicompaniesList = multicompanies.map(function (item) {
-    //    return item.companyValue;
-    //}).join(',');
-
-    //function arrayToList(array) {
-    //    if (array.length <= 0)
-    //        return null;
-
-    //    return { multicompanies };
-    //}
-
-    //var keycompany = JSON.stringify(multicompanies);
+   
 
     var UserColl = [];
     UserColl[UserColl.length] = new User($("input[id*='txtUserId']").val() == 0 ? 0 : $("input[id*='txtUserId']").val(),
@@ -373,25 +351,17 @@ function fnAddUpdateUser() {
         $("input[id*='txtPhone']").val(), $("textarea[id*='txtAddress']").val(), $("input[id*='txtTenurestartdate']").val(),
         $("input[id*='txtTenureenddate']").val(), $("input[id*='txtDateofbirth']").val(), $("select[id*='ddlNationality']").val(),
         $("input[id*='txtUserid']").val(),
-        $("input[id*='txtPassword']").val(),
+        //$("input[id*='txtPassword']").val(),
         //$("#txtPassword").val(fff),
         $("select[id*='ddlRole']").val(),
+        $("select[id*='ddlCategory']").val(),
         $("select[id*='ddlStatus']").val(),
-        $("select[id*='ddlDepartment']").val(), $("select[id*='ddlDesignation']").val(), $("select[id*='ddlCategory']").val(),
-         $("textarea[id*='txtProfile']").val(),
+        $("textarea[id*='txtProfile']").val(),
         $("input[id*='txtPAN']").val(),
         $("textarea[id*='txtPANRemark']").val(),
         $("input[id*='txtDIN']").val(),
         $("textarea[id*='txtDINRemark']").val(),
-        $("select[id*='ddlcat1']").val(),
-        $("select[id*='ddlcat2']").val(),
-        $("select[id*='ddlcat3']").val(),
-        $("select[id*='ddl17A']").val(),
         $("input[id*='txtdate']").val(),
-        $("select[id*='no1']").val(),
-        $("select[id*='no2']").val(),
-        $("select[id*='no3']").val(),
-        $("select[id*='no4']").val(),
         $("textarea[id*='txtOccupationArea']").val(),
         $("textarea[id*='txtEducationalqualification']").val(),
         $("textarea[id*='txtExperience']").val(),
@@ -399,16 +369,25 @@ function fnAddUpdateUser() {
         $("input[id*='txtAadharNo']").val(),
         $("input[id*='txtShareholding']").val(),
         $("input[id*='txtshareholdingpercentage']").val(),
-        //$("select[id*='ddlCurrencySymbol']").val(),
-        //$("input[id*='txtSittingFee']").val(),
-        //$("select[id*='ddlPaymentMode']").val(),
-        //$("input[id*='txtRemuneration']").val(),
         $("input[id*='txtAppointedSection']").val(),
-        //$("input[id*='txtOtherCompanies']").val(),
         $("input[id*='txtCommitteesAlreadyDirector']").val(),
+        $("select[id*='no1']").val(),
+        $("select[id*='no2']").val(),
+        $("select[id*='no3']").val(),
+        $("select[id*='no4']").val(),
         multicompanies,
-        //arrayToList(multicompanies),
         $("input[id*='txtMembershipnumber']").val()
+        
+        //$("select[id*='ddlDepartment']").val(), $("select[id*='ddlDesignation']").val(), $("select[id*='ddlCategory']").val(),
+        
+       
+      
+       
+      
+       
+        
+      
+       
     );
 
     userData.append("Object", JSON.stringify(UserColl));
@@ -508,14 +487,14 @@ function fnEditUser(index, UserLogin) {
     $('#txtMiddleName').val(objUser[index].userMiddleName);
     $('#txtLastName').val(objUser[index].userLastName);
     $('#txtEmail').prop('disabled', true).val(objUser[index].emailId);
-    $("select[id*='ddlRole'] option[value='" + objUser[index].role + "']").prop("selected", true);
+   // $("select[id*='ddlRole'] option[value='" + objUser[index].role + "']").prop("selected", true);
     $("select[id*='ddlSalutation'] option[value='" + objUser[index].salutation + "']").prop("selected", true);
-    $("select[id*='ddlDepartment'] option[value='" + objUser[index].department + "']").prop("selected", true);
-    $("select[id*='ddlDesignation'] option[value='" + objUser[index].designation + "']").prop("selected", true);
+    //$("select[id*='ddlDepartment'] option[value='" + objUser[index].department + "']").prop("selected", true);
+    //$("select[id*='ddlDesignation'] option[value='" + objUser[index].designation + "']").prop("selected", true);
     $("select[id*='ddlCategory'] option[value='" + objUser[index].category + "']").prop("selected", true);
-    //$("select[id*='ddlRole'] option[value='" + objUser[index].role.Id + "']").prop("selected", true);
-    //$("select[id*='ddlDepartment'] option[value='" + objUser[index].department.departmentId + "']").prop("selected", true);
-    //$("select[id*='ddlDesignation'] option[value='" + objUser[index].designation.ID + "']").prop("selected", true);
+    $("select[id*='ddlRole'] option[value='" + objUser[index].role.Id + "']").prop("selected", true);
+    $("select[id*='ddlDepartment'] option[value='" + objUser[index].department.departmentId + "']").prop("selected", true);
+    $("select[id*='ddlDesignation'] option[value='" + objUser[index].designation.ID + "']").prop("selected", true);
     //$("select[id*='ddlCategory'] option[value='" + objUser[index].category.ID + "']").prop("selected", true);
     getdiv();
     $('#txtPhone').val(objUser[index].phone);
@@ -524,15 +503,21 @@ function fnEditUser(index, UserLogin) {
     var dateformat1 = objUser[index].tenureEndDate.split(' ')[0];
     var dateformat2 = objUser[index].dateOfBirth.split(' ')[0];
     var TenDate = dateformat.split('-').reverse().join('-');
-    var TenDate1 = dateformat1.split('-').reverse().join('-');
+    var TenDate1 = dateformat1.split('').reverse().join('-');
     var TenDate2 = dateformat2.split('-').reverse().join('-');
     $('#txtTenurestartdate').val(TenDate);
     $('#txtTenureenddate').val(TenDate1);
     $('#txtDateofbirth').val(TenDate2);
 
-    //$('#txtTenurestartdate').val("2023-05-05" || objUser[index].tenureStartDate);
+    //$('#txtTenurestartdate').val(objUser[index].tenureStartDate.split(" ")[0]);
     //$('#txtTenureenddate').val(objUser[index].tenureEndDate.split(" ")[0]);
     //$('#txtDateofbirth').val(objUser[index].dateOfBirth.split(" ")[0]);
+
+
+ 
+
+
+
     $('#ddlNationality').val(objUser[index].nationality);
     $('#txtUserid').prop('disabled', true).val(objUser[index].userLogin);
     $('#txtPassword').val(objUser[index].password);
@@ -596,15 +581,15 @@ function fnEditUser(index, UserLogin) {
         $("#dinremark").show();
     }
 
-    $("select[id*='ddlcat1'] option[value='" + objUser[index].ddlcat1 + "']").prop("selected", true);
-    $("select[id*='ddlcat2'] option[value='" + objUser[index].ddlcat2 + "']").prop("selected", true);
-    $("select[id*='ddlcat3'] option[value='" + objUser[index].ddlcat3 + "']").prop("selected", true);
-    $("select[id*='ddl17A'] option[value='" + objUser[index].ddl17A + "']").prop("selected", true);
+    //$("select[id*='ddlcat1'] option[value='" + objUser[index].ddlcat1 + "']").prop("selected", true);
+    //$("select[id*='ddlcat2'] option[value='" + objUser[index].ddlcat2 + "']").prop("selected", true);
+    //$("select[id*='ddlcat3'] option[value='" + objUser[index].ddlcat3 + "']").prop("selected", true);
+    //$("select[id*='ddl17A'] option[value='" + objUser[index].ddl17A + "']").prop("selected", true);
     $('#txtdate').val(objUser[index].txtdate);
-    $("select[id*='no1'] option[value='" + objUser[index].no1 + "']").prop("selected", true);
-    $("select[id*='no2'] option[value='" + objUser[index].no2 + "']").prop("selected", true);
-    $("select[id*='no3'] option[value='" + objUser[index].no3 + "']").prop("selected", true);
-    $("select[id*='no4'] option[value='" + objUser[index].no4 + "']").prop("selected", true);
+    $("select[id*='no1'] option[value='" + objUser[index].no_of_directorship + "']").prop("selected", true);
+    $("select[id*='no2'] option[value='" + objUser[index].no_of_independent + "']").prop("selected", true);
+    $("select[id*='no3'] option[value='" + objUser[index].no_of_membership + "']").prop("selected", true);
+    $("select[id*='no4'] option[value='" + objUser[index].no_of_post_of_chairperson + "']").prop("selected", true);
     //$('#no1').val(objUser[index].no_of_directorship);
     //$('#no2').val(objUser[index].no_of_independent);
     //$('#no3').val(objUser[index].no_of_membership);
@@ -897,45 +882,45 @@ function fnValidate() {
     }
 
 
-    if (Password == "") {
-        isValid = false;
-        $('#lblPassword').addClass('text-danger');
-    }
-    else if (Password.length < 8) {
-        isValid = false;
-        alert("Password should have atleast 8 Character !");
-        $('#lblPassword').addClass('text-danger');
-    }
-    else {
-        $('#lblPassword').removeClass('text-danger');
+    //if (Password == "") {
+    //    isValid = false;
+    //    $('#lblPassword').addClass('text-danger');
+    //}
+    //else if (Password.length < 8) {
+    //    isValid = false;
+    //    alert("Password should have atleast 8 Character !");
+    //    $('#lblPassword').addClass('text-danger');
+    //}
+    //else {
+    //    $('#lblPassword').removeClass('text-danger');
 
-       //var regex =  /^[0-9]{10}$/;
-        var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-+.]).{8,20}$/;        /*(^.* (?=.{ 8,}) (?=.*\d) (?=.* [a - z])(?=.* [A - Z])(?=.* [!*@#$%^&+=]).* $)*/
-        if (Password != "") {
-            if (Password.match(regex)) {
-                $('#lblPassword').removeClass('text-danger');
-            }
-            else {
-                isValid = false;
-                alert("Please enter correct Password format !");
-                $('#lblPassword').addClass('text-danger');
-            }
-        }
-    }
+    //   //var regex =  /^[0-9]{10}$/;
+    //    var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-+.]).{8,20}$/;        /*(^.* (?=.{ 8,}) (?=.*\d) (?=.* [a - z])(?=.* [A - Z])(?=.* [!*@#$%^&+=]).* $)*/
+    //    if (Password != "") {
+    //        if (Password.match(regex)) {
+    //            $('#lblPassword').removeClass('text-danger');
+    //        }
+    //        else {
+    //            isValid = false;
+    //            alert("Please enter correct Password format !");
+    //            $('#lblPassword').addClass('text-danger');
+    //        }
+    //    }
+    //}
 
-    if (ConfirmPassword == "") {
-        isValid = false;
-        $('#lblConfirm').addClass('text-danger');
-    }
-    else if (Password !== ConfirmPassword) {
-        isValid = false;
-        alert("Password and Confirm Password Not Match !");
-        $('#lblConfirm').addClass('text-danger');
-    }
-    else {
-        $('#lblPassword').removeClass('text-danger');
-        $('#lblConfirm').removeClass('text-danger');
-    }
+    //if (ConfirmPassword == "") {
+    //    isValid = false;
+    //    $('#lblConfirm').addClass('text-danger');
+    //}
+    //else if (Password !== ConfirmPassword) {
+    //    isValid = false;
+    //    alert("Password and Confirm Password Not Match !");
+    //    $('#lblConfirm').addClass('text-danger');
+    //}
+    //else {
+    //    $('#lblPassword').removeClass('text-danger');
+    //    $('#lblConfirm').removeClass('text-danger');
+    //}
     /******Add By Jitender**********/
     //var _salt = $("#txtSalt").val();
     //var _msalt = $("#txtMSalt").val();
@@ -1188,6 +1173,7 @@ function getAllUsersRole() {
 }
 
 function fnGetUserEmailList() {
+    debugger
     var webUrl = uri + "/api/User/GetUserEmailList";
     $("#txtEmail").autocomplete({
         source: function (request, response) {
@@ -1295,9 +1281,9 @@ function fnFillUserDetails() {
 }
 
 function User(ID, emailId, userFirstName, userMiddleName, userLastName, salutation, phone, address, tenureStartDate, tenureEndDate, dateOfBirth,
-    nationality, userLogin, password, roleId, status, DepartmentName, DesignationName, CategoryName, profile, txtdp_pan, panremark, txtdin_pan, din_remark,
-    ddlcat1, ddlcat2, ddlcat3, ddl17A, txtdate, no_of_directorship, no_of_independent, no_of_membership, no_of_post_of_chairperson, occupation_Area, educational_Qualification, experience, gender, aadhar_Number,  //currency_Symbol, sitting_Amount, payment_mode, remuneration_Amount,
-    shareHolding, shareHolding_percentage, appointed_Section, committees_Already_director, multicompanies, membership_Num_Secretarial_User) {
+    nationality, userLogin, roleId, CategoryName, status, profile, txtdp_pan, panremark, txtdin_pan, din_remark, txtdate,
+    occupation_Area, educational_Qualification, experience, gender, aadhar_Number, shareHolding, shareHolding_percentage, appointed_Section, committees_Already_director,no_of_directorship, no_of_independent, no_of_membership, no_of_post_of_chairperson,    //currency_Symbol, sitting_Amount, payment_mode, remuneration_Amount,
+       multicompanies, membership_Num_Secretarial_User) {
     debugger
     this.ID = ID;
     //this.userName = userName;
@@ -1314,28 +1300,17 @@ function User(ID, emailId, userFirstName, userMiddleName, userLastName, salutati
     this.dateOfBirth = dateOfBirth;
     this.nationality = nationality;
     this.userLogin = userLogin;
-    this.password = password;
+   // this.password = password;
     this.role = new Role(roleId);
-    this.status = status;
-    this.department = DepartmentName;
-    this.designation = DesignationName;
     this.category = CategoryName;
-    //this.role = role;
-    
+    this.status = status;
     this.profile = profile;
     this.txtdp_pan = txtdp_pan;
     this.panremark = panremark;
     this.txtdin_pan = txtdin_pan;
     this.din_remark = din_remark;
-    this.ddlcat1 = ddlcat1;
-    this.ddlcat2 = ddlcat2;
-    this.ddlcat3 = ddlcat3;
-    this.ddl17A = ddl17A;
     this.txtdate = txtdate;
-    this.no_of_directorship = no_of_directorship;
-    this.no_of_independent = no_of_independent;
-    this.no_of_membership = no_of_membership;
-    this.no_of_post_of_chairperson = no_of_post_of_chairperson;
+    //this.ddl17A = ddl17A;
     this.occupation_Area = occupation_Area;
     this.educational_Qualification = educational_Qualification;
     this.experience = experience;
@@ -1343,19 +1318,38 @@ function User(ID, emailId, userFirstName, userMiddleName, userLastName, salutati
     this.aadhar_Number = aadhar_Number;
     this.shareHolding = shareHolding;
     this.shareHolding_percentage = shareHolding_percentage;
+    this.appointed_Section = appointed_Section;
+    //this.other_Companies = other_Companies;
+    this.committees_Already_director = committees_Already_director;
+    this.no_of_directorship = no_of_directorship;
+    this.no_of_independent = no_of_independent;
+    this.no_of_membership = no_of_membership;
+    this.no_of_post_of_chairperson = no_of_post_of_chairperson;
+    this.multi_Companies = multicompanies;
+    this.membership_Num_Secretarial_User = membership_Num_Secretarial_User;
+    //this.department = DepartmentName;
+    //this.designation = DesignationName;
+    
+    //this.role = role;
+    
+    
+  
+    //this.ddlcat1 = ddlcat1;
+    //this.ddlcat2 = ddlcat2;
+    //this.ddlcat3 = ddlcat3;
+    
+   
+  
+  
+  
     //this.currency_Symbol = currency_Symbol;
     //this.sitting_Amount = sitting_Amount;
     //this.payment_mode = payment_mode;
     //this.remuneration_Amount = remuneration_Amount;
-    this.appointed_Section = appointed_Section;
     //this.other_Companies = other_Companies;
-    this.committees_Already_director = committees_Already_director;
-    this.multi_Companies = multicompanies;
-    this.membership_Num_Secretarial_User = membership_Num_Secretarial_User;
-
-
-    //this.department = new Department();
-    //this.designation = new Designation();
+    
+    this.department = new Department();
+    this.designation = new Designation();
     //this.category = new Category();
     
     //this.keyCompany = KeyCompany;
@@ -1366,13 +1360,13 @@ function Role(roleId) {
 }
 
 
-//function Department() {
-//    this.departmentId = $("select[id*='ddlDepartment']").val();
-//}
+function Department() {
+    this.departmentId = $("select[id*='ddlDepartment']").val();
+}
 
-//function Designation() {
-//    this.ID = $("select[id*='ddlDesignation']").val();
-//}
+function Designation() {
+    this.ID = $("select[id*='ddlDesignation']").val();
+}
 
 //function Category() {
 //    this.ID = $("select[id*='ddlCategory']").val();

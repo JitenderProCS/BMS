@@ -8,6 +8,7 @@ namespace BMS_New.Models.BMS.Model
     public class BaseEntity
     {
         public String moduleDatabase { get; set; }
+        public Int32 CompanyId { get; set; }
         public string LoginId { set; get; }
         public String operation { get; set; }
         public String operation_Dt { get; set; }

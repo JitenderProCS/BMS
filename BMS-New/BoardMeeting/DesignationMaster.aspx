@@ -101,6 +101,23 @@
         </div>
     </div>
     <!--end::Modal-->
+    <!--begin::Modal-->
+     <div class="modal fade in" id="deleteProduct" tabindex="-1" role="dialog" aria-hidden="True">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="True"></button>
+                    <h4 class="modal-title"><b>Are you sure, you want to delete ?</b></h4>
+                </div>
+                <div class="modal-footer">
+                    <input id="txtDelID" type="hidden" value="0" />
+                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">NO</button>
+                    <input value="YES" id="btnDeleteConfirm" data-dismiss="modal" class="btn red" onclick="DeleteDesignation()" type="submit" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Modal-->
 </asp:Content>
 
 <asp:Content ID="content3" ContentPlaceHolderID="ContentPlaceHolder2" runat="server">

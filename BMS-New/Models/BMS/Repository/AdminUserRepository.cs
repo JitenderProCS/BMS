@@ -38,7 +38,7 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Add(new SqlParameter("@ACTION_TYPE", "INSERT"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
                         cmd.Parameters.Add(new SqlParameter("@USER_EMAIL", objUser.emailId));
-                        cmd.Parameters.Add(new SqlParameter("@LOGIN_ID", objUser.userLogin));
+                        cmd.Parameters.Add(new SqlParameter("@LOGIN_ID", objUser.LoginId));
                         cmd.Parameters.Add(new SqlParameter("@USER_AUTHENTICATION", objUser.authentication));
                         //cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
                         cmd.ExecuteNonQuery();
@@ -54,11 +54,11 @@ namespace BMS_New.Models.BMS.Repository
                             cmd.Parameters.Add(new SqlParameter("@USER_NM", objUser.userName));
                             cmd.Parameters.Add(new SqlParameter("@USER_EMAIL", objUser.emailId));
                             //cmd.Parameters.Add(new SqlParameter("@USER_SALUTATION", objUser.salutation));
-                            cmd.Parameters.Add(new SqlParameter("@LOGIN_ID", objUser.userLogin));
+                            cmd.Parameters.Add(new SqlParameter("@LOGIN_ID", objUser.LoginId));
                             cmd.Parameters.Add(new SqlParameter("@USER_MOBILE", objUser.phone));
                             cmd.Parameters.Add(new SqlParameter("@USER_AUTHENTICATION", objUser.authentication));
                             cmd.Parameters.Add(new SqlParameter("@CREATE_BY", objUser.CREATED_BY));
-                            cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
+                            cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.CompanyId));
                             cmd.Parameters.Add(new SqlParameter("@STATUS", "Active"));
                             cmd.Parameters.Add(new SqlParameter("@ID", objUser.ID));
                             objUser.ID = Convert.ToInt32(cmd.Parameters["@SET_COUNT"].Value);
@@ -76,7 +76,7 @@ namespace BMS_New.Models.BMS.Repository
                                 foreach (CompanyAccess Cmap in objUser.CompanyMapping)
                                 {
                                     DataRow dr = dtCompanyMapping.NewRow();
-                                    dr["companyId"] = Cmap.companyId;
+                                    dr["companyId"] = Cmap.CompanyId;
                                     dr["CompanyName"] = Cmap.CompanyName;
                                     dr["moduleId"] = Cmap.moduleId;
                                     dr["moduleName"] = Cmap.moduleName;
@@ -126,9 +126,9 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Clear();
                         cmd.Parameters.Add(new SqlParameter("@MODE", "GET_User_List"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
-                        cmd.Parameters.Add(new SqlParameter("@LOGIN_ID", objUser.LoginId));
-                        cmd.Parameters.Add(new SqlParameter("@USER_AUTHENTICATION", (objUser.authentication == "0" ? objUser.authentication : null)));
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.CompanyId));
+                        //cmd.Parameters.Add(new SqlParameter("@LOGIN_ID", objUser.LoginId));
+                       // cmd.Parameters.Add(new SqlParameter("@USER_AUTHENTICATION", (objUser.authentication == "0" ? objUser.authentication : null)));
                         DataSet ds = new DataSet();
 
                         using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
@@ -149,7 +149,7 @@ namespace BMS_New.Models.BMS.Repository
                                     o.userName = Convert.ToString(dr["USER_NM"]);
                                     o.emailId = Convert.ToString(dr["USER_EMAIL"]);
                                     o.phone = Convert.ToString(dr["USER_MOBILE"]);
-                                    o.userLogin = Convert.ToString(dr["LOGIN_ID"]);
+                                    o.LoginId = Convert.ToString(dr["LOGIN_ID"]);
                                     o.authentication = Convert.ToString(dr["USER_AUTHENTICATION"]);
 
 
@@ -165,8 +165,8 @@ namespace BMS_New.Models.BMS.Repository
                                         {
                                             CompanyAccess obj = new CompanyAccess();
                                             obj.ID = Convert.ToInt32(item["ID"]);
-                                            obj.LOGIN_ID = Convert.ToString(item["LOGIN_ID"]);
-                                            obj.companyId = Convert.ToInt32(item["COMPANY_ID"]);
+                                            obj.LoginId = Convert.ToString(item["LOGIN_ID"]);
+                                            obj.CompanyId = Convert.ToInt32(item["COMPANY_ID"]);
                                             obj.CompanyName = Convert.ToString(item["COMPANY_NM"]);
                                             obj.moduleId = Convert.ToInt32(item["MODULE_ID"]);
                                             obj.moduleName = Convert.ToString(item["MODULE_NM"]);
@@ -224,7 +224,7 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Add(new SqlParameter("@ACTION_TYPE", "UPDATE"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
                         cmd.Parameters.Add(new SqlParameter("@USER_EMAIL", objUser.emailId));
-                        cmd.Parameters.Add(new SqlParameter("@LOGIN_ID", objUser.userLogin));
+                        cmd.Parameters.Add(new SqlParameter("@LOGIN_ID", objUser.LoginId));
                         cmd.Parameters.Add(new SqlParameter("@ID", objUser.ID));
                         cmd.ExecuteNonQuery();
                         Int32 obj = Convert.ToInt32(cmd.Parameters["@SET_COUNT"].Value);
@@ -240,11 +240,11 @@ namespace BMS_New.Models.BMS.Repository
                             cmd.Parameters.Add(new SqlParameter("@USER_NM", objUser.userName));
                             cmd.Parameters.Add(new SqlParameter("@USER_EMAIL", objUser.emailId));
                             //cmd.Parameters.Add(new SqlParameter("@USER_SALUTATION", objUser.salutation));
-                            cmd.Parameters.Add(new SqlParameter("@LOGIN_ID", objUser.userLogin));
+                            cmd.Parameters.Add(new SqlParameter("@LOGIN_ID", objUser.LoginId));
                             cmd.Parameters.Add(new SqlParameter("@USER_MOBILE", objUser.phone));
                             cmd.Parameters.Add(new SqlParameter("@USER_AUTHENTICATION", objUser.authentication));
                             cmd.Parameters.Add(new SqlParameter("@CREATE_BY", objUser.CREATED_BY));
-                            cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
+                            cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.CompanyId));
                             cmd.Parameters.Add(new SqlParameter("@STATUS", "Active"));
                             cmd.Parameters.Add(new SqlParameter("@ACTION_TYPE_COMP_MAP", "COMPANY_MAPPING_UPDATE"));
                             {
@@ -257,7 +257,7 @@ namespace BMS_New.Models.BMS.Repository
                                 foreach (CompanyAccess Cmap in objUser.CompanyMapping)
                                 {
                                     DataRow dr = dtCompanyMapping.NewRow();
-                                    dr["companyId"] = Cmap.companyId;
+                                    dr["companyId"] = Cmap.CompanyId;
                                     dr["CompanyName"] = Cmap.CompanyName;
                                     dr["moduleId"] = Cmap.moduleId;
                                     dr["moduleName"] = Cmap.moduleName;
@@ -492,8 +492,8 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Clear();
                         cmd.Parameters.Add(new SqlParameter("@MODE", "GET_USER_DETAILS"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-                        cmd.Parameters.Add(new SqlParameter("@LOGIN_ID", objUser.userLogin));
-                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
+                        cmd.Parameters.Add(new SqlParameter("@LOGIN_ID", objUser.LoginId));
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.CompanyId));
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         {
                             DataTable dt = new DataTable();
@@ -544,7 +544,7 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Clear();
                         cmd.Parameters.Add(new SqlParameter("@MODE", "GET_USER_NAME_BY_LOGIN"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-                        cmd.Parameters.Add(new SqlParameter("@USER_LOGIN", objUser.userLogin));
+                        cmd.Parameters.Add(new SqlParameter("@USER_LOGIN", objUser.LoginId));
                         //cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
                         SqlDataReader rdr = cmd.ExecuteReader();
                         if (rdr.HasRows)
@@ -697,7 +697,7 @@ namespace BMS_New.Models.BMS.Repository
                             {
                                 _userResponse.User.userName = (!String.IsNullOrEmpty(Convert.ToString(rdr["USER_NM"]))) ? Convert.ToString(rdr["USER_NM"]) : String.Empty;
                                 _userResponse.User.emailId = (!String.IsNullOrEmpty(Convert.ToString(rdr["USER_EMAIL"]))) ? Convert.ToString(rdr["USER_EMAIL"]) : String.Empty;
-                                _userResponse.User.userLogin = (!String.IsNullOrEmpty(Convert.ToString(rdr["USER_LOGIN"]))) ? Convert.ToString(rdr["USER_LOGIN"]) : String.Empty;
+                                _userResponse.User.LoginId = (!String.IsNullOrEmpty(Convert.ToString(rdr["USER_LOGIN"]))) ? Convert.ToString(rdr["USER_LOGIN"]) : String.Empty;
                                 //_userResponse.User.password = (!String.IsNullOrEmpty(Convert.ToString(rdr["USER_PWD"]))) ? CryptorEngine.Decrypt(Convert.ToString(rdr["USER_PWD"]), true) : String.Empty;
                                 //_userResponse.User.role = new Role
                                 //{
@@ -739,7 +739,7 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Clear();
                         cmd.Parameters.Add(new SqlParameter("@MODE", "GET_USER_COMPANY_LIST"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-                        cmd.Parameters.Add(new SqlParameter("@LOGIN_ID", objUser.userLogin));
+                        cmd.Parameters.Add(new SqlParameter("@LOGIN_ID", objUser.LoginId));
 
                         // Remove the SqlDataAdapter, as it's not needed
                         using (SqlDataReader reader = cmd.ExecuteReader())
@@ -751,9 +751,10 @@ namespace BMS_New.Models.BMS.Repository
                                 while (reader.Read())
                                 {
                                     CompanyAccess Cmap = new CompanyAccess();
-                                    Cmap.companyId = Convert.ToInt32( reader["COMPANY_ID"]);
+                                    Cmap.CompanyId = Convert.ToInt32( reader["COMPANY_ID"]);
+                                    Cmap.CompanyCode = reader["COMPANY_CODE"].ToString();
                                     Cmap.CompanyName = reader["COMPANY_NM"].ToString();
-                                    Cmap.LOGIN_ID = reader["LOGIN_ID"].ToString();
+                                    Cmap.LoginId = reader["LOGIN_ID"].ToString();
                                     Cmap.ModuleDataBase = reader["BMS_DB_NAME"].ToString();
                                     Cmap.modulefolder = reader["MODULE_FOLDER"].ToString();
                                     Cmap.moduleName = reader["MODULE_NM"].ToString();

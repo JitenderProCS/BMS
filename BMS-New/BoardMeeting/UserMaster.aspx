@@ -249,7 +249,7 @@
                                                         <!--end::Group-->
 
                                                         <!--begin::Group-->
-                                                        <div class="form-group row">
+                                                        <div class="form-group row" style="display:none">
                                                             <label id="lblPassword" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label d-flex">Password <sup class="text-danger">*</sup>
                                                                 <button class="btn btn-primary rounded-circle d-flex justify-content-center align-items-center p-0" style="width:16px;height:16px" type="button" data-container="body" data-offset="20px 20px" data-toggle="popover" data-placement="top" data-content="Password should be Minimum length 8 characters, Minimum one alphabet Upper Case character(A-Z), Minimum one alphabet Lower Case character(a-z), Minimum one digit (0-9), Minimum one special character eg.[ !,@,#,$,%,^,&,*,(,),\,-,+,. ]" >i</button>
                                                             </label>
@@ -261,7 +261,7 @@
                                                         <!--end::Group-->
 
                                                         <!--begin::Group-->
-                                                        <div class="form-group row">
+                                                        <div class="form-group row" style="display:none">
                                                             <label id="lblConfirm" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">Confirm Password <sup class="text-danger">*</sup></label>
                                                             <div class="col-lg-9 col-xl-9">
                                                                 <input id="txtConfirm" class="form-control form-control-solid form-control-lg" type="password" value="" placeholder="Confirm Password" autocomplete="off" onkeypress="javascript:fnRemoveClass(this,'Confirm');" />

@@ -29,7 +29,7 @@ namespace BMS_New.Models.BMS.Service.Request
             try
             {
                 _companyRepo = new CompanyRepository();
-                if (_company.companyId == 0)
+                if (_company.CompanyId == 0)
                 {
                     _companyRes = _companyRepo.AddCompnay(_company);
                 }

@@ -4264,6 +4264,7 @@
     <Content Include="BoardMeeting\CompanyMaster.aspx" />
     <Content Include="BoardMeeting\Contact.aspx" />
     <Content Include="BoardMeeting\Dashboard.aspx" />
+    <Content Include="BoardMeeting\DepartmentMaster.aspx" />
     <Content Include="BoardMeeting\DesignationMaster.aspx" />
     <Content Include="BoardMeeting\images\CompanyGroupLogo\DocumentManagement.png" />
     <Content Include="BoardMeeting\images\CompanyGroupLogo\InsiderTrading.png" />
@@ -4275,6 +4276,7 @@
     <Content Include="BoardMeeting\js\CommitteeComposition.js" />
     <Content Include="BoardMeeting\js\CompanyGroup.js" />
     <Content Include="BoardMeeting\js\CompanyMaster.js" />
+    <Content Include="BoardMeeting\js\Department.js" />
     <Content Include="BoardMeeting\js\Designation.js" />
     <Content Include="BoardMeeting\js\Global.js" />
     <Content Include="BoardMeeting\js\Login.js" />
@@ -4663,6 +4665,13 @@
     <Compile Include="BoardMeeting\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
     </Compile>
+    <Compile Include="BoardMeeting\DepartmentMaster.aspx.cs">
+      <DependentUpon>DepartmentMaster.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardMeeting\DepartmentMaster.aspx.designer.cs">
+      <DependentUpon>DepartmentMaster.aspx</DependentUpon>
+    </Compile>
     <Compile Include="BoardMeeting\DesignationMaster.aspx.cs">
       <DependentUpon>DesignationMaster.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -4708,6 +4717,7 @@
     <Compile Include="Controllers\AdminUserController.cs" />
     <Compile Include="Controllers\CommitteeController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\DesignationController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\UserCompanyModuleSelectionController.cs" />
@@ -4752,6 +4762,7 @@
     <Compile Include="Models\BMS\Model\CommitteeRole.cs" />
     <Compile Include="Models\BMS\Model\Company.cs" />
     <Compile Include="Models\BMS\Model\CompanyGrooup.cs" />
+    <Compile Include="Models\BMS\Model\Department.cs" />
     <Compile Include="Models\BMS\Model\Designation.cs" />
     <Compile Include="Models\BMS\Model\Document.cs" />
     <Compile Include="Models\BMS\Model\DocumentLn.cs" />
@@ -4762,12 +4773,14 @@
     <Compile Include="Models\BMS\Repository\CommitteeRepository.cs" />
     <Compile Include="Models\BMS\Repository\CompanyGroupRepository.cs" />
     <Compile Include="Models\BMS\Repository\CompanyRepository.cs" />
+    <Compile Include="Models\BMS\Repository\DepartmentRepository.cs" />
     <Compile Include="Models\BMS\Repository\DesignationRepository.cs" />
     <Compile Include="Models\BMS\Repository\UserRepository.cs" />
     <Compile Include="Models\BMS\Service\Request\AdminUserRequest.cs" />
     <Compile Include="Models\BMS\Service\Request\CommitteeRequest.cs" />
     <Compile Include="Models\BMS\Service\Request\CompanyGroupRequest.cs" />
     <Compile Include="Models\BMS\Service\Request\CompanyRequest.cs" />
+    <Compile Include="Models\BMS\Service\Request\DepartmentRequest.cs" />
     <Compile Include="Models\BMS\Service\Request\DesignationRequest.cs" />
     <Compile Include="Models\BMS\Service\Request\UserRequest.cs" />
     <Compile Include="Models\BMS\Service\Response\AdminUserResponse.cs" />
@@ -4775,6 +4788,7 @@
     <Compile Include="Models\BMS\Service\Response\CommitteeResponse.cs" />
     <Compile Include="Models\BMS\Service\Response\CompanyGroupResponse.cs" />
     <Compile Include="Models\BMS\Service\Response\CompanyResponse.cs" />
+    <Compile Include="Models\BMS\Service\Response\DepartmentResponse.cs" />
     <Compile Include="Models\BMS\Service\Response\DesignationResponse.cs" />
     <Compile Include="Models\BMS\Service\Response\UserResponse.cs" />
     <Compile Include="Models\Infrastructure\CryptoEngine.cs" />

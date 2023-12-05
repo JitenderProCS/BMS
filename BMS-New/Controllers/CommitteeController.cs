@@ -39,7 +39,7 @@ namespace BMS_New.Controllers
                 User user = new JavaScriptSerializer().Deserialize<User>(input);
                 user.createdBy = Convert.ToString(HttpContext.Current.Session["EMPLOYEE_ID"]);
                 user.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
-                user.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                user.CompanyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 UserRequest userRequest = new UserRequest(user);
                 userResponse = userRequest.GetUsersForCommitteeSuperAdmin();
             }
@@ -76,8 +76,8 @@ namespace BMS_New.Controllers
                 List<Committee> lstUser = JsonConvert.DeserializeObject<List<Committee>>(input);
                 Committee committee = lstUser[0];
                 committee.createdBy = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
-                committee.companyName = Convert.ToString(HttpContext.Current.Session["CompanyName"]);
-                committee.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                //committee.companyName = Convert.ToString(HttpContext.Current.Session["CompanyName"]);
+                committee.CompanyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 committee.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
                 CommitteeRequest committeeRequest = new CommitteeRequest(committee);
                 committeeResponse = committeeRequest.Savecommittee();
@@ -129,6 +129,39 @@ namespace BMS_New.Controllers
         //    return committeeResponse;
         //}
 
+        [Route("EditCommittee")]
+        [HttpPost]
+        public CommitteeResponse EditCommittee()
+        {
+            try
+            {
+                if (HttpContext.Current.Session.Count == 0)
+                {
+                    committeeResponse.StatusFl = false;
+                    committeeResponse.Msg = "SessionExpired";
+                    return committeeResponse;
+                }
+
+                using (System.IO.StreamReader sr = new System.IO.StreamReader(HttpContext.Current.Request.InputStream))
+                {
+                    input = sr.ReadToEnd();
+                }
+                Committee committee = new JavaScriptSerializer().Deserialize<Committee>(input);
+                committee.createdBy = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
+                committee.CompanyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                committee.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
+                CommitteeRequest committeeRequest = new CommitteeRequest(committee);
+                committeeResponse = committeeRequest.ListEditCommittee();
+            }
+            catch (Exception ex)
+            {
+                new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]), Convert.ToInt32(HttpContext.Current.Session["CompanyId"]));
+                committeeResponse.StatusFl = false;
+                committeeResponse.Msg = ex.Message;
+            }
+            return committeeResponse;
+        }
+
         [Route("GetUserListForCommittee")]
         [HttpPost]
         public CommitteeResponse GetUserListForCommittee()
@@ -148,7 +181,7 @@ namespace BMS_New.Controllers
                 }
                 Committee committee = new JavaScriptSerializer().Deserialize<Committee>(input);
                 committee.createdBy = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
-                committee.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                committee.CompanyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 committee.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
                 CommitteeRequest committeeRequest = new CommitteeRequest(committee);
                 committeeResponse = committeeRequest.userlistforcommittee();
@@ -181,7 +214,7 @@ namespace BMS_New.Controllers
                 }
                 Committee committee = new JavaScriptSerializer().Deserialize<Committee>(input);
                 committee.createdBy = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
-                committee.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                committee.CompanyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 committee.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
                 CommitteeRequest committeeRequest = new CommitteeRequest(committee);
                 committeeResponse = committeeRequest.CommitteeCoordinatorList();
@@ -251,7 +284,7 @@ namespace BMS_New.Controllers
 
 
                 committee.createdBy = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
-                committee.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                committee.CompanyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
                 committee.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
                 CommitteeRequest committeeRequest = new CommitteeRequest(committee);
                 committeeResponse = committeeRequest.ListCommittee();

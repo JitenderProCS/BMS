@@ -64,7 +64,7 @@ namespace BMS_New.Controllers
 
                 foreach (CompanyAccess p in data)
                 {
-                    HttpContext.Current.Session["CompanyId"] = p.companyId;
+                    HttpContext.Current.Session["CompanyId"] = p.CompanyId;
                     HttpContext.Current.Session["CompanyName"] = p.CompanyName;
                     HttpContext.Current.Session["CompanyLogo"] = p.logo;
                     HttpContext.Current.Session["ModuleId"] = p.moduleId;
@@ -72,7 +72,7 @@ namespace BMS_New.Controllers
                     HttpContext.Current.Session["ModuleFolder"] = p.modulefolder;
                     //HttpContext.Current.Session["ModuleDatabase"] = p.ModuleDataBase;
                     HttpContext.Current.Session["ModuleDatabase"] = "PROCS_BOARD_MEETING_50";
-                    HttpContext.Current.Session["EmployeeId"] = p.LOGIN_ID;
+                    HttpContext.Current.Session["EmployeeId"] = p.LoginId;
                     HttpContext.Current.Session["UserMobile"] = p.Mobile;
                 }
 

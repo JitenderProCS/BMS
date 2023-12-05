@@ -28,10 +28,11 @@ namespace BMS_New.Models.BMS.Repository
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    //conn.ChangeDatabase(objUser.moduleDatabase);
+                    conn.ChangeDatabase(objUser.moduleDatabase);
                     using (SqlCommand cmd = new SqlCommand("SP_PROCS_BMS_USER_MASTER", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
+
                         cmd.CommandTimeout = 0;
                         cmd.Parameters.Clear();
                         cmd.Parameters.Add(new SqlParameter("@MODE", "CHECK"));
@@ -39,7 +40,7 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
                         cmd.Parameters.Add(new SqlParameter("@EMAIL_ID", objUser.emailId));
                         cmd.Parameters.Add(new SqlParameter("@USER_LOGIN", objUser.userLogin));
-                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.CompanyId));
                         cmd.ExecuteNonQuery();
                         Int32 obj = Convert.ToInt32(cmd.Parameters["@SET_COUNT"].Value);
                         if (obj == 0)
@@ -50,65 +51,13 @@ namespace BMS_New.Models.BMS.Repository
                             cmd.Parameters.Add(new SqlParameter("@MODE", "INSERT_UPDATE"));
                             cmd.Parameters.Add(new SqlParameter("@ACTION_TYPE", "INSERT"));
                             cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-                            //cmd.Parameters.Add(new SqlParameter("@NAME", objUser.userName));
                             cmd.Parameters.Add(new SqlParameter("@USER_SALUTATION", objUser.salutation));
+                            cmd.Parameters.Add(new SqlParameter("@ROLE", objUser.role.Id));
+                            cmd.Parameters.Add(new SqlParameter("@USER_PROFILE", objUser.profile));
+                            cmd.Parameters.Add(new SqlParameter("@MOBILE_NO", objUser.phone));
                             cmd.Parameters.Add(new SqlParameter("@USER_FIRST_NAME", objUser.userFirstName));
                             cmd.Parameters.Add(new SqlParameter("@USER_MIDDLE_NAME", objUser.userMiddleName));
                             cmd.Parameters.Add(new SqlParameter("@USER_LAST_NAME", objUser.userLastName));
-                            cmd.Parameters.Add(new SqlParameter("@EMAIL_ID", objUser.emailId));
-                            cmd.Parameters.Add(new SqlParameter("@ROLE", objUser.role.Id));
-                            //cmd.Parameters.Add(new SqlParameter("@ROLE", objUser.role));
-                            //cmd.Parameters.Add(new SqlParameter("@PHONE_NO", objUser.phone));
-                            cmd.Parameters.Add(new SqlParameter("@MOBILE_NO", objUser.phone));
-                            cmd.Parameters.Add(new SqlParameter("@ADDRESS", objUser.address));
-
-                            //add parameter for director open
-                            cmd.Parameters.Add(new SqlParameter("@pan_no", objUser.txtdp_pan));
-                            cmd.Parameters.Add(new SqlParameter("@pan_remark", objUser.panremark));
-                            cmd.Parameters.Add(new SqlParameter("@din_no", objUser.txtdin_pan));
-                            cmd.Parameters.Add(new SqlParameter("@din_remark", objUser.din_remark));
-                            cmd.Parameters.Add(new SqlParameter("@cat1", objUser.ddlcat1));
-                            cmd.Parameters.Add(new SqlParameter("@cat2", objUser.ddlcat2));
-                            cmd.Parameters.Add(new SqlParameter("@cat3", objUser.ddlcat3));
-                            cmd.Parameters.Add(new SqlParameter("@Listing17_1_A", objUser.ddl17A));
-                            cmd.Parameters.Add(new SqlParameter("@date_of_passing", objUser.txtdate));
-                            cmd.Parameters.Add(new SqlParameter("@no_of_directorship", objUser.no_of_directorship));
-                            cmd.Parameters.Add(new SqlParameter("@no_of_independent", objUser.no_of_independent));
-                            cmd.Parameters.Add(new SqlParameter("@no_of_membership", objUser.no_of_membership));
-                            cmd.Parameters.Add(new SqlParameter("@no_of_post_of_chairperson", objUser.no_of_post_of_chairperson));
-                            cmd.Parameters.Add(new SqlParameter("@OCCUPATION_AREA", objUser.occupation_Area));
-                            cmd.Parameters.Add(new SqlParameter("@EDUCATIONAL_QUALIFICATION", objUser.educational_Qualification));
-                            cmd.Parameters.Add(new SqlParameter("@EXPERIENCE", objUser.experience));
-                            cmd.Parameters.Add(new SqlParameter("@GENDER", objUser.gender));
-                            cmd.Parameters.Add(new SqlParameter("@AADHAR_NUMBER", objUser.aadhar_Number));
-                            cmd.Parameters.Add(new SqlParameter("@SHAREHOLDING", objUser.shareHolding));
-                            cmd.Parameters.Add(new SqlParameter("@SHAREHOLDING_PERCENTAGE", objUser.shareHolding_percentage));
-                            //cmd.Parameters.Add(new SqlParameter("@CURRENCY_SYMBOL", objUser.currency_Symbol));
-                            //cmd.Parameters.Add(new SqlParameter("@SITTING_AMOUNT", objUser.sitting_Amount));
-                            //cmd.Parameters.Add(new SqlParameter("@PAYMENT_MODE", objUser.payment_mode));
-                            //cmd.Parameters.Add(new SqlParameter("@REMUNERATION_AMOUNT", objUser.remuneration_Amount));
-                            cmd.Parameters.Add(new SqlParameter("@APPOINTED_SECTION", objUser.appointed_Section));
-                            // cmd.Parameters.Add(new SqlParameter("@OTHER_COMPANIES", objUser.multi_Companies));
-                            cmd.Parameters.Add(new SqlParameter("@COMMITTEES_ALREADY_DIRECTOR", objUser.committees_Already_director));
-                            cmd.Parameters.Add(new SqlParameter("@MEMBERSHIP_NUM_SECRETARIAL_USER", objUser.membership_Num_Secretarial_User));
-
-                            cmd.Parameters.Add(new SqlParameter("@ACTION_TYPE_COMP", "MULTICOMPANY_INSERT"));
-                            {
-                                DataTable dt = new DataTable();
-                                dt.Columns.Add("OTHER_DIRECTOR_COMPANIES", typeof(string));
-                                //DataRow dr = dt.NewRow();
-                                foreach (var compname in objUser.multi_Companies)
-                                {
-                                    DataRow dr = dt.NewRow();
-                                    dr["OTHER_DIRECTOR_COMPANIES"] = compname;
-                                    //dr["OTHER_DIRECTOR_COMPANIES"] = compname.Companies;
-                                    dt.Rows.Add(dr);
-                                }
-                                cmd.Parameters.Add(new SqlParameter("@OTHER_COMPANIES", dt));
-                            }
-
-                            //add parameter for director close
-
                             if (!String.IsNullOrEmpty(Convert.ToString(objUser.tenureStartDate)))
                             {
                                 cmd.Parameters.Add(new SqlParameter("@TENURE_START", DateTime.Parse(objUser.tenureStartDate)));
@@ -125,6 +74,30 @@ namespace BMS_New.Models.BMS.Repository
                             {
                                 cmd.Parameters.Add(new SqlParameter("@TENURE_END", null));
                             }
+                            cmd.Parameters.Add(new SqlParameter("@EMAIL_ID", objUser.emailId));
+                            cmd.Parameters.Add(new SqlParameter("@USER_LOGIN", objUser.userLogin));
+                            cmd.Parameters.Add(new SqlParameter("@STATUS", objUser.status));
+                            cmd.Parameters.Add(new SqlParameter("@SHAREHOLDING", objUser.shareHolding));
+                            cmd.Parameters.Add(new SqlParameter("@SHAREHOLDING_PERCENTAGE", objUser.shareHolding_percentage));
+                            cmd.Parameters.Add(new SqlParameter("@RESOLUTION_OF_LODR", objUser.txtdate));
+                            cmd.Parameters.Add(new SqlParameter("@pan_no", objUser.txtdp_pan));
+                            cmd.Parameters.Add(new SqlParameter("@pan_remark", objUser.panremark));
+                            cmd.Parameters.Add(new SqlParameter("@OCCUPATION_AREA", objUser.occupation_Area));
+                            cmd.Parameters.Add(new SqlParameter("@no_of_directorship", objUser.no_of_directorship));
+                            cmd.Parameters.Add(new SqlParameter("@no_of_independent", objUser.no_of_independent));
+                            cmd.Parameters.Add(new SqlParameter("@no_of_membership", objUser.no_of_membership));
+                            cmd.Parameters.Add(new SqlParameter("@no_of_post_of_chairperson", objUser.no_of_post_of_chairperson));
+                            cmd.Parameters.Add(new SqlParameter("@NATIONALITY", objUser.nationality));
+                            cmd.Parameters.Add(new SqlParameter("@MEMBERSHIP_NUM_SECRETARIAL_USER", objUser.membership_Num_Secretarial_User));
+                            cmd.Parameters.Add(new SqlParameter("@GENDER", objUser.gender));
+                            cmd.Parameters.Add(new SqlParameter("@EXPERIENCE", objUser.experience));
+                            cmd.Parameters.Add(new SqlParameter("@EDUCATIONAL_QUALIFICATION", objUser.educational_Qualification));
+                            cmd.Parameters.Add(new SqlParameter("@din_no", objUser.txtdin_pan));
+                            cmd.Parameters.Add(new SqlParameter("@din_remark", objUser.din_remark));
+                            cmd.Parameters.Add(new SqlParameter("@DEPARTMENT_ID", objUser.department.departmentId));
+                            cmd.Parameters.Add(new SqlParameter("@DESIGNATION_ID", objUser.designation.ID));
+                            //cmd.Parameters.Add(new SqlParameter("@CATEGORY_ID", objUser.category.ID));
+                            cmd.Parameters.Add(new SqlParameter("@DATE_OF_RESOLUTION", objUser.txtdate));
                             if (!String.IsNullOrEmpty(Convert.ToString(objUser.dateOfBirth)))
                             {
                                 cmd.Parameters.Add(new SqlParameter("@DATE_OF_BIRTH", DateTime.Parse(objUser.dateOfBirth)));
@@ -133,23 +106,32 @@ namespace BMS_New.Models.BMS.Repository
                             {
                                 cmd.Parameters.Add(new SqlParameter("@DATE_OF_BIRTH", null));
                             }
-                            cmd.Parameters.Add(new SqlParameter("@NATIONALITY", objUser.nationality));
-                            cmd.Parameters.Add(new SqlParameter("@USER_LOGIN", objUser.userLogin));
-                            cmd.Parameters.Add(new SqlParameter("@PASSWORD", CryptoEngine.Encrypt(objUser.password, true)));
-                            cmd.Parameters.Add(new SqlParameter("@STATUS", objUser.status));
+                            cmd.Parameters.Add(new SqlParameter("@CREATED_BY", objUser.createdBy));
+                            cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.CompanyId));
+                            cmd.Parameters.Add(new SqlParameter("@APPOINTED_SECTION", objUser.appointed_Section));
+                            cmd.Parameters.Add(new SqlParameter("@ADDRESS", objUser.address));
+                            cmd.Parameters.Add(new SqlParameter("@AADHAR_NUMBER", objUser.aadhar_Number));
+                            cmd.Parameters.Add(new SqlParameter("@COMMITTEES_ALREADY_DIRECTOR", objUser.committees_Already_director));
+                            cmd.Parameters.Add(new SqlParameter("@CATEGORY_NAME", objUser.category));
+                            cmd.Parameters.Add(new SqlParameter("@ACTION_TYPE_COMP", "MULTICOMPANY_INSERT"));
+                            {
+                                DataTable dt = new DataTable();
+                                dt.Columns.Add("OTHER_DIRECTOR_COMPANIES", typeof(string));
+                                //DataRow dr = dt.NewRow();
+                                foreach (var compname in objUser.multi_Companies)
+                                {
+                                    DataRow dr = dt.NewRow();
+                                    dr["OTHER_DIRECTOR_COMPANIES"] = compname;
+                                    //dr["OTHER_DIRECTOR_COMPANIES"] = compname.Companies;
+                                    dt.Rows.Add(dr);
+                                }
+                                cmd.Parameters.Add(new SqlParameter("@OTHER_COMPANIES", dt));
+                            }
+                            //cmd.Parameters.Add(new SqlParameter("@USER_LOGIN", objUser.LoginId));
                             cmd.Parameters.Add(new SqlParameter("@UPLOAD_AVATAR", objUser.uploadAvatar));
                             cmd.Parameters.Add(new SqlParameter("@ID", objUser.ID));
                             cmd.Parameters.Add(new SqlParameter("@MODULE_ID", objUser.moduleId));
-                            cmd.Parameters.Add(new SqlParameter("@USER_PROFILE", objUser.profile));
-                            //cmd.Parameters.Add(new SqlParameter("@DEPARTMENT_ID", objUser.department.departmentId));
-                            //cmd.Parameters.Add(new SqlParameter("@DESIGNATION_ID", objUser.designation.ID));
-                            //cmd.Parameters.Add(new SqlParameter("@CATEGORY_ID", objUser.category.ID));
-                            cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
-                            cmd.Parameters.Add(new SqlParameter("@DEPARTMENT_NAME", objUser.department));
-                            cmd.Parameters.Add(new SqlParameter("@DESIGNATION_NAME", objUser.designation));
-                            cmd.Parameters.Add(new SqlParameter("@CATEGORY_NAME", objUser.category));
-                            cmd.Parameters.Add(new SqlParameter("@CREATED_BY", objUser.createdBy));
-                            cmd.ExecuteNonQuery();
+                             cmd.ExecuteNonQuery();
                             objUser.ID = Convert.ToInt32(cmd.Parameters["@SET_COUNT"].Value);
                             _userResponse.StatusFl = true;
                             _userResponse.Msg = "User has been saved successfully !";
@@ -197,7 +179,7 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
                         cmd.Parameters.Add(new SqlParameter("@EMAIL_ID", objUser.emailId));
                         cmd.Parameters.Add(new SqlParameter("@USER_LOGIN", objUser.userLogin));
-                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.CompanyId));
                         cmd.ExecuteNonQuery();
                         Int32 obj = Convert.ToInt32(cmd.Parameters["@SET_COUNT"].Value);
                         if (obj == 1)
@@ -207,66 +189,14 @@ namespace BMS_New.Models.BMS.Repository
                             cmd.Parameters.Clear();
                             cmd.Parameters.Add(new SqlParameter("@MODE", "INSERT_UPDATE"));
                             cmd.Parameters.Add(new SqlParameter("@ACTION_TYPE", "UPDATE"));
-                            cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
                             cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-                            //cmd.Parameters.Add(new SqlParameter("@NAME", objUser.userName));
                             cmd.Parameters.Add(new SqlParameter("@USER_SALUTATION", objUser.salutation));
+                            cmd.Parameters.Add(new SqlParameter("@ROLE", objUser.role.Id));
+                            cmd.Parameters.Add(new SqlParameter("@USER_PROFILE", objUser.profile));
+                            cmd.Parameters.Add(new SqlParameter("@MOBILE_NO", objUser.phone));
                             cmd.Parameters.Add(new SqlParameter("@USER_FIRST_NAME", objUser.userFirstName));
                             cmd.Parameters.Add(new SqlParameter("@USER_MIDDLE_NAME", objUser.userMiddleName));
                             cmd.Parameters.Add(new SqlParameter("@USER_LAST_NAME", objUser.userLastName));
-                            cmd.Parameters.Add(new SqlParameter("@EMAIL_ID", objUser.emailId));
-                            //cmd.Parameters.Add(new SqlParameter("@ROLE", objUser.role.Id));
-                            cmd.Parameters.Add(new SqlParameter("@ROLE", objUser.role));
-                            cmd.Parameters.Add(new SqlParameter("@MOBILE_NO", objUser.phone));
-                            cmd.Parameters.Add(new SqlParameter("@ADDRESS", objUser.address));
-
-                            ////for vclink
-                            cmd.Parameters.Add(new SqlParameter("@pan_no", objUser.txtdp_pan));
-                            cmd.Parameters.Add(new SqlParameter("@pan_remark", objUser.panremark));
-                            cmd.Parameters.Add(new SqlParameter("@din_no", objUser.txtdin_pan));
-                            cmd.Parameters.Add(new SqlParameter("@din_remark", objUser.din_remark));
-                            cmd.Parameters.Add(new SqlParameter("@cat1", objUser.ddlcat1));
-                            cmd.Parameters.Add(new SqlParameter("@cat2", objUser.ddlcat2));
-                            cmd.Parameters.Add(new SqlParameter("@cat3", objUser.ddlcat3));
-                            cmd.Parameters.Add(new SqlParameter("@Listing17_1_A", objUser.ddl17A));
-                            cmd.Parameters.Add(new SqlParameter("@date_of_passing", objUser.txtdate));
-                            cmd.Parameters.Add(new SqlParameter("@no_of_directorship", objUser.no_of_directorship));
-                            cmd.Parameters.Add(new SqlParameter("@no_of_independent", objUser.no_of_independent));
-                            cmd.Parameters.Add(new SqlParameter("@no_of_membership", objUser.no_of_membership));
-                            cmd.Parameters.Add(new SqlParameter("@no_of_post_of_chairperson", objUser.no_of_post_of_chairperson));
-                            cmd.Parameters.Add(new SqlParameter("@OCCUPATION_AREA", objUser.occupation_Area));
-                            cmd.Parameters.Add(new SqlParameter("@EDUCATIONAL_QUALIFICATION", objUser.educational_Qualification));
-                            cmd.Parameters.Add(new SqlParameter("@EXPERIENCE", objUser.experience));
-                            cmd.Parameters.Add(new SqlParameter("@GENDER", objUser.gender));
-                            cmd.Parameters.Add(new SqlParameter("@AADHAR_NUMBER", objUser.aadhar_Number));
-                            cmd.Parameters.Add(new SqlParameter("@SHAREHOLDING", objUser.shareHolding));
-                            cmd.Parameters.Add(new SqlParameter("@SHAREHOLDING_PERCENTAGE", objUser.shareHolding_percentage));
-                            //cmd.Parameters.Add(new SqlParameter("@CURRENCY_SYMBOL", objUser.currency_Symbol));
-                            //cmd.Parameters.Add(new SqlParameter("@SITTING_AMOUNT", objUser.sitting_Amount));
-                            //cmd.Parameters.Add(new SqlParameter("@PAYMENT_MODE", objUser.payment_mode));
-                            //cmd.Parameters.Add(new SqlParameter("@REMUNERATION_AMOUNT", objUser.remuneration_Amount));
-                            cmd.Parameters.Add(new SqlParameter("@APPOINTED_SECTION", objUser.appointed_Section));
-                            //cmd.Parameters.Add(new SqlParameter("@OTHER_COMPANIES", objUser.other_Companies));
-
-                            cmd.Parameters.Add(new SqlParameter("@ACTION_TYPE_COMP", "MULTICOMPANY_UPDATE"));
-                            {
-                                DataTable dt = new DataTable();
-                                dt.Columns.Add("OTHER_DIRECTOR_COMPANIES", typeof(string));
-                                //DataRow dr = dt.NewRow();
-                                foreach (var compname in objUser.multi_Companies)
-                                {
-                                    DataRow dr = dt.NewRow();
-                                    dr["OTHER_DIRECTOR_COMPANIES"] = compname;
-                                    //dr["OTHER_DIRECTOR_COMPANIES"] = compname.Companies;
-                                    dt.Rows.Add(dr);
-                                }
-                                cmd.Parameters.Add(new SqlParameter("@OTHER_COMPANIES", dt));
-                            }
-                            cmd.Parameters.Add(new SqlParameter("@COMMITTEES_ALREADY_DIRECTOR", objUser.committees_Already_director));
-                            cmd.Parameters.Add(new SqlParameter("@MEMBERSHIP_NUM_SECRETARIAL_USER", objUser.membership_Num_Secretarial_User));
-
-                            //add parameter for director close
-
                             if (!String.IsNullOrEmpty(Convert.ToString(objUser.tenureStartDate)))
                             {
                                 cmd.Parameters.Add(new SqlParameter("@TENURE_START", DateTime.Parse(objUser.tenureStartDate)));
@@ -283,6 +213,29 @@ namespace BMS_New.Models.BMS.Repository
                             {
                                 cmd.Parameters.Add(new SqlParameter("@TENURE_END", null));
                             }
+                            cmd.Parameters.Add(new SqlParameter("@EMAIL_ID", objUser.emailId));
+                            cmd.Parameters.Add(new SqlParameter("@USER_LOGIN", objUser.userLogin));
+                            cmd.Parameters.Add(new SqlParameter("@STATUS", objUser.status));
+                            cmd.Parameters.Add(new SqlParameter("@SHAREHOLDING", objUser.shareHolding));
+                            cmd.Parameters.Add(new SqlParameter("@SHAREHOLDING_PERCENTAGE", objUser.shareHolding_percentage));
+                            cmd.Parameters.Add(new SqlParameter("@RESOLUTION_OF_LODR", objUser.txtdate));
+                            cmd.Parameters.Add(new SqlParameter("@pan_no", objUser.txtdp_pan));
+                            cmd.Parameters.Add(new SqlParameter("@pan_remark", objUser.panremark));
+                            cmd.Parameters.Add(new SqlParameter("@OCCUPATION_AREA", objUser.occupation_Area));
+                            cmd.Parameters.Add(new SqlParameter("@no_of_directorship", objUser.no_of_directorship));
+                            cmd.Parameters.Add(new SqlParameter("@no_of_independent", objUser.no_of_independent));
+                            cmd.Parameters.Add(new SqlParameter("@no_of_membership", objUser.no_of_membership));
+                            cmd.Parameters.Add(new SqlParameter("@no_of_post_of_chairperson", objUser.no_of_post_of_chairperson));
+                            cmd.Parameters.Add(new SqlParameter("@NATIONALITY", objUser.nationality));
+                            cmd.Parameters.Add(new SqlParameter("@GENDER", objUser.gender));
+                            cmd.Parameters.Add(new SqlParameter("@EXPERIENCE", objUser.experience));
+                            cmd.Parameters.Add(new SqlParameter("@EDUCATIONAL_QUALIFICATION", objUser.educational_Qualification));
+                            cmd.Parameters.Add(new SqlParameter("@din_no", objUser.txtdin_pan));
+                            cmd.Parameters.Add(new SqlParameter("@din_remark", objUser.din_remark));
+                            cmd.Parameters.Add(new SqlParameter("@DEPARTMENT_ID", objUser.department.departmentId));
+                            cmd.Parameters.Add(new SqlParameter("@DESIGNATION_ID", objUser.designation.ID));
+                            //cmd.Parameters.Add(new SqlParameter("@CATEGORY_ID", objUser.category.ID));
+                            cmd.Parameters.Add(new SqlParameter("@DATE_OF_RESOLUTION", objUser.txtdate));
                             if (!String.IsNullOrEmpty(Convert.ToString(objUser.dateOfBirth)))
                             {
                                 cmd.Parameters.Add(new SqlParameter("@DATE_OF_BIRTH", DateTime.Parse(objUser.dateOfBirth)));
@@ -291,18 +244,37 @@ namespace BMS_New.Models.BMS.Repository
                             {
                                 cmd.Parameters.Add(new SqlParameter("@DATE_OF_BIRTH", null));
                             }
-                            cmd.Parameters.Add(new SqlParameter("@NATIONALITY", objUser.nationality));
-                            cmd.Parameters.Add(new SqlParameter("@USER_LOGIN", objUser.userLogin));
-                            cmd.Parameters.Add(new SqlParameter("@PASSWORD", CryptoEngine.Encrypt(objUser.password, true)));
-                            cmd.Parameters.Add(new SqlParameter("@STATUS", objUser.status));
-                            cmd.Parameters.Add(new SqlParameter("@UPLOAD_AVATAR", objUser.uploadAvatar));
-                            cmd.Parameters.Add(new SqlParameter("@USER_PROFILE", objUser.profile));
-                            //cmd.Parameters.Add(new SqlParameter("@DEPARTMENT_ID", objUser.department.departmentId));
-                            //cmd.Parameters.Add(new SqlParameter("@DESIGNATION_ID", objUser.designation.ID));
-                            //cmd.Parameters.Add(new SqlParameter("@CATEGORY_ID", objUser.category.ID));
-                            cmd.Parameters.Add(new SqlParameter("@DEPARTMENT_NAME", objUser.department));
-                            cmd.Parameters.Add(new SqlParameter("@DESIGNATION_NAME", objUser.designation));
+                            cmd.Parameters.Add(new SqlParameter("@CREATED_BY", objUser.createdBy));
+                            cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.CompanyId));
+                            cmd.Parameters.Add(new SqlParameter("@APPOINTED_SECTION", objUser.appointed_Section));
+                            cmd.Parameters.Add(new SqlParameter("@ADDRESS", objUser.address));
+                            cmd.Parameters.Add(new SqlParameter("@AADHAR_NUMBER", objUser.aadhar_Number));
+                            cmd.Parameters.Add(new SqlParameter("@COMMITTEES_ALREADY_DIRECTOR", objUser.committees_Already_director));
                             cmd.Parameters.Add(new SqlParameter("@CATEGORY_NAME", objUser.category));
+
+                            cmd.Parameters.Add(new SqlParameter("@ACTION_TYPE_COMP", "MULTICOMPANY_UPDATE"));
+                            {
+                                DataTable dt = new DataTable();
+                                dt.Columns.Add("OTHER_DIRECTOR_COMPANIES", typeof(string));
+                                //DataRow dr = dt.NewRow();
+                                foreach (var compname in objUser.multi_Companies)
+                                {
+                                    DataRow dr = dt.NewRow();
+                                    dr["OTHER_DIRECTOR_COMPANIES"] = compname;
+                                    //dr["OTHER_DIRECTOR_COMPANIES"] = compname.Companies;
+                                    dt.Rows.Add(dr);
+                                }
+                                cmd.Parameters.Add(new SqlParameter("@OTHER_COMPANIES", dt));
+                            }
+                            cmd.Parameters.Add(new SqlParameter("@MEMBERSHIP_NUM_SECRETARIAL_USER", objUser.membership_Num_Secretarial_User));
+
+                            //add parameter for director close
+
+                          
+                            //cmd.Parameters.Add(new SqlParameter("@USER_LOGIN", objUser.LoginId));
+                           // cmd.Parameters.Add(new SqlParameter("@PASSWORD", CryptoEngine.Encrypt(objUser.password, true)));
+                            cmd.Parameters.Add(new SqlParameter("@UPLOAD_AVATAR", objUser.uploadAvatar));
+                            //cmd.Parameters.Add(new SqlParameter("@CATEGORY_ID", objUser.category.ID));
                             cmd.Parameters.Add(new SqlParameter("@MODIFIED_BY", objUser.createdBy));
                             cmd.Parameters.Add(new SqlParameter("@ID", objUser.ID));
                             cmd.ExecuteNonQuery();
@@ -342,7 +314,7 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.CommandTimeout = 0;
                         cmd.Parameters.Clear();
                         cmd.Parameters.Add(new SqlParameter("@Mode", "DELETE_USER"));
-                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.CompanyId));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
                         cmd.Parameters.Add(new SqlParameter("@ID", objUser.ID));
                         cmd.ExecuteNonQuery();
@@ -381,7 +353,7 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Clear();
                         cmd.Parameters.Add(new SqlParameter("@MODE", "GET_USER_LIST"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.CompanyId));
                         //cmd.Parameters.Add(new SqlParameter("@USER_LOGIN", objUser.LoginId));
                         //cmd.Parameters.Add(new SqlParameter("@STATUS", (objUser.status != "0" ? objUser.status : null)));
                         DataSet ds = new DataSet();
@@ -414,9 +386,22 @@ namespace BMS_New.Models.BMS.Repository
                                    // obj.role = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_ROLE1"]))) ? Convert.ToString(dr["USER_ROLE1"]) : String.Empty;
                                     obj.phone = (!String.IsNullOrEmpty(Convert.ToString(dr["USER_MOBILE"]))) ? Convert.ToString(dr["USER_MOBILE"]) : String.Empty;
                                     obj.address = (!String.IsNullOrEmpty(Convert.ToString(dr["ADDRESS"]))) ? Convert.ToString(dr["ADDRESS"]) : String.Empty;
-                                    obj.designation = (!String.IsNullOrEmpty(Convert.ToString(dr["DESIGNATION_NAME"]))) ? Convert.ToString(dr["DESIGNATION_NAME"]) : String.Empty;
-                                    obj.department = (!String.IsNullOrEmpty(Convert.ToString(dr["DEPARTMENT_NAME"]))) ? Convert.ToString(dr["DEPARTMENT_NAME"]) : String.Empty;
-                                    obj.category = (!String.IsNullOrEmpty(Convert.ToString(dr["CATEGORY_NAME"]))) ? Convert.ToString(dr["CATEGORY_NAME"]) : String.Empty;
+                                    //obj.designation = (!String.IsNullOrEmpty(Convert.ToString(dr["DESIGNATION_NAME"]))) ? Convert.ToString(dr["DESIGNATION_NAME"]) : String.Empty;
+                                    //obj.department = (!String.IsNullOrEmpty(Convert.ToString(dr["DEPARTMENT_NAME"]))) ? Convert.ToString(dr["DEPARTMENT_NAME"]) : String.Empty;
+                                    obj.department = new Department
+                                    {
+                                        departmentId = Convert.ToInt32(dr["DEPARTMENT_ID"]),
+                                        departmentName = (!String.IsNullOrEmpty(Convert.ToString(dr["DEPARTMENT_NM"]))) ? Convert.ToString(dr["DEPARTMENT_NM"]) : String.Empty
+                                    };
+                                    obj.designation = new Designation
+                                    {
+                                        ID = Convert.ToInt32(dr["DESIGNATION_ID"]),
+                                        designationName = (!String.IsNullOrEmpty(Convert.ToString(dr["DESIGNATION_NAME"]))) ? Convert.ToString(dr["DESIGNATION_NAME"]) : String.Empty
+                                    };
+                                    obj.category = (!String.IsNullOrEmpty(Convert.ToString(dr["CATEGORY_NM"]))) ? Convert.ToString(dr["CATEGORY_NM"]) : String.Empty;
+                                    //obj.tenureStartDate = (!String.IsNullOrEmpty(Convert.ToString(dr["TENURE_START"]))) ? Convert.ToString(dr["TENURE_START"]) : String.Empty;
+                                    //obj.tenureEndDate = (!String.IsNullOrEmpty(Convert.ToString(dr["TENURE_END"]))) ? Convert.ToString(dr["TENURE_END"]) : String.Empty;
+                                    //obj.dateOfBirth = (!String.IsNullOrEmpty(Convert.ToString(dr["DATE_OF_BIRTH"]))) ? Convert.ToString(dr["DATE_OF_BIRTH"]) : String.Empty;
                                     obj.tenureStartDate = (!String.IsNullOrEmpty(Convert.ToString(dr["TENURE_START"]))) ? Convert.ToString(dr["TENURE_START"]) : String.Empty;
                                     obj.tenureEndDate = (!String.IsNullOrEmpty(Convert.ToString(dr["TENURE_END"]))) ? Convert.ToString(dr["TENURE_END"]) : String.Empty;
                                     obj.dateOfBirth = (!String.IsNullOrEmpty(Convert.ToString(dr["DATE_OF_BIRTH"]))) ? Convert.ToString(dr["DATE_OF_BIRTH"]) : String.Empty;
@@ -431,11 +416,8 @@ namespace BMS_New.Models.BMS.Repository
                                     obj.panremark = (!String.IsNullOrEmpty(Convert.ToString(dr["pan_remark"]))) ? Convert.ToString(dr["pan_remark"]) : String.Empty;
                                     obj.txtdin_pan = (!String.IsNullOrEmpty(Convert.ToString(dr["din_no"]))) ? Convert.ToString(dr["din_no"]) : String.Empty;
                                     obj.din_remark = (!String.IsNullOrEmpty(Convert.ToString(dr["din_remark"]))) ? Convert.ToString(dr["din_remark"]) : String.Empty;
-                                    obj.ddlcat1 = (!String.IsNullOrEmpty(Convert.ToString(dr["cat1"]))) ? Convert.ToString(dr["cat1"]) : String.Empty;
-                                    obj.ddlcat2 = (!String.IsNullOrEmpty(Convert.ToString(dr["cat2"]))) ? Convert.ToString(dr["cat2"]) : String.Empty;
-                                    obj.ddlcat3 = (!String.IsNullOrEmpty(Convert.ToString(dr["cat3"]))) ? Convert.ToString(dr["cat3"]) : String.Empty;
-                                    obj.ddl17A = (!String.IsNullOrEmpty(Convert.ToString(dr["Listing17_1_A"]))) ? Convert.ToString(dr["Listing17_1_A"]) : String.Empty;
-                                    obj.txtdate = (!String.IsNullOrEmpty(Convert.ToString(dr["date_of_passing"]))) ? Convert.ToString(dr["date_of_passing"]) : String.Empty;
+                                    //obj.ddl17A = (!String.IsNullOrEmpty(Convert.ToString(dr["Listing17_1_A"]))) ? Convert.ToString(dr["Listing17_1_A"]) : String.Empty;
+                                   // obj.txtdate = (!String.IsNullOrEmpty(Convert.ToString(dr["date_of_passing"]))) ? Convert.ToString(dr["date_of_passing"]) : String.Empty;
                                     obj.no_of_directorship = (!String.IsNullOrEmpty(Convert.ToString(dr["no_of_directorship"]))) ? Convert.ToString(dr["no_of_directorship"]) : String.Empty;
                                     obj.no_of_independent = (!String.IsNullOrEmpty(Convert.ToString(dr["no_of_independent"]))) ? Convert.ToString(dr["no_of_independent"]) : String.Empty;
                                     obj.no_of_membership = (!String.IsNullOrEmpty(Convert.ToString(dr["no_of_membership"]))) ? Convert.ToString(dr["no_of_membership"]) : String.Empty;
@@ -829,8 +811,8 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Clear();
                         cmd.Parameters.Add(new SqlParameter("@MODE", "GET_USER_DETAILS"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-                        cmd.Parameters.Add(new SqlParameter("@USER_LOGIN", objUser.userLogin));
-                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
+                        cmd.Parameters.Add(new SqlParameter("@USER_LOGIN", objUser.LoginId));
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.CompanyId));
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         {
                             DataTable dt = new DataTable();
@@ -879,7 +861,7 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Clear();
                         cmd.Parameters.Add(new SqlParameter("@MODE", "GET_USER_FOR_COMPOSITION"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.CompanyId));
                         cmd.Parameters.Add(new SqlParameter("@NAME", objUser.userName));
                         //cmd.Parameters.Add(new SqlParameter("@COMMITTEE_ID", objUser.committee.ID));
                         SqlDataReader rdr = cmd.ExecuteReader();
@@ -1051,7 +1033,7 @@ namespace BMS_New.Models.BMS.Repository
                             cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
                             cmd.Parameters.Add(new SqlParameter("@NAME", objUser.userName));
                             cmd.Parameters.Add(new SqlParameter("@EMAIL_ID", objUser.emailId));
-                            cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
+                            cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.CompanyId));
                             cmd.Parameters.Add(new SqlParameter("@ID", objUser.ID));
                             cmd.ExecuteNonQuery();
                             objUser.ID = Convert.ToInt32(cmd.Parameters["@SET_COUNT"].Value);
@@ -1133,8 +1115,8 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Clear();
                         cmd.Parameters.Add(new SqlParameter("@MODE", "GET_USER_NAME_BY_LOGIN"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-                        cmd.Parameters.Add(new SqlParameter("@USER_LOGIN", objUser.userLogin));
-                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
+                        cmd.Parameters.Add(new SqlParameter("@USER_LOGIN", objUser.LoginId));
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.CompanyId));
                         SqlDataReader rdr = cmd.ExecuteReader();
                         if (rdr.HasRows)
                         {
@@ -1182,7 +1164,7 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Add(new SqlParameter("@MODE", "GET_USER_EMAIL_BY_ID"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
                         cmd.Parameters.Add(new SqlParameter("@ID", objUser.ID));
-                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.CompanyId));
                         SqlDataReader rdr = cmd.ExecuteReader();
                         if (rdr.HasRows)
                         {
@@ -1228,7 +1210,7 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Clear();
                         cmd.Parameters.Add(new SqlParameter("@MODE", "GET_USER_FOR_COMMITTEE_SUPER_ADMIN"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.CompanyId));
                         cmd.Parameters.Add(new SqlParameter("@NAME", objUser.userName));
                         SqlDataReader rdr = cmd.ExecuteReader();
                         if (rdr.HasRows)
@@ -1237,6 +1219,7 @@ namespace BMS_New.Models.BMS.Repository
                             {
                                 User obj = new User();
                                 obj.ID = Convert.ToInt32(rdr["ID"]);
+                                obj.userLogin = (!String.IsNullOrEmpty(Convert.ToString(rdr["USER_LOGIN"]))) ? Convert.ToString(rdr["USER_LOGIN"]) : String.Empty;
                                 obj.userName = (!String.IsNullOrEmpty(Convert.ToString(rdr["NAME"]))) ? Convert.ToString(rdr["NAME"]) : String.Empty;
                                 obj.emailId = (!String.IsNullOrEmpty(Convert.ToString(rdr["EMAIL_ID"]))) ? Convert.ToString(rdr["EMAIL_ID"]) : String.Empty;
                                 _userResponse.AddObject(obj);
@@ -1356,7 +1339,7 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.CommandTimeout = 0;
                         cmd.Parameters.Clear();
                         cmd.Parameters.Add(new SqlParameter("@MODE", "GET_ALL_USER_BY_COMPANY"));
-                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.companyId));
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objUser.CompanyId));
 
                         SqlDataReader rdr = cmd.ExecuteReader();
                         if (rdr.HasRows)

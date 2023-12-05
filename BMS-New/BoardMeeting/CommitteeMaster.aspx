@@ -54,10 +54,12 @@
       <table class="table table-striped table-hover table-bordered" id="tbl-committee-setup">
         <thead>
             <tr>
-                  <th>SR. No</th>
+                  <th style="width: 40.559px;">SR. No</th>
                             <th>Committee</th>
                             <th>Abbr.</th>
-                            <th>No. of Administrators</th>
+                            <th style="width: 89.299px;">No. of Members</th>
+                            <th style="width: 175.705px;">No. Of Independent Director</th>
+                             <th style="width: 120.757px;">No. Of Women Director</th>
                             <th>Actions</th>
             </tr>
         </thead>

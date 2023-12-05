@@ -143,9 +143,9 @@ namespace BMS_New.BoardMeeting
                     Response.Redirect("/LogOut.aspx");
                 }
                 BMS_New.Models.BMS.Model.AdminUser user = new BMS_New.Models.BMS.Model.AdminUser();
-                user.userLogin = Convert.ToString(Session["EmployeeId"]);
+                user.LoginId = Convert.ToString(Session["EmployeeId"]);
                 user.moduleDatabase = Convert.ToString(Session["ModuleDatabase"]);
-                user.companyId = Convert.ToInt32(Session["CompanyId"]);
+                user.CompanyId = Convert.ToInt32(Session["CompanyId"]);
                 AdminUserRequest objUser = new AdminUserRequest(user);
                 AdminUserResponse objResponse = objUser.GetUserDetails();
                 if (objResponse.StatusFl)
@@ -171,7 +171,7 @@ namespace BMS_New.BoardMeeting
                     Response.Redirect("/LogOut.aspx");
                 }
                 BMS_New.Models.BMS.Model.AdminUser user = new BMS_New.Models.BMS.Model.AdminUser();
-                user.userLogin = Convert.ToString(Session["EmployeeId"]);
+                user.LoginId = Convert.ToString(Session["EmployeeId"]);
                 AdminUserRequest objUser = new AdminUserRequest(user);
                 AdminUserResponse objResponse = objUser.GetUserCompanyList();
                 if (objResponse.StatusFl)
@@ -185,7 +185,7 @@ namespace BMS_New.BoardMeeting
                      sb.Append("<option value='" + Session["CompanyId"] + "'>" + Session["CompanyName"] + "</option>");
                     foreach (var item in objResponse.User.CompanyMapping)
                     {
-                        sb.Append("<option value='" + item.companyId + "," + item.CompanyName + "," + item.logo + "," + item.moduleId + "," + item.moduleName + "," + item.modulefolder + "," + item.ModuleDataBase + "," + item.LOGIN_ID + "," + item.Mobile + "'>" + item.CompanyName + "</option>");
+                        sb.Append("<option value='" + item.CompanyId + "," + item.CompanyName + "," + item.logo + "," + item.moduleId + "," + item.moduleName + "," + item.modulefolder + "," + item.ModuleDataBase + "," + item.LoginId + "," + item.Mobile + "'>" + item.CompanyName + "</option>");
                         //sb.Append("<option value='" + item.companyId + "' onchange='javascript:GoToDashBoard(" + item.companyId + ","+item.CompanyName+ ", "+ Session["ModuleDatabase"] +")'>" + item.CompanyName + "</option>");
 
                     }
