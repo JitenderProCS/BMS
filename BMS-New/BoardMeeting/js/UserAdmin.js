@@ -149,11 +149,11 @@ function fnGetAdminUserList() {
                     //objAdminUser.push(msg.UserList[i]);
                     result += '<tr id="tr_' + msg.UserList[i].ID + '">';
                     /* result += '<td id="tdedit_' + msg.UserList[i].userLogin + '">';*/
-                    result += '<td id="tdEdit_' + msg.UserList[i].ID + '"><a data-target="#exampleModalSizeLg" data-toggle="modal" id="a_' + msg.UserList[i].ID + '" title="Edit" class="btn btn-light-primary px-3 font-weight-bold" onclick=\"javascript:fnEditUser(\'' + msg.UserList[i].ID + '\',\'' + msg.UserList[i].userName + '\',\'' + msg.UserList[i].userLogin + '\',\'' + msg.UserList[i].emailId + '\',\'' + msg.UserList[i].phone + '\',\'' + msg.UserList[i].authentication + '\');\"><i class="fas fa-pencil-alt"></i></a>';
+                    result += '<td id="tdEdit_' + msg.UserList[i].ID + '"><a data-target="#exampleModalSizeLg" data-toggle="modal" id="a_' + msg.UserList[i].ID + '" title="Edit" class="btn btn-light-primary px-3 font-weight-bold" onclick=\"javascript:fnEditUser(\'' + msg.UserList[i].ID + '\',\'' + msg.UserList[i].userName + '\',\'' + msg.UserList[i].LoginId + '\',\'' + msg.UserList[i].emailId + '\',\'' + msg.UserList[i].phone + '\',\'' + msg.UserList[i].authentication + '\');\"><i class="fas fa-pencil-alt"></i></a>';
                    /* result += '<td id="tdEdit_' + msg.UserList[i].ID + '"><a data-target="#exampleModalSizeLg" data-toggle="modal" id="a_' + msg.UserList[i].ID + '" title="Edit" class="btn btn-light-primary px-3 font-weight-bold" onclick=\"javascript:fnEditUser(' + i + ');\"><i class="fas fa-pencil-alt"></i></a></td>';*/
                     result += '<td id="tdUser_Name_' + msg.UserList[i].ID + '">' + msg.UserList[i].userName + '</td>';
                     result += '<td id="tdUser_Email_' + msg.UserList[i].ID + '">' + msg.UserList[i].emailId + '</td>';
-                    result += '<td id="tdUser_UserLogin_' + msg.UserList[i].ID + '">' + msg.UserList[i].userLogin + '</td>';
+                    result += '<td id="tdUser_UserLogin_' + msg.UserList[i].ID + '">' + msg.UserList[i].LoginId + '</td>';
                     result += '<td id="tdUser_Authentication_' + msg.UserList[i].ID + '">' + msg.UserList[i].authentication + '</td>';
 
                     result += '</tr>';
@@ -709,12 +709,12 @@ function fnDeleteAccessDetail(cntrl) {
     //deleteDematDetailElement = $(event.currentTarget).closest('tr');
     $(cntrl).closest('tr').remove();
 }
-function fnEditUser(ID, userName, userLogin, emailId, phone, authentication) {
+function fnEditUser(ID, userName, LoginId, emailId, phone, authentication) {
     debugger
     $('#txtUserId').val(ID);
     $('#txtName').val(userName);
     $('#txtEmail').val(emailId);
-    $('#txtUserid').val(userLogin);
+    $('#txtUserid').val(LoginId);
     $('#txtPhone').val(phone);
     $("select[id*='ddlAuthentication']").val(authentication);
     $('#txtEmail').prop('disabled', true);
@@ -725,7 +725,7 @@ function fnEditUser(ID, userName, userLogin, emailId, phone, authentication) {
     var ACompMap = new Array();
     for (var x = 0; x < arrACompMap.length; x++) {
         //alert("arrUpsiType[" + x + "].TypeId=" + arrUpsiType[x].TypeId);
-        if (userLogin == arrACompMap[x].userLogin) {
+        if (LoginId == arrACompMap[x].LoginId) {
             for (var i = 0; i < arrACompMap[x].CompanyMapping.length; i++) {
                 var obj = new Object();
                 obj.ID = arrACompMap[x].CompanyMapping[i].ID;

@@ -11,6 +11,7 @@ namespace BMS_New.Models.BMS.Model
         public Int32 Sequence { get; set; }
         public String UserLogin { get; set; }
         public String UserNm { get; set; }
+        public String UserEmail { get; set; }
         public String CommitteeDesignationName { get; set; }
         public Int32 CommitteeRoleId { get; set; }
         public String createdBy { get; set; }

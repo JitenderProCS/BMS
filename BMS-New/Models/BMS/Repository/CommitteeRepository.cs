@@ -19,72 +19,6 @@ namespace BMS_New.Models.BMS.Repository
         private static String dataBaseName = SQLHelper.GetDBName();
         //private string database_name = "PROCS_BOARD_MEETING";
 
-        public CommitteeResponse SaveCommittee(Committee objCommittee)
-        {
-            _committeeResponse = new CommitteeResponse();
-            _committeeResponse.StatusFl = false;
-            _committeeResponse.Msg = "Something went wrong. Please try again or Contact Support!";
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-                    conn.ChangeDatabase(objCommittee.moduleDatabase);
-                    using (SqlCommand cmd = new SqlCommand("SP_PROCS_BMS_COMMITTEE", conn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.CommandTimeout = 0;
-                        cmd.Parameters.Clear();
-                        cmd.Parameters.Add(new SqlParameter("@MODE", "ADD_COMMITTEE_MEMBER1"));
-                        cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-                        //cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objCommittee.companyId));
-                        cmd.Parameters.Add(new SqlParameter("@USER_ID", objCommittee.createdBy));
-                        cmd.Parameters.Add(new SqlParameter("@COMMITTEE_ID", objCommittee.ID));
-                        cmd.Parameters.Add(new SqlParameter("@COMMITTEE_NAME", objCommittee.committeeName));
-                        cmd.Parameters.Add(new SqlParameter("@COMMITTEE_ABBR", objCommittee.committeeABRR));
-                        cmd.Parameters.Add(new SqlParameter("@NO_OF_MEMBER", objCommittee.NoOfMembers));
-                        cmd.Parameters.Add(new SqlParameter("@NO_OF_INDEPENDENT_DIRECTOR", objCommittee.NoOfIndependentDirector));
-                        cmd.Parameters.Add(new SqlParameter("@NO_OF_WOMEN_DIRECTOR", objCommittee.NoOfWomenDirector));
-                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objCommittee.CompanyId));
-                        cmd.ExecuteNonQuery();
-                        int obj = Convert.ToInt32(cmd.Parameters["@SET_COUNT"].Value);
-                        if (obj == 0)
-                        {
-                            _committeeResponse.StatusFl = false;
-                            _committeeResponse.Msg = "Committee already exist !";
-                            return _committeeResponse;
-                        }
-                        foreach (CommitteeMember objAdmin in objCommittee.committeeMembers)
-                        {
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.CommandTimeout = 0;
-                            cmd.Parameters.Clear();
-                            cmd.Parameters.Add(new SqlParameter("@MODE", "ADD_COMMITTEE_MEMBERS"));
-                            cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-                            cmd.Parameters.Add(new SqlParameter("@COMMITTEE_ID", obj));
-                            cmd.Parameters.Add(new SqlParameter("@USER1_ID", objAdmin.UserLogin));
-                            cmd.Parameters.Add(new SqlParameter("@SEQUENCE", objAdmin.Sequence));
-                            cmd.Parameters.Add(new SqlParameter("@ROLE_ID", objAdmin.CommitteeRoleId));
-                            cmd.Parameters.Add(new SqlParameter("@USER_ID", objCommittee.createdBy));
-                            cmd.Parameters.Add(new SqlParameter("@SUPER_ADMIN_ID", objAdmin.CommitteeDesignationName));
-                            cmd.ExecuteNonQuery();
-                        }
-                        _committeeResponse.StatusFl = true;
-                        _committeeResponse.Msg = "Data has been saved successfully !";
-                    }
-                    conn.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                _committeeResponse = new CommitteeResponse();
-                _committeeResponse.StatusFl = false;
-                _committeeResponse.Msg = "Something went wrong. Please try again or Contact Support!";
-                new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
-            }
-            return _committeeResponse;
-        }
-
         //public CommitteeResponse SaveCommittee(Committee objCommittee)
         //{
         //    _committeeResponse = new CommitteeResponse();
@@ -120,7 +54,7 @@ namespace BMS_New.Models.BMS.Repository
         //                    _committeeResponse.Msg = "Committee already exist !";
         //                    return _committeeResponse;
         //                }
-        //                foreach (CommitteeMember objAdmin in objCommittee.committeeMembers)
+        //                foreach (CommitteeMember objMember in objCommittee.committeeMembers)
         //                {
         //                    cmd.CommandType = CommandType.StoredProcedure;
         //                    cmd.CommandTimeout = 0;
@@ -128,35 +62,13 @@ namespace BMS_New.Models.BMS.Repository
         //                    cmd.Parameters.Add(new SqlParameter("@MODE", "ADD_COMMITTEE_MEMBERS"));
         //                    cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
         //                    cmd.Parameters.Add(new SqlParameter("@COMMITTEE_ID", obj));
-        //                    cmd.Parameters.Add(new SqlParameter("@USER1_ID", objAdmin.UserLogin));
-        //                    cmd.Parameters.Add(new SqlParameter("@SEQUENCE", objAdmin.Sequence));
-        //                    cmd.Parameters.Add(new SqlParameter("@ROLE_ID", objAdmin.CommitteeRoleId));
+        //                    cmd.Parameters.Add(new SqlParameter("@USER1_ID", objMember.UserLogin));
+        //                    cmd.Parameters.Add(new SqlParameter("@SEQUENCE", objMember.Sequence));
+        //                    cmd.Parameters.Add(new SqlParameter("@ROLE_ID", objMember.CommitteeRoleId));
         //                    cmd.Parameters.Add(new SqlParameter("@USER_ID", objCommittee.createdBy));
-        //                    cmd.Parameters.Add(new SqlParameter("@SUPER_ADMIN_ID", objAdmin.CommitteeDesignationName));
+        //                    cmd.Parameters.Add(new SqlParameter("@SUPER_ADMIN_ID", objMember.CommitteeDesignationName));
         //                    cmd.ExecuteNonQuery();
-        //                    int obj1 = Convert.ToInt32(cmd.Parameters["@SET_COUNT"].Value);
-        //                    if (obj1 == 0)
-        //                    {
-        //                        _committeeResponse.StatusFl = false;
-        //                        _committeeResponse.Msg = "Committee already exist !";
-        //                        return _committeeResponse;
-        //                    }
-        //                    foreach (CommitteeMember objAdmin1 in objCommittee.committeeMembers)
-        //                    {
-        //                        cmd.CommandType = CommandType.StoredProcedure;
-        //                        cmd.CommandTimeout = 0;
-        //                        cmd.Parameters.Clear();
-        //                        cmd.Parameters.Add(new SqlParameter("@MODE", "ADD_COMMITTEE_MEMBERS"));
-        //                        cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-        //                        cmd.Parameters.Add(new SqlParameter("@COMMITTEE_ID", obj));
-        //                        cmd.Parameters.Add(new SqlParameter("@USER1_ID", objAdmin.userLogin));
-        //                        cmd.Parameters.Add(new SqlParameter("@ROLE_ID", objCommittee.committeeSuperAdmins));
-        //                        cmd.Parameters.Add(new SqlParameter("@USER_ID", objCommittee.createdBy));
-        //                        cmd.Parameters.Add(new SqlParameter("@SUPER_ADMIN_ID", objCommittee.committeeMembers.CommitteeDesignationName));
-        //                        cmd.ExecuteNonQuery();
-        //                    }
         //                }
-
         //                _committeeResponse.StatusFl = true;
         //                _committeeResponse.Msg = "Data has been saved successfully !";
         //            }
@@ -172,6 +84,74 @@ namespace BMS_New.Models.BMS.Repository
         //    }
         //    return _committeeResponse;
         //}
+
+        public CommitteeResponse SaveCommittee(Committee objCommittee)
+        {
+            _committeeResponse = new CommitteeResponse();
+            _committeeResponse.StatusFl = false;
+            _committeeResponse.Msg = "Something went wrong. Please try again or Contact Support!";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    conn.ChangeDatabase(objCommittee.moduleDatabase);
+                    using (SqlCommand cmd = new SqlCommand("SP_PROCS_BMS_COMMITTEE", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = 0;
+                        cmd.Parameters.Clear();
+                        cmd.Parameters.Add(new SqlParameter("@MODE", "ADD_COMMITTEE_MEMBER1"));
+                        cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
+                        //cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objCommittee.companyId));
+                        cmd.Parameters.Add(new SqlParameter("@USER_ID", objCommittee.createdBy));
+                        cmd.Parameters.Add(new SqlParameter("@COMMITTEE_ID", objCommittee.ID));
+                        cmd.Parameters.Add(new SqlParameter("@COMMITTEE_NAME", objCommittee.committeeName));
+                        cmd.Parameters.Add(new SqlParameter("@COMMITTEE_ABBR", objCommittee.committeeABRR));
+                        cmd.Parameters.Add(new SqlParameter("@NO_OF_MEMBER", objCommittee.NoOfMembers));
+                        cmd.Parameters.Add(new SqlParameter("@NO_OF_INDEPENDENT_DIRECTOR", objCommittee.NoOfIndependentDirector));
+                        cmd.Parameters.Add(new SqlParameter("@NO_OF_WOMEN_DIRECTOR", objCommittee.NoOfWomenDirector));
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objCommittee.CompanyId));
+                        cmd.ExecuteNonQuery();
+                        int obj = Convert.ToInt32(cmd.Parameters["@SET_COUNT"].Value);
+                        if (obj == 0)
+                        {
+                            _committeeResponse.StatusFl = false;
+                            _committeeResponse.Msg = "Committee already exist !";
+                            return _committeeResponse;
+                        }
+                        foreach (CommitteeMember objMember in objCommittee.committeeMembers)
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.CommandTimeout = 0;
+                            cmd.Parameters.Clear();
+                            cmd.Parameters.Add(new SqlParameter("@MODE", "ADD_COMMITTEE_MEMBERS"));
+                            cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
+                            cmd.Parameters.Add(new SqlParameter("@COMMITTEE_ID", obj));
+                            cmd.Parameters.Add(new SqlParameter("@USER1_ID", objMember.UserLogin));
+                            cmd.Parameters.Add(new SqlParameter("@SEQUENCE", objMember.Sequence));
+                            cmd.Parameters.Add(new SqlParameter("@ROLE_ID", objMember.CommitteeRoleId));
+                            cmd.Parameters.Add(new SqlParameter("@USER_ID", objCommittee.createdBy));
+                            cmd.Parameters.Add(new SqlParameter("@SUPER_ADMIN_ID", objMember.CommitteeDesignationName));
+                            cmd.ExecuteNonQuery();
+                        }
+                        _committeeResponse.StatusFl = true;
+                        _committeeResponse.Msg = "Data has been saved successfully !";
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                _committeeResponse = new CommitteeResponse();
+                _committeeResponse.StatusFl = false;
+                _committeeResponse.Msg = "Something went wrong. Please try again or Contact Support!";
+                new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
+            }
+            return _committeeResponse;
+        }
+
+
 
 
         public CommitteeResponse UpdateCommittee(Committee objCommittee)
@@ -197,20 +177,26 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Add(new SqlParameter("@COMMITTEE_NAME", objCommittee.committeeName));
                         cmd.Parameters.Add(new SqlParameter("@COMMITTEE_ABBR", objCommittee.committeeABRR));
                         cmd.Parameters.Add(new SqlParameter("@COMMITTEE_ID", objCommittee.ID));
+                        cmd.Parameters.Add(new SqlParameter("@NO_OF_MEMBER", objCommittee.NoOfMembers));
+                        cmd.Parameters.Add(new SqlParameter("@NO_OF_INDEPENDENT_DIRECTOR", objCommittee.NoOfIndependentDirector));
+                        cmd.Parameters.Add(new SqlParameter("@NO_OF_WOMEN_DIRECTOR", objCommittee.NoOfWomenDirector));
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objCommittee.CompanyId));
                         cmd.ExecuteNonQuery();
                         int obj = Convert.ToInt32(cmd.Parameters["@SET_COUNT"].Value);
                         int admin = 0;
-                        foreach (User objUser in objCommittee.committeeAdmins)
+                        foreach (CommitteeMember objMember in objCommittee.committeeMembers)
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.CommandTimeout = 0;
                             cmd.Parameters.Clear();
-                            cmd.Parameters.Add(new SqlParameter("@MODE", "UPDATE_COMMITTEE_ADMIN"));
+                            cmd.Parameters.Add(new SqlParameter("@MODE", "UPDATE_COMMITTEE_MEMBERS"));
                             cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
                             cmd.Parameters.Add(new SqlParameter("@COMMITTEE_ID", obj));
-                            cmd.Parameters.Add(new SqlParameter("@USER1_ID", objUser.ID));
+                            cmd.Parameters.Add(new SqlParameter("@USER1_ID", objMember.UserLogin));
+                            cmd.Parameters.Add(new SqlParameter("@SEQUENCE", objMember.Sequence));
+                            cmd.Parameters.Add(new SqlParameter("@ROLE_ID", objMember.CommitteeRoleId));
                             cmd.Parameters.Add(new SqlParameter("@USER_ID", objCommittee.createdBy));
-                            //cmd.Parameters.Add(new SqlParameter("@SUPER_ADMIN_ID", objUser.designation.designationName));
+                            cmd.Parameters.Add(new SqlParameter("@SUPER_ADMIN_ID", objMember.CommitteeDesignationName));
                             cmd.ExecuteNonQuery();
                             admin = Convert.ToInt32(cmd.Parameters["@SET_COUNT"].Value);
                         }
@@ -233,17 +219,80 @@ namespace BMS_New.Models.BMS.Repository
             return _committeeResponse;
         }
 
+        //public CommitteeResponse GetListCommittees(Committee objCommittee)
+        //{
+        //    _committeeResponse = new CommitteeResponse();
+        //    _committeeResponse.StatusFl = false;
+        //    _committeeResponse.Msg = "No Data Found!";
+        //    try
+        //    {
+        //        using (SqlConnection conn = new SqlConnection(connectionString))
+        //        {
+        //            conn.Open();
+        //            conn.ChangeDatabase(objCommittee.moduleDatabase);
+        //            using (SqlCommand cmd = new SqlCommand("SP_PROCS_BMS_COMMITTEE", conn))
+        //            {
+        //                cmd.CommandType = CommandType.StoredProcedure;
+        //                cmd.CommandTimeout = 0;
+        //                cmd.Parameters.Clear();
+        //                cmd.Parameters.Add(new SqlParameter("@MODE", "GET_COMMITTEES_LIST"));
+        //                cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
+        //                cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objCommittee.CompanyId));
+        //                cmd.Parameters.Add(new SqlParameter("@USER_ID", objCommittee.createdBy));
+        //                SqlDataReader rdr = cmd.ExecuteReader();
+        //                if (rdr.HasRows)
+        //                {
+        //                    List<Committee> lstUser = new List<Committee>();
+        //                    while (rdr.Read())
+        //                    {
+        //                        Committee obj = new Committee();
+        //                        obj.ID = Convert.ToInt32(rdr["COMMITTEE_ID"]);
+        //                        obj.committeeName = (!String.IsNullOrEmpty(Convert.ToString(rdr["COMMITTEE_NM"]))) ? Convert.ToString(rdr["COMMITTEE_NM"]) : String.Empty;
+        //                        obj.committeeABRR = (!String.IsNullOrEmpty(Convert.ToString(rdr["COMMITTEE_ABBR"]))) ? Convert.ToString(rdr["COMMITTEE_ABBR"]) : String.Empty;
+        //                        obj.NoOfMembers = Convert.ToInt32(rdr["NO_OF_MEMBER"]);
+        //                        obj.NoOfIndependentDirector = Convert.ToInt32(rdr["NO_OF_INDEPENDENT_DIRECTOR"]);
+        //                        obj.NoOfWomenDirector = Convert.ToInt32(rdr["NO_OF_WOMEN_DIRECTOR"]);
+        //                        obj.NoOfcommitteeMembers = (!String.IsNullOrEmpty(Convert.ToString(rdr["TotalMembers"]))) ? Convert.ToString(rdr["TotalMembers"]) : String.Empty;
+        //                        //obj.NoOfIndependentDirector = Convert.ToInt32(rdr["CNT_Independent_Director"]);
+        //                        //obj.NoOfWomenDirector = Convert.ToInt32(rdr["CNT_WomenDirector"]);
+        //                        obj.CntIndependentDirector = (!String.IsNullOrEmpty(Convert.ToString(rdr["CNT_Independent_Director"]))) ? Convert.ToString(rdr["CNT_Independent_Director"]) : String.Empty;
+        //                        obj.CntWomenDirector = (!String.IsNullOrEmpty(Convert.ToString(rdr["CNT_WomenDirector"]))) ? Convert.ToString(rdr["CNT_WomenDirector"]) : String.Empty;
+        //                        //obj.isDelete = Convert.ToInt32(rdr["IS_EXISTS"]);
+        //                        _committeeResponse.AddObject(obj);
+        //                    }
+        //                    _committeeResponse.StatusFl = true;
+        //                    _committeeResponse.Msg = "Data has been fetched successfully !";
+        //                }
+        //                rdr.Close();
+        //            }
+        //            conn.Close();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _committeeResponse = new CommitteeResponse();
+        //        _committeeResponse.StatusFl = false;
+        //        _committeeResponse.Msg = "Something went wrong. Please try again or Contact Support!";
+        //        new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
+        //    }
+        //    return _committeeResponse;
+        //}
+
+        
+
         public CommitteeResponse GetListCommittees(Committee objCommittee)
         {
             _committeeResponse = new CommitteeResponse();
             _committeeResponse.StatusFl = false;
             _committeeResponse.Msg = "No Data Found!";
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
                     conn.ChangeDatabase(objCommittee.moduleDatabase);
+
                     using (SqlCommand cmd = new SqlCommand("SP_PROCS_BMS_COMMITTEE", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
@@ -253,33 +302,105 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
                         cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objCommittee.CompanyId));
                         cmd.Parameters.Add(new SqlParameter("@USER_ID", objCommittee.createdBy));
-                        SqlDataReader rdr = cmd.ExecuteReader();
-                        if (rdr.HasRows)
+                        DataSet ds = new DataSet();
+
+                        using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                         {
-                            List<Committee> lstUser = new List<Committee>();
-                            while (rdr.Read())
-                            {
-                                Committee obj = new Committee();
-                                obj.ID = Convert.ToInt32(rdr["COMMITTEE_ID"]);
-                                obj.committeeName = (!String.IsNullOrEmpty(Convert.ToString(rdr["COMMITTEE_NM"]))) ? Convert.ToString(rdr["COMMITTEE_NM"]) : String.Empty;
-                                obj.committeeABRR = (!String.IsNullOrEmpty(Convert.ToString(rdr["COMMITTEE_ABBR"]))) ? Convert.ToString(rdr["COMMITTEE_ABBR"]) : String.Empty;
-                                obj.NoOfMembers = Convert.ToInt32(rdr["NO_OF_MEMBER"]);
-                                obj.NoOfIndependentDirector = Convert.ToInt32(rdr["NO_OF_INDEPENDENT_DIRECTOR"]);
-                                obj.NoOfWomenDirector = Convert.ToInt32(rdr["NO_OF_WOMEN_DIRECTOR"]);
-                                obj.NoOfcommitteeMembers = (!String.IsNullOrEmpty(Convert.ToString(rdr["TotalMembers"]))) ? Convert.ToString(rdr["TotalMembers"]) : String.Empty;
-                                //obj.NoOfIndependentDirector = Convert.ToInt32(rdr["CNT_Independent_Director"]);
-                                //obj.NoOfWomenDirector = Convert.ToInt32(rdr["CNT_WomenDirector"]);
-                                obj.CntIndependentDirector = (!String.IsNullOrEmpty(Convert.ToString(rdr["CNT_Independent_Director"]))) ? Convert.ToString(rdr["CNT_Independent_Director"]) : String.Empty;
-                                obj.CntWomenDirector = (!String.IsNullOrEmpty(Convert.ToString(rdr["CNT_WomenDirector"]))) ? Convert.ToString(rdr["CNT_WomenDirector"]) : String.Empty;
-                                //obj.isDelete = Convert.ToInt32(rdr["IS_EXISTS"]);
-                                _committeeResponse.AddObject(obj);
-                            }
-                            _committeeResponse.StatusFl = true;
-                            _committeeResponse.Msg = "Data has been fetched successfully !";
+                            adapter.Fill(ds);
                         }
-                        rdr.Close();
+
+                        DataTable dt = ds.Tables[0];
+                        DataTable dtChairman = ds.Tables[1];
+                        DataTable dtMembers = ds.Tables[2];
+                        DataTable dtCoordinatorList = ds.Tables[3];
+                        if (dt != null)
+                        {
+                            if (dt.Rows.Count > 0)
+                            {
+                                List<Committee> lstuser = new List<Committee>();
+                                foreach (DataRow dr in dt.Rows)
+                                {
+                                    Committee o = new Committee();
+                                    o.ID = Convert.ToInt32(dr["COMMITTEE_ID"]);
+                                    o.committeeName = Convert.ToString(dr["COMMITTEE_NM"]);
+                                    o.committeeABRR = Convert.ToString(dr["COMMITTEE_ABBR"]);
+                                    o.NoOfMembers = Convert.ToInt32(dr["NO_OF_MEMBER"]);
+                                    o.NoOfIndependentDirector = Convert.ToInt32(dr["NO_OF_INDEPENDENT_DIRECTOR"]);
+                                    o.NoOfWomenDirector = Convert.ToInt32(dr["NO_OF_WOMEN_DIRECTOR"]);
+                                    o.NoOfcommitteeMembers = Convert.ToString(dr["TotalMembers"]);
+                                    o.CntIndependentDirector = Convert.ToString(dr["CNT_Independent_Director"]);
+                                    o.CntWomenDirector = Convert.ToString(dr["CNT_WomenDirector"]);
+                                    if (dtChairman.Rows.Count > 0)
+                                    {
+                                        List<CommitteeMember> committeeMembers = new List<CommitteeMember>();
+                                        string committeeId = dr["COMMITTEE_ID"].ToString();
+                                        DataRow[] chairmanRows = dtChairman.Select($"COMMITTEE_ID = {o.ID}");
+                                        foreach (DataRow chairmanRow in chairmanRows)
+                                        {
+                                            CommitteeMember chairman = new CommitteeMember();
+                                            chairman.ID = Convert.ToInt32(chairmanRow["COMMITTEE_ID"]);
+                                            chairman.UserLogin = Convert.ToString(chairmanRow["USER_ID"]);
+                                            chairman.UserNm = Convert.ToString(chairmanRow["USER_NM"]);
+                                            chairman.UserEmail = Convert.ToString(chairmanRow["USER_EMAIL"]);
+                                            chairman.Sequence = Convert.ToInt32(chairmanRow["Sequence"]);
+                                            chairman.CommitteeRoleId = Convert.ToInt32(chairmanRow["COMMITTEE_ROLE_ID"]);
+                                            chairman.CommitteeDesignationName = Convert.ToString(chairmanRow["COMMITTEE_ROLE"]);
+
+                                            committeeMembers.Add(chairman);
+                                        }
+
+                                        //List<CommitteeMember> committeeMembers = new List<CommitteeMember>();
+                                        //string committeeId = dr["COMMITTEE_ID"].ToString();
+
+                                        // Add members from dtMembers
+                                        DataRow[] membersRows = dtMembers.Select("COMMITTEE_ID = '" + committeeId + "'");
+                                        foreach (DataRow memberRow in membersRows)
+                                        {
+                                            CommitteeMember member = new CommitteeMember();
+                                            member.ID = Convert.ToInt32(memberRow["COMMITTEE_ID"]);
+                                            member.UserLogin = Convert.ToString(memberRow["USER_ID"]);
+                                            member.UserNm = Convert.ToString(memberRow["USER_NM"]);
+                                            member.UserEmail = Convert.ToString(memberRow["USER_EMAIL"]);
+                                            member.Sequence = Convert.ToInt32(memberRow["Sequence"]);
+                                            member.CommitteeRoleId = Convert.ToInt32(memberRow["COMMITTEE_ROLE_ID"]);
+                                            member.CommitteeDesignationName = Convert.ToString(memberRow["COMMITTEE_ROLE"]);
+                                            committeeMembers.Add(member);
+                                        }
+
+                                        // Add members from dtCoordinatorList
+                                        DataRow[] coordinatorRows = dtCoordinatorList.Select("COMMITTEE_ID = '" + committeeId + "'");
+                                        foreach (DataRow coordinatorRow in coordinatorRows)
+                                        {
+                                            CommitteeMember coordinator = new CommitteeMember();
+                                            coordinator.ID = Convert.ToInt32(coordinatorRow["COMMITTEE_ID"]);
+                                            coordinator.UserLogin = Convert.ToString(coordinatorRow["USER_ID"]);
+                                            coordinator.UserNm = Convert.ToString(coordinatorRow["USER_NM"]);
+                                            coordinator.UserEmail = Convert.ToString(coordinatorRow["USER_EMAIL"]);
+                                            coordinator.Sequence = Convert.ToInt32(coordinatorRow["Sequence"]);
+                                            coordinator.CommitteeRoleId = Convert.ToInt32(coordinatorRow["COMMITTEE_ROLE_ID"]);
+                                            coordinator.CommitteeDesignationName = Convert.ToString(coordinatorRow["COMMITTEE_ROLE"]);
+                                            committeeMembers.Add(coordinator);
+                                        }
+
+                                        o.committeeMembers = committeeMembers;
+                                    }
+                                    lstuser.Add(o);
+
+                                }
+
+                                _committeeResponse.CommitteeList = lstuser;
+                                _committeeResponse.StatusFl = true;
+                                _committeeResponse.Msg = "Data has been fetched successfully !";
+                            }
+                        }
+                        else
+                        {
+                            _committeeResponse.StatusFl = false;
+                            _committeeResponse.Msg = "No data found !";
+                        }
+
+                        return _committeeResponse;
                     }
-                    conn.Close();
                 }
             }
             catch (Exception ex)
@@ -289,8 +410,10 @@ namespace BMS_New.Models.BMS.Repository
                 _committeeResponse.Msg = "Something went wrong. Please try again or Contact Support!";
                 new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
             }
+
             return _committeeResponse;
         }
+
 
         public CommitteeResponse GetCommittee(Committee objCommittee)
         {
@@ -323,12 +446,12 @@ namespace BMS_New.Models.BMS.Repository
                                 obj.committeeABRR = (!String.IsNullOrEmpty(Convert.ToString(rdr["COMMITTEE_ABBR"]))) ? Convert.ToString(rdr["COMMITTEE_ABBR"]) : String.Empty;
                                 obj.NoOfMembers = Convert.ToInt32(rdr["NO_OF_MEMBER"]);
                                 obj.NoOfIndependentDirector = Convert.ToInt32(rdr["NO_OF_INDEPENDENT_DIRECTOR"]);
-                                obj.NoOfWomenDirector = Convert.ToInt32(rdr["COMMITTEE_ID"]);
-                                obj.committeeMembers = new CommitteeMember
-                                {
-                                    UserLogin = (!String.IsNullOrEmpty(Convert.ToString(rdr["USER_ID"]))) ? Convert.ToString(rdr["USER_ID"]) : String.Empty
-                                    UserNm = (!String.IsNullOrEmpty(Convert.ToString(rdr["USER_NM"]))) ? Convert.ToString(rdr["USER_NM"]) : String.Empty
-                                };
+                                obj.NoOfWomenDirector = Convert.ToInt32(rdr["NO_OF_WOMEN_DIRECTOR"]);
+                                //obj.committeeMembers = new CommitteeMember
+                                //{
+                                //    UserLogin = (!String.IsNullOrEmpty(Convert.ToString(rdr["USER_ID"]))) ? Convert.ToString(rdr["USER_ID"]) : String.Empty
+                                //    UserNm = (!String.IsNullOrEmpty(Convert.ToString(rdr["USER_NM"]))) ? Convert.ToString(rdr["USER_NM"]) : String.Empty
+                                //};
                                 obj.CompanyId = objCommittee.CompanyId;
                                 obj.moduleDatabase = objCommittee.moduleDatabase;
                                 GetCommitteeMembers(obj);
@@ -376,13 +499,14 @@ namespace BMS_New.Models.BMS.Repository
                             while (rdr.Read())
                             {
                                 User obj = new User();
-                                obj.ID = Convert.ToInt32(rdr["ID"]);
+                                //obj.ID = Convert.ToInt32(rdr["ID"]);
+                                obj.userLogin = (!String.IsNullOrEmpty(Convert.ToString(rdr["USER_LOGIN"]))) ? Convert.ToString(rdr["USER_LOGIN"]) : String.Empty;
                                 obj.userName = (!String.IsNullOrEmpty(Convert.ToString(rdr["USER_NM"]))) ? Convert.ToString(rdr["USER_NM"]) : String.Empty;
                                 obj.emailId = (!String.IsNullOrEmpty(Convert.ToString(rdr["USER_EMAIL"]))) ? Convert.ToString(rdr["USER_EMAIL"]) : String.Empty;
-                                //obj.role = new Role
-                                //{
-                                //    role = (!String.IsNullOrEmpty(Convert.ToString(rdr["ROLE"]))) ? Convert.ToString(rdr["ROLE"]) : String.Empty
-                                //};
+                                obj.role = new Role
+                                {
+                                    role = (!String.IsNullOrEmpty(Convert.ToString(rdr["ROLE"]))) ? Convert.ToString(rdr["ROLE"]) : String.Empty
+                                };
                                 obj.CHECKED = Convert.ToInt32(rdr["CHECKED"]);
                                 lstUser.Add(obj);
                             }

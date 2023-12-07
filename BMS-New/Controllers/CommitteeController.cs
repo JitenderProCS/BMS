@@ -162,6 +162,41 @@ namespace BMS_New.Controllers
             return committeeResponse;
         }
 
+        [Route("DeleteCommittee_CheckMeeting")]
+        [HttpPost]
+        public CommitteeResponse DeleteCommittee_CheckMeeting()
+        {
+            try
+            {
+                if (HttpContext.Current.Session.Count == 0)
+                {
+                    committeeResponse.StatusFl = false;
+                    committeeResponse.Msg = "SessionExpired";
+                    return committeeResponse;
+                }
+
+                Committee committee = new Committee();
+                using (System.IO.StreamReader sr = new System.IO.StreamReader(HttpContext.Current.Request.InputStream))
+                {
+                    input = sr.ReadToEnd();
+                }
+
+                committee = serializer1.Deserialize<Committee>(input);
+                committee.createdBy = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
+                committee.CompanyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                committee.moduleDatabase = Convert.ToString(HttpContext.Current.Session["ModuleDatabase"]);
+                CommitteeRequest committeeRequest = new CommitteeRequest(committee);
+                committeeResponse = committeeRequest.DeleteCommittee_checkMeeting();
+            }
+            catch (Exception ex)
+            {
+                new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]), Convert.ToInt32(HttpContext.Current.Session["CompanyId"]));
+                committeeResponse.StatusFl = false;
+                committeeResponse.Msg = ex.Message;
+            }
+            return committeeResponse;
+        }
+
         [Route("GetUserListForCommittee")]
         [HttpPost]
         public CommitteeResponse GetUserListForCommittee()

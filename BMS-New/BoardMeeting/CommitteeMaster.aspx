@@ -54,20 +54,39 @@
       <table class="table table-striped table-hover table-bordered" id="tbl-committee-setup">
         <thead>
             <tr>
-                  <th style="width: 40.559px;">SR. No</th>
+                            <th>SR. No</th>
                             <th>Committee</th>
                             <th>Abbr.</th>
-                            <th style="width: 89.299px;">No. of Members</th>
-                            <th style="width: 175.705px;">No. Of Independent Director</th>
-                             <th style="width: 120.757px;">No. Of Women Director</th>
+                            <th>No. of Members</th>
+                            <th>No. Of Independent Director</th>
+                             <th>No. Of Women Director</th>
                             <th>Actions</th>
             </tr>
         </thead>
         <tbody id="tbdCommitteList">
         </tbody>
     </table>
+      <!-----begin :: Delete Modal------>
+    <div class="modal fade in" id="deleteCommittee" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="True">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="True"></button>
+                    <h4 class="modal-title"><b>Are you sure, you want to delete This Committee?</b></h4>
+                </div>
+                <div class="modal-footer">
+                    <input id="txtDelID" type="hidden" value="0" />
+                    <button type="button" class="btn dark btn-outline" data-dismiss="modal" onclick="Conferm_Delete_Close()">NO</button>
+                    <input value="YES" id="btnDeleteConfirm" data-dismiss="modal" class="btn red" onclick="DeleteCommittee()" type="submit" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-----END :: Delete Modal------>
+
     <!-----begin :: Edit Modal------>
-    <div class="modal fade in" id="EditCommittee" tabindex="-1" role="dialog" aria-hidden="True">
+   <%-- <div class="modal fade in" id="EditCommittee" tabindex="-1" role="dialog" aria-hidden="True">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -76,12 +95,12 @@
                 </div>
                 <div class="modal-footer">
                     <input id="txteditID" type="hidden" value="0" />
-                    <button class="btn dark btn-outline" data-dismiss="modal" onclick="Conferm_Edit_Close()">NO</button>
+                    <button class="close" data-dismiss="modal" onclick="Conferm_Edit_Close()">NO</button>
                     <button id="btneditConfirm" class="btn red" onclick="javascript:fnSaveCommittee();">YES</button>
                 </div>
             </div>
         </div>
-    </div>
+    </div>--%>
     <!---------end:: Model---------->
 
      <!--begin::Modal-->
@@ -166,7 +185,7 @@
                               <select id="ddlCoordinator" style="width: 325px;" class="form-control form-control-lg form-control-solid col" onchange="javascript:fnRemoveClass(this,'Coordinator');">
                                </select>&nbsp;
                             <input type="number" value="" style="width: 125px;" class="form-control form-control-solid form-control-lg" placeholder="Sequence" id="txtSequence" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="2" autocomplete="off" onkeypress="javascript:fnRemoveClass(this,'Sequence');" />&nbsp;&nbsp;
-                             <button id="btnadd" class="btn btn-primary " onclick=" javascript:fnAddMembers();" type="button">Add</button>
+                             <button id="btnadd" class="btn btn-primary" onclick=" javascript:fnAddMembers();" type="button">Add</button>
                         </div>
                     </div>
                       <!--end::Group-->
@@ -219,6 +238,7 @@
                                             </div>
                      <!--end::Group-->
                             <div class="modal-footer">
+                                <input id="txteditID" type="hidden" value="0" />
                      <button id="btnSave" type="button" class="btn btn-primary font-weight-bold" data-wizard-type="action-submit" onclick="javascript:fnSaveCommittee();">Submit</button>
                     <button id="btnCancel" type="button" class="btn btn-primary font-weight-bold" data-dismiss="modal" data-wizard-type="action-close" onclick="javascript:fnCloseModal();">Close</button>
                 </div>
