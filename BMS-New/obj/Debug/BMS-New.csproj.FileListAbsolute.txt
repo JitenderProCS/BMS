@@ -397,4 +397,3 @@ E:\Jitendra\GIT\developement\BMS\BMS-New\obj\Debug\BMS-New.csproj.CoreCompileInp
 E:\Jitendra\GIT\developement\BMS\BMS-New\obj\Debug\BMS-New.csproj.CopyComplete
 E:\Jitendra\GIT\developement\BMS\BMS-New\obj\Debug\BMS-New.dll
 E:\Jitendra\GIT\developement\BMS\BMS-New\obj\Debug\BMS-New.pdb
-E:\Jitendra\GIT\developement\BMS\BMS-New\obj\Debug\BMS-New.csproj.AssemblyReference.cache

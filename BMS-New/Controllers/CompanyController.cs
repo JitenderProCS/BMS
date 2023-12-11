@@ -131,9 +131,9 @@ namespace BMS_New.Controllers
                 }
                 Company company = new JavaScriptSerializer().Deserialize<Company>(input);
                 Company objcom = new Company();
-               //var Id = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                var Id = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);
+                objcom.CompanyId = Convert.ToInt32(Id);
                 var createdby = Convert.ToString(HttpContext.Current.Session["EmployeeId"]);
-                //objcom.CompanyId = Convert.ToInt32(Id);
                 objcom.createdBy = Convert.ToString(createdby);
                 //meetingVenue.createdBy = Convert.ToString(HttpContext.Current.Session["EMPLOYEE_ID"]);
                 //user.companyId = Convert.ToInt32(HttpContext.Current.Session["CompanyId"]);

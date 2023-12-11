@@ -160,56 +160,6 @@ namespace BMS_New.Models.BMS.Service.Request
             }
         }
 
-        public CommitteeResponse SavecommitteeComposition()
-        {
-            try
-            {
-                _committeeRepo = new CommitteeRepository();
-
-                return _committeeRepo.SaveCommitteeComposition(_committee);
-                if (_committee.ID == 0)
-                {
-
-                }
-                else
-                {
-                    return _committeeRepo.UpdateCommittee(_committee);
-                }
-            }
-            catch (Exception ex)
-            {
-                new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
-                return null;
-            }
-
-        }
-        public CommitteeResponse ListCommitteeComposition()
-        {
-            try
-            {
-                _committeeRepo = new CommitteeRepository();
-                return _committeeRepo.GetListCommitteesComposition(_committee);
-            }
-            catch (Exception ex)
-            {
-                new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
-                return null;
-            }
-        }
-
-        public CommitteeResponse ListEditCommitteeComposition()
-        {
-            try
-            {
-                _committeeRepo = new CommitteeRepository();
-                return _committeeRepo.GetCommitteeCompositionEdit(_committee);
-            }
-            catch (Exception ex)
-            {
-                new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
-                return null;
-            }
-        }
 
         public CommitteeResponse HistoryCommittee()
         {
