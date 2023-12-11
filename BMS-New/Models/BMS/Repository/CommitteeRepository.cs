@@ -172,7 +172,6 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Clear();
                         cmd.Parameters.Add(new SqlParameter("@MODE", "UPDATE_COMMITTEE_MEMBER"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
-                       // cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objCommittee.companyId));
                         cmd.Parameters.Add(new SqlParameter("@USER_ID", objCommittee.createdBy));
                         cmd.Parameters.Add(new SqlParameter("@COMMITTEE_NAME", objCommittee.committeeName));
                         cmd.Parameters.Add(new SqlParameter("@COMMITTEE_ABBR", objCommittee.committeeABRR));
@@ -544,7 +543,7 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Add(new SqlParameter("@MODE", "DELETE_COMMITTEE"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
                         cmd.Parameters.Add(new SqlParameter("@COMMITTEE_ID", objCommittee.ID));
-                        //cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objCommittee.companyId));
+                        cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objCommittee.CompanyId));
                         cmd.ExecuteNonQuery();
                         //int idd = Convert.ToInt32(cmd.Parameters["@SET_COUNT"].Value);
                         //if (idd > 0)
@@ -565,6 +564,7 @@ namespace BMS_New.Models.BMS.Repository
             }
             return _committeeResponse;
         }
+
 
         public CommitteeResponse DeleteCommittee_CheckMeeting(Committee objCommittee)
         {
@@ -1092,7 +1092,7 @@ namespace BMS_New.Models.BMS.Repository
             return _committeeResponse;
         }
 
-        public CommitteeResponse GetCommitteeCompositionHistory(Committee objCommittee)
+        public CommitteeResponse GetCommitteeHistory(Committee objCommittee)
         {
             _committeeResponse = new CommitteeResponse();
             _committeeResponse.StatusFl = false;
@@ -1108,7 +1108,7 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandTimeout = 0;
                         cmd.Parameters.Clear();
-                        cmd.Parameters.Add(new SqlParameter("@MODE", "GET_COMMITTEE__COMPOSITION_FOR_HISTORY"));
+                        cmd.Parameters.Add(new SqlParameter("@MODE", "GET_COMMITTEE_FOR_HISTORY"));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
                         cmd.Parameters.Add(new SqlParameter("@COMMITTEE_ID", objCommittee.ID));
                         SqlDataReader rdr = cmd.ExecuteReader();
@@ -1119,22 +1119,15 @@ namespace BMS_New.Models.BMS.Repository
                             {
                                 CommitteeMember obj = new CommitteeMember();
                                 objCommittee.committeeName = (!String.IsNullOrEmpty(Convert.ToString(rdr["COMMITTEE_NM"]))) ? Convert.ToString(rdr["COMMITTEE_NM"]) : String.Empty;
-                                obj.version = Convert.ToInt32(rdr["VERSION_ID"]);
-                                //obj.sequence = Convert.ToInt32(rdr["SEQUENCE"]);
+                                //obj.version = Convert.ToInt32(rdr["VERSION_ID"]);
+                                obj.Sequence = Convert.ToInt32(rdr["SEQUENCE"]);
                                 obj.modifiedBy = (!String.IsNullOrEmpty(Convert.ToString(rdr["CREATED_BY"]))) ? Convert.ToString(rdr["CREATED_BY"]) : String.Empty;
                                 obj.createdon = (!String.IsNullOrEmpty(Convert.ToString(rdr["CREATED_ON"]))) ? Convert.ToString(Convert.ToDateTime(rdr["CREATED_ON"]).ToString("dd/MM/yyyy")) : String.Empty;
-                                //obj.member = new User
-                                //{
-                                //    ID = Convert.ToInt32(rdr["USER_ID"]),
-                                //    userName = (!String.IsNullOrEmpty(Convert.ToString(rdr["USER_NM"]))) ? Convert.ToString(rdr["USER_NM"]) : String.Empty,
-                                //    emailId = (!String.IsNullOrEmpty(Convert.ToString(rdr["USER_EMAIL"]))) ? Convert.ToString(rdr["USER_EMAIL"]) : String.Empty
-                                //};
-                                //obj.designation = new Designation
-                                //{
-                                //    ID = Convert.ToInt32(rdr["DESIGNATION_ID"]),
-                                //    designationName = (!String.IsNullOrEmpty(Convert.ToString(rdr["DESIGNATION_NAME"]))) ? Convert.ToString(rdr["DESIGNATION_NAME"]) : String.Empty
-
-                                //};
+                                obj.UserLogin = (!String.IsNullOrEmpty(Convert.ToString(rdr["USER_ID"]))) ? Convert.ToString(rdr["USER_ID"]) : String.Empty;
+                                obj.UserNm = (!String.IsNullOrEmpty(Convert.ToString(rdr["USER_NM"]))) ? Convert.ToString(rdr["USER_NM"]) : String.Empty;
+                                obj.UserEmail = (!String.IsNullOrEmpty(Convert.ToString(rdr["USER_EMAIL"]))) ? Convert.ToString(rdr["USER_EMAIL"]): String.Empty;
+                                obj.CommitteeRoleId= Convert.ToInt32(rdr["ID"]);
+                                obj.CommitteeDesignationName= (!String.IsNullOrEmpty(Convert.ToString(rdr["COMMITTEE_ROLE"]))) ? Convert.ToString(rdr["COMMITTEE_ROLE"]) : String.Empty;
                                 obj.committeeModifiedDate = (!String.IsNullOrEmpty(Convert.ToString(rdr["COMMITTEE_MODIFIED_DATE"]))) ? (Convert.ToString(rdr["COMMITTEE_MODIFIED_DATE"]) == "1900-01-01 00:00:00.000" ? "" : Convert.ToString(Convert.ToDateTime(rdr["COMMITTEE_MODIFIED_DATE"]).ToString("dd/MM/yyyy"))) : String.Empty;
                                // obj.remarks = (!String.IsNullOrEmpty(Convert.ToString(rdr["REMARKS"]))) ? Convert.ToString(rdr["REMARKS"]) : String.Empty;
                                 lstMember.Add(obj);

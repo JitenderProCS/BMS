@@ -67,7 +67,7 @@ namespace BMS_New
                                 Session["CompanyName"] = matchedObj[0].CompanyNm;
                                 Session["ModuleId"] = matchedObj[0].ModuleId;
                                 Session["ModuleName"] = matchedObj[0].ModuleNm;
-                                //Session["CompanyLogo"] = matchedObj[0].CompanyLogo;
+                                Session["CompanyLogo"] = matchedObj[0].CompanyLogo;
                                 Session["ModuleFolder"] = matchedObj[0].ModuleFolder;
                                 Session["ModuleDatabase"] = matchedObj[0].ModuleDataBase;
                                // Session["UserMobile"] = matchedObj[0].Mobile;
@@ -80,8 +80,8 @@ namespace BMS_New
                                 {
                                     Session["IsVerified"] = "True";
                                     Response.StatusCode = 200;
-                                    Response.Redirect("/Dashboard.aspx");
-                                    //Response.Redirect(Session["ModuleFolder"] + "/" + "Dashboard.aspx");
+                                   // Response.Redirect("/Dashboard.aspx");
+                                    Response.Redirect(Session["ModuleFolder"] + "/" + "Dashboard.aspx");
                                     //Server.Transfer(Session["ModuleFolder"] + "/" + "Dashboard.aspx");
                                 }
 

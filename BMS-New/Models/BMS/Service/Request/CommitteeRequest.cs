@@ -145,19 +145,7 @@ namespace BMS_New.Models.BMS.Service.Request
             }
 
         }
-        public CommitteeResponse DeleteCommittee_checkMeeting()
-        {
-            try
-            {
-                _committeeRepo = new CommitteeRepository();
-                return _committeeRepo.DeleteCommittee_CheckMeeting(_committee);
-            }
-            catch (Exception ex)
-            {
-                new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
-                return null;
-            }
-        }
+
         public CommitteeResponse BindCommittee()
         {
             try
@@ -223,25 +211,12 @@ namespace BMS_New.Models.BMS.Service.Request
             }
         }
 
-        public CommitteeResponse HistoryCommitteeComposition()
+        public CommitteeResponse HistoryCommittee()
         {
             try
             {
                 _committeeRepo = new CommitteeRepository();
-                return _committeeRepo.GetCommitteeCompositionHistory(_committee);
-            }
-            catch (Exception ex)
-            {
-                new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
-                return null;
-            }
-        }
-        public CommitteeResponse DeleteCommitteecomposition()
-        {
-            try
-            {
-                _committeeRepo = new CommitteeRepository();
-                return _committeeRepo.DeleteCommitteecomposition(_committee);
+                return _committeeRepo.GetCommitteeHistory(_committee);
             }
             catch (Exception ex)
             {

@@ -502,7 +502,7 @@ namespace BMS_New.Models.BMS.Repository
                             {
                                 AdminUser obj = new AdminUser();
                                 obj.userName = !String.IsNullOrEmpty(Convert.ToString(dt.Rows[0]["USER_NM"])) ? Convert.ToString(dt.Rows[0]["USER_NM"]) : String.Empty;
-                                obj.CompanyName = !String.IsNullOrEmpty(Convert.ToString(dt.Rows[0]["COMPANY_NM"])) ? Convert.ToString(dt.Rows[0]["COMPANY_NM"]) : String.Empty;
+                                //obj.CompanyName = !String.IsNullOrEmpty(Convert.ToString(dt.Rows[0]["COMPANY_NM"])) ? Convert.ToString(dt.Rows[0]["COMPANY_NM"]) : String.Empty;
                                 obj.emailId = !String.IsNullOrEmpty(Convert.ToString(dt.Rows[0]["USER_EMAIL"])) ? Convert.ToString(dt.Rows[0]["USER_EMAIL"]) : String.Empty;
                                 obj.phone = !String.IsNullOrEmpty(Convert.ToString(dt.Rows[0]["USER_MOBILE"])) ? Convert.ToString(dt.Rows[0]["USER_MOBILE"]) : String.Empty;
                                 _userResponse.User = obj;

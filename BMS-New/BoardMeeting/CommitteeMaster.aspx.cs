@@ -14,6 +14,7 @@ namespace BMS_New.BoardMeeting
             if (!String.IsNullOrEmpty(Convert.ToString(Session["CompanyName"])))
             {
                 CompanyName.InnerText = Convert.ToString(Session["CompanyName"]);
+                his_comp.Text = Convert.ToString(Session["CompanyName"]);
             }
             else
             {

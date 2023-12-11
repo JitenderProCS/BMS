@@ -76,8 +76,8 @@
                 </div>
                 <div class="modal-footer">
                     <input id="txtDelID" type="hidden" value="0" />
-                    <button type="button" class="btn dark btn-outline" data-dismiss="modal" onclick="Conferm_Delete_Close()">NO</button>
-                    <input value="YES" id="btnDeleteConfirm" data-dismiss="modal" class="btn red" onclick="DeleteCommittee()" type="submit" />
+                    <button type="button" class="btn btn-light-primary px-3 font-weight-bold" data-dismiss="modal" onclick="Conferm_Delete_Close()">NO</button>
+                    <input value="YES" id="btnDeleteConfirm" data-dismiss="modal" class="btn btn-light-primary px-3 font-weight-bold" onclick="DeleteCommittee()" type="submit" />
                 </div>
             </div>
         </div>
@@ -86,7 +86,7 @@
     <!-----END :: Delete Modal------>
 
     <!-----begin :: Edit Modal------>
-   <%-- <div class="modal fade in" id="EditCommittee" tabindex="-1" role="dialog" aria-hidden="True">
+    <div class="modal fade in" id="EditCommittee" tabindex="-1" role="dialog" aria-hidden="True">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -100,7 +100,7 @@
                 </div>
             </div>
         </div>
-    </div>--%>
+    </div>
     <!---------end:: Model---------->
 
      <!--begin::Modal-->
@@ -129,7 +129,7 @@
                     <!--end::Group-->
                      <!--begin::Group-->
                     <div class="form-group row">
-                        <label id="lblCommitteeName" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">Select Committee </label>
+                        <label id="lblCommitteeName" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">Add Committee </label>
                         <div class="col-lg-9 col-xl-9">
                             <input type="text" class="form-control form-control-solid form-control-lg" placeholder="Enter text" id="txtCommitteeName" autocomplete="off" onkeypress="javascript:fnRemoveClass(this,'CommitteeName');" />
                             <input type="text" class="form-control form-control-solid form-control-lg" placeholder="Enter text" id="txtCommitteeid" style="display: none" />
@@ -238,7 +238,7 @@
                                             </div>
                      <!--end::Group-->
                             <div class="modal-footer">
-                                <input id="txteditID" type="hidden" value="0" />
+                               <%-- <input id="txteditID" type="hidden" value="0" />--%>
                      <button id="btnSave" type="button" class="btn btn-primary font-weight-bold" data-wizard-type="action-submit" onclick="javascript:fnSaveCommittee();">Submit</button>
                     <button id="btnCancel" type="button" class="btn btn-primary font-weight-bold" data-dismiss="modal" data-wizard-type="action-close" onclick="javascript:fnCloseModal();">Close</button>
                 </div>
@@ -254,6 +254,63 @@
                 </div>
         </div>
     <!--end::Modal-->
+      <!--begin::Committee_History Modal-->
+    <div id="committee_history" class="modal fade" tabindex="-1" data-width="400" aria-labelledby="exampleModalSizeLg" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                    <h4 class="modal-title">Committee History</h4>
+                </div>
+                  <br />
+                <div> <img src="../BoardMeeting/images/CompanyLogo/<%= Session["CompanyLogo"] %>" alt="Logo" style="height: 60px;width: 150px;margin-left: 289px;" /></div>
+                <div class="modal-body">
+                    <div class="portlet-body form">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label"><b>Company Name</b></label>
+                                <div class="col-md-6">
+                                    <asp:Label runat="server" ID="his_comp"></asp:Label>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <label class="col-md-3 control-label"><b>Committee Name</b></label>
+                                <div class="col-md-6">
+                                    <div id="ddlCommittee_his"></div>
+                                </div>
+                            </div>
+                            <br />
+                            <br />
+                            <div class="row">
+                                <h4><b>Current Committee Composition</b></h4>
+                                <table class="table table-striped" id="adduser_prev">
+                                    <thead>
+                                        <tr>
+                                            <th>SEQUENCE</th>
+                                            <th>NAME & EMAIL</th>
+                                            <th>ROLE</th>                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody_prev"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="row">
+                                <div class="modal-footer">
+                                    <button id="btnCancel1" type="button" class="btn btn-primary font-weight-bold" data-target="#committee_history" data-toggle="modal"  onclick="javascript:CancleCommittee_composition();">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     <!--end::Committee_History Model-->
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="Footer" runat="server">
     
