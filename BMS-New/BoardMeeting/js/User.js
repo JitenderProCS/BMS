@@ -499,11 +499,18 @@ function fnEditUser(index, UserLogin) {
     getdiv();
     $('#txtPhone').val(objUser[index].phone);
     $('#txtAddress').val(objUser[index].address);
+
+    //$('#txtTenurestartdate').val(objUser[index].tenureStartDate);
+    //$('#txtTenureenddate').val(objUser[index].tenureEndDate);
+    //$('#txtDateofbirth').val(objUser[index].dateOfBirth);
+   
+
+
     var dateformat = objUser[index].tenureStartDate.split(' ')[0];
     var dateformat1 = objUser[index].tenureEndDate.split(' ')[0];
     var dateformat2 = objUser[index].dateOfBirth.split(' ')[0];
     var TenDate = dateformat.split('-').reverse().join('-');
-    var TenDate1 = dateformat1.split('').reverse().join('-');
+    var TenDate1 = dateformat1.split('-').reverse().join('-');
     var TenDate2 = dateformat2.split('-').reverse().join('-');
     $('#txtTenurestartdate').val(TenDate);
     $('#txtTenureenddate').val(TenDate1);

@@ -1,2 +1,0 @@
-E:\Jitendra\GIT\developement\BMS\BMS-New\obj\Release\BMS-New.csproj.AssemblyReference.cache
-E:\Jitendra\GIT\developement\BMS\BMS-New\obj\Release\BMS-New.csproj.CoreCompileInputs.cache

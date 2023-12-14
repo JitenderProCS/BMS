@@ -71,7 +71,7 @@ namespace BMS_New.Controllers
                             HttpPostedFile file = files[i];
                             String ext = Path.GetExtension(file.FileName);
                             String name = String.Empty;
-                            if (file.FileName.Length < 20)
+                            if (file.FileName.Length > 20)
                             {
                                 name = Path.GetFileNameWithoutExtension(file.FileName).Replace(".", "").Substring(0, 20);
                             }

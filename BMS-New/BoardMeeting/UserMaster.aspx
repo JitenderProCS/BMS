@@ -25,7 +25,7 @@
 
         @media (min-width: 992px) {
             .header-fixed.subheader-fixed .subheader {
-                height: 76px;
+                height: 56px;
             }
         }
 
@@ -46,7 +46,63 @@
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="ContentPlaceHolder4" runat="Server">
     <!--begin::Subheader-->
-    <div class="subheader py-2 py-lg-5 subheader-solid" id="kt_subheader">
+     <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-2">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">
+                        <span class="svg-icon svg-icon-primary svg-icon-2x">
+                            <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\legacy\metronic\theme\html\demo1\dist/../src/media/svg/icons\General\Settings-2.svg-->
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24" />
+                                    <path d="M5,8.6862915 L5,5 L8.6862915,5 L11.5857864,2.10050506 L14.4852814,5 L19,5 L19,9.51471863 L21.4852814,12 L19,14.4852814 L19,19 L14.4852814,19 L11.5857864,21.8994949 L8.6862915,19 L5,19 L5,15.3137085 L1.6862915,12 L5,8.6862915 Z M12,15 C13.6568542,15 15,13.6568542 15,12 C15,10.3431458 13.6568542,9 12,9 C10.3431458,9 9,10.3431458 9,12 C9,13.6568542 10.3431458,15 12,15 Z" fill="#000000" />
+                                </g>
+                            </svg><!--end::Svg Icon--></span>
+                       User's Profile Details</h5>
+                    <!--end::Page Title-->
+                    <!--begin::Actions-->
+                    <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
+                    <div class="col-md-5 my-2 my-md-0" >
+                                <div class="d-flex align-items-center" style="width: 310px;">
+                                    <label class="mr-3 mb-0 d-none d-md-block">Status:</label>
+                                    <select id="ddlUserStatus" class="form-control" >
+                                        <option selected="selected" value="0">Select Status</option>
+                                        <option value="Active">Active</option>
+                                        <option value="InActive">InActive</option>
+                                    </select>&nbsp;
+                                     <button id="Button1" runat="server" class="btn btn-light-primary px-6 font-weight-bold" onclick="javascript:fnGetUserList();">
+                            Search
+                        </button>
+                                </div>
+                            </div>
+                         
+
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+            <!--begin::Button-->
+           <button type="button" data-toggle="modal" data-target="#exampleModalSizeLg" class="btn btn-primary font-weight-bolder" onclick="javascript:fnClearForm();">
+                                    <span class="svg-icon svg-icon-md">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24" />
+                                                <circle fill="#000000" cx="9" cy="15" r="6" />
+                                                <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
+                                            </g>
+                                        </svg>
+                                        <!--end::Svg Icon-->
+                                    </span>Add New User</button>
+            <!--end::Button-->
+        </div>
+    </div>
+
+  <%--  <div class="subheader py-2 py-lg-5 subheader-solid" id="kt_subheader">
         <div class="container-fluid ">
             <!--begin::Info-->
            <div class="col-12">
@@ -101,11 +157,36 @@
             </div>
             <!--end::Info-->
         </div>
-    </div>
+    </div>--%>
     <!--end::Subheader-->
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="ContentPlaceHolder3" runat="Server">
-    <!--begin::Card-->
+   
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+
+
+     <!--begin::Table-->
+                <table class="table table-striped table-hover table-bordered"  id="tbl-User-setup" style="margin-top: 26px;">
+                    <thead>
+                        <tr>
+                            <th>Action</th>
+                            <th>Name </th>
+                            <th>Role  </th>
+                            <%-- <th>Tenure Start</th>
+                            <th>Tenure End</th>--%>
+                            <th>Email</th>
+                            <th>User Login</th>
+                            <th>Status</th>
+                            <th></th>
+                            <%--<th></th>--%>
+                        </tr>
+                    </thead>
+                    <tbody id="tbdUserList">
+                    </tbody>
+                </table>
+    <!--End::Table-->
+  
      <!--begin::Modal-->
                 <div class="modal fade" id="exampleModalSizeLg" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-lg" style="margin-left:23%;" role="document">
@@ -712,154 +793,7 @@
                                                         </div>
                                                             <!--end::Group-->
 
-                                                            <%--<!--begin::Group-->
-                                                        <div class="form-group row">
-                                                            <label id="lblSittingFee" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">Sitting Fee </label>
-                                                            <div class="col-lg-9 col-xl-9">
-                                                                <div class="row">
-                                                                    <div class="col-4">
-                                                                    <div class="input-group-prepend">
-															         <select id="ddlCurrencySymbol" class="form-control form-control-lg form-control-solid col">
-                                                                        <option selected="selected" value="0">¤ currencySign</option>
-                                                                         <option value="rupee">₹ rupee</option>
-                                                                          <option value="austral">₳ austral</option>
-                                                                          <option value="australCentavo">¢ australCentavo</option>
-                                                                          <option value="baht">฿ baht</option>
-                                                                          <option value="cedi">₵ cedi</option>
-                                                                          <option value="cent">¢ cent</option>
-                                                                          <option value="colon">₡ colon</option>
-                                                                          <option value="cruzeiro">₢ cruzeiro</option>
-                                                                          <option value="dollar">$ dollar</option>
-                                                                          <option value="dong">₫ dong</option>
-                                                                          <option value="drachma">₯ drachma</option>
-                                                                          <option value="dram">​֏ dram</option>
-                                                                          <option value="european">₠ european</option>
-                                                                          <option value="euro">€ euro</option>
-                                                                          <option value="florin">ƒ florin</option>
-                                                                          <option value="franc">₣ franc</option>
-                                                                          <option value="guarani">₲ guarani</option>
-                                                                          <option value="hryvnia">₴ hryvnia</option>
-                                                                          <option value="kip">₭ kip</option>
-                                                                          <option value="att ">ອັດ att</option>
-                                                                          <option value="lepton">Λ. lepton</option>
-                                                                          <option value="lira">₺ lira</option>
-                                                                          <option value="liraOld">₤ liraOld</option>
-                                                                          <option value="lari">₾ lari</option>
-                                                                          <option value="mark">ℳ mark</option>
-                                                                          <option value="mill">₥ mill</option>
-                                                                          <option value="naira">₦ naira</option>
-                                                                          <option value="peseta">₧ peseta</option>
-                                                                          <option value="peso">₱ peso</option>
-                                                                          <option value="pfennig">₰ pfennig</option>
-                                                                          <option value="pound">£ pound</option>
-                                                                          <option value="real">R$  real</option>
-                                                                          <option value="riel">៛ riel</option>
-                                                                          <option value="ruble">₽ ruble</option>
-                                                                          <option value="rupeeOld">₨ rupeeOld</option>
-                                                                          <option value="shekel">₪ shekel</option>
-                                                                          <option value="shekelAlt">ש״ח shekelAlt</option>
-                                                                          <option value="taka">৳ taka</option>
-                                                                          <option value="tenge">₸ tenge</option>
-                                                                          <option value="togrog">₮ togrog </option>
-                                                                          <option value="won">₩ won </option>
-                                                                          <option value="yen">¥ yen  </option>
-                                                                    </select> 
-															        </div>
-                                                                        </div>
-                                                                    <div class="col-5">
-																        <input id="txtSittingFee" class="form-control form-control-solid form-control-lg" type="number" value="" onkeypress="javascript:fnRemoveClass(this,'SittingType');" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" placeholder="Enter Amount" autocomplete="off" />
-														        </div>
-                                                                    <div class="col-3">
-                                                                    <div class="input-group-prepend">
-															         <select id="ddlPaymentMode" class="form-control form-control-lg form-control-solid col">
-                                                                        <option selected="selected" value="0">Select . . .</option>
-                                                                          <option value="Monthly">Monthly</option>
-                                                                          <option value="Quarterly">Quarterly</option>
-                                                                          <option value="BioAnnual">Bi Annual</option>
-                                                                          <option value="Yearly">Yearly</option>
-
-                                                                    </select> 
-															        </div>
-                                                                  </div>
-                                                                    </div>
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Group-->
-
-
-                                                            <!--begin::Group-->
-                                                        <div class="form-group row">
-                                                            <label id="lblRemuneration" style="text-align: left" class="col-xl-3 col-lg-3 col-form-label">Remuneration </label>
-                                                            <div class="col-lg-9 col-xl-9">
-                                                                <div class="row">
-                                                                    <div class="col-4">
-                                                                    <div class="input-group-prepend">
-															         <select id="ddlCurrencySymbolRem" class="form-control form-control-lg form-control-solid col">
-                                                                        <option selected="selected" value="0">¤ currencySign</option>
-                                                                         <option value="rupee">₹ rupee</option>
-                                                                          <option value="austral">₳ austral</option>
-                                                                          <option value="australCentavo">¢ australCentavo</option>
-                                                                          <option value="baht">฿ baht</option>
-                                                                          <option value="cedi">₵ cedi</option>
-                                                                          <option value="cent">¢ cent</option>
-                                                                          <option value="colon">₡ colon</option>
-                                                                          <option value="cruzeiro">₢ cruzeiro</option>
-                                                                          <option value="dollar">$ dollar</option>
-                                                                          <option value="dong">₫ dong</option>
-                                                                          <option value="drachma">₯ drachma</option>
-                                                                          <option value="dram">​֏ dram</option>
-                                                                          <option value="european">₠ european</option>
-                                                                          <option value="euro">€ euro</option>
-                                                                          <option value="florin">ƒ florin</option>
-                                                                          <option value="franc">₣ franc</option>
-                                                                          <option value="guarani">₲ guarani</option>
-                                                                          <option value="hryvnia">₴ hryvnia</option>
-                                                                          <option value="kip">₭ kip</option>
-                                                                          <option value="att ">ອັດ att</option>
-                                                                          <option value="lepton">Λ. lepton</option>
-                                                                          <option value="lira">₺ lira</option>
-                                                                          <option value="liraOld">₤ liraOld</option>
-                                                                          <option value="lari">₾ lari</option>
-                                                                          <option value="mark">ℳ mark</option>
-                                                                          <option value="mill">₥ mill</option>
-                                                                          <option value="naira">₦ naira</option>
-                                                                          <option value="peseta">₧ peseta</option>
-                                                                          <option value="peso">₱ peso</option>
-                                                                          <option value="pfennig">₰ pfennig</option>
-                                                                          <option value="pound">£ pound</option>
-                                                                          <option value="real">R$  real</option>
-                                                                          <option value="riel">៛ riel</option>
-                                                                          <option value="ruble">₽ ruble</option>
-                                                                          <option value="rupeeOld">₨ rupeeOld</option>
-                                                                          <option value="shekel">₪ shekel</option>
-                                                                          <option value="shekelAlt">ש״ח shekelAlt</option>
-                                                                          <option value="taka">৳ taka</option>
-                                                                          <option value="tenge">₸ tenge</option>
-                                                                          <option value="togrog">₮ togrog </option>
-                                                                          <option value="won">₩ won </option>
-                                                                          <option value="yen">¥ yen  </option>
-                                                                    </select> 
-															        </div>
-                                                                        </div>
-                                                                    <div class="col-5">
-																        <input id="txtRemuneration" class="form-control form-control-solid form-control-lg" type="number" value="" onkeypress="javascript:fnRemoveClass(this,'Remuneration');" placeholder="Enter Amount" autocomplete="off" />
-														            </div>
-                                                                  <div class="col-3">
-                                                                    <div class="input-group-prepend">
-															         <select id="ddlddlPaymentModeRemuneration" class="form-control form-control-lg form-control-solid col">
-                                                                        <option selected="selected" value="0">Select . . .</option>
-                                                                          <option value="Monthly">Monthly</option>
-                                                                          <option value="Quarterly">Quarterly</option>
-                                                                          <option value="BioAnnual">Bi Annual</option>
-                                                                          <option value="Yearly">Yearly</option>
-
-                                                                    </select> 
-															        </div>
-                                                                  </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Group-->--%>
+                                                      
 
                                                             <!--begin::Group-->
                                                         <div class="form-group row">
@@ -889,33 +823,7 @@
                                                                     </tbody>
                                                                 </table>
                                                                 
-                                                                <%--<div id="kt_repeater_3">
-	                                                            <div class="form-group row">
-		                                                            <div data-repeater-list="" class="col-xl-9">
-			
-		                                                            <div data-repeater-item="" class="form-group row" style="">
-				                                                            <div class="col-lg-8 companies">
-					                                                            <div class="input-group">
-						                                                            
-						                                                            <input type="text" name="companyName" id="txtOtherCompanies" placeholder="Enter Other Companies" class="form-control form-control-solid form-control-lg" value="" onkeypress="return blockSpecialChar(event)" autocomplete="off" maxlength="100" />    onkeypress="javascript:fnRemoveClass(this,'OtherCompanies');"
-					                                                            </div>
-				                                                            </div>
-				                                                            <div class="col-lg-2">
-					                                                            <a href="javascript:;" data-repeater-delete="" class="btn font-weight-bold btn-danger btn-icon">
-						                                                            <i class="la la-remove"></i>
-					                                                            </a>
-				                                                            </div>
-                                                                        <div class="col-lg-3"></div>
-		                                                            
-			                                                            </div></div>
-                                                                    <div class="col-lg-3"></div>
-		                                                            <div class="col">
-			                                                            <div data-repeater-create="" class="btn font-weight-bold btn-primary">
-			                                                            <i id="autoAddTextbox" class="la la-plus"></i>Add</div>
-		                                                            </div>
-	                                                            </div>
-	                                                            
-                                                            </div>--%>
+                                                           
                                                             </div>
                                                         </div>
                                                         <!--end::Group-->
@@ -956,7 +864,8 @@
                     </div>
                 </div>
                 <!--end::Modal-->
-    <div class="card card-custom"> 
+    
+   <!--begin::Modal-->
         <div class="modal fade in" id="deleteProduct" tabindex="-1" role="dialog" aria-hidden="True">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -972,77 +881,7 @@
                 </div>
             </div>
         </div>
-        <div>
-            <!--begin: Search Form-->
-            <!--begin::Search Form-->
-            <%--<div class="mb-7">
-                <div class="row align-items-center">
-                    <div class="col-lg-9 col-xl-8">
-                        <div class="row align-items-center">
-                            <div class="col-md-4 my-2 my-md-0">
-                                <div class="input-icon">
-                                    <input type="text" class="form-control" placeholder="Search..." />
-                                    <span>
-                                        <i class="flaticon2-search-1 text-muted"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="col-md-4 my-2 my-md-0">
-                                <div class="d-flex align-items-center">
-                                    <label class="mr-3 mb-0 d-none d-md-block">Status:</label>
-                                    <select style="width: 250px;" id="ddlUserStatus" class="form-control" >
-                                        <option selected="selected" value="0">Please Select Status</option>
-                                        <option value="Active">Active</option>
-                                        <option value="InActive">InActive</option>
-                                        
-                                    </select>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-xl-4 mt-5 mt-lg-0">
-                        <button id="btnSearch" runat="server" class="btn btn-light-primary px-6 font-weight-bold" onclick="javascript:fnGetUserList();">
-                            Search
-                        </button>
-                    </div>
-                </div>
-
-            </div>--%>
-        </div>
-        <!--end::Search Form-->
-    </div>
-    </div>
-    <!--end::Card-->
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <%--List Bind--%>
-    <div class="portlet light bordered">
-        <div class="portlet-body">
-            <div class="form-body">
-                <table class="table table-striped table-hover table-bordered" id="tbl-User-setup">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Name </th>
-                            <th>Role  </th>
-                            <%-- <th>Tenure Start</th>
-                            <th>Tenure End</th>--%>
-                            <th>Email</th>
-                            <th>User Login</th>
-                            <th>Status</th>
-                            <th></th>
-                            <%--<th></th>--%>
-                        </tr>
-                    </thead>
-                    <tbody id="tbdUserList">
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <%--<div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>--%>
+          <!--end::Modal-->
 </asp:Content>
 
 <asp:Content ID="content3" ContentPlaceHolderID="ContentPlaceHolder2" runat="server">

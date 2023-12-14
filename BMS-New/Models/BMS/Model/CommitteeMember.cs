@@ -16,6 +16,7 @@ namespace BMS_New.Models.BMS.Model
         public Int32 CommitteeRoleId { get; set; }
         public String createdBy { get; set; }
         public String modifiedBy { get; set; }
+        public String Operation { get; set; }
         public Int32 version { get; set; }
         public string createdon { get; set; }
         public string committeeModifiedDate { get; set; }

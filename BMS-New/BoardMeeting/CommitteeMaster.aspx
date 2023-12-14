@@ -51,7 +51,7 @@
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <%--  <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>--%>
-      <table class="table table-striped table-hover table-bordered" id="tbl-committee-setup">
+      <table class="table table-striped table-hover table-bordered"id="tbl-committee-setup">
         <thead>
             <tr>
                             <th>SR. No</th>
@@ -285,13 +285,13 @@
                             <br />
                             <br />
                             <div class="row">
-                                <h4><b>Current Committee Composition</b></h4>
+                                <h4><b>Current Committee</b></h4>
                                 <table class="table table-striped" id="adduser_prev">
                                     <thead>
                                         <tr>
                                             <th>SEQUENCE</th>
                                             <th>NAME & EMAIL</th>
-                                            <th>ROLE</th>                                            
+                                            <th>ROLE</th>      
                                         </tr>
                                     </thead>
                                     <tbody id="tbody_prev"></tbody>
@@ -301,7 +301,7 @@
                         <div>
                             <div class="row">
                                 <div class="modal-footer">
-                                    <button id="btnCancel1" type="button" class="btn btn-primary font-weight-bold" data-target="#committee_history" data-toggle="modal"  onclick="javascript:CancleCommittee_composition();">Cancel</button>
+                                    <button id="btnCancel1" type="button" class="btn btn-primary font-weight-bold" data-target="#committee_history" data-toggle="modal"  onclick="javascript:CancleCommittee();">Cancel</button>
                                 </div>
                             </div>
                         </div>

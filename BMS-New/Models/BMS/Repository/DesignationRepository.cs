@@ -16,17 +16,20 @@ namespace BMS_New.Models.BMS.Repository
         private DesignationResponse _designationResponse;
         private string connectionString = SQLHelper.GetConnString();
 
+   
         public DesignationResponse AddDesignation(Designation objDesignation)
         {
             _designationResponse = new DesignationResponse();
             _designationResponse.StatusFl = false;
             _designationResponse.Msg = "Something went wrong. Please try again or Contact Support!";
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
                     conn.ChangeDatabase(objDesignation.moduleDatabase);
+
                     using (SqlCommand cmd = new SqlCommand("SP_PROCS_BMS_DESIGNATION", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
@@ -34,20 +37,19 @@ namespace BMS_New.Models.BMS.Repository
                         cmd.Parameters.Clear();
                         cmd.Parameters.Add(new SqlParameter("@MODE", "CHECK"));
                         cmd.Parameters.Add(new SqlParameter("@ACTION_TYPE", "INSERT"));
-                        //cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objDesignation.companyId));
                         cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objDesignation.CompanyId));
                         cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
-                        Int32 obj = Convert.ToInt32(cmd.Parameters["@SET_COUNT"].Value);
-                        if (obj == 0)
+                        Int32 objCount = Convert.ToInt32(cmd.Parameters["@SET_COUNT"].Value);
+
+                        if (objCount == 0)
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.CommandTimeout = 0;
                             cmd.Parameters.Clear();
                             cmd.Parameters.Add(new SqlParameter("@MODE", "INSERT_UPDATE"));
                             cmd.Parameters.Add(new SqlParameter("@ACTION_TYPE", "INSERT"));
-                            //cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objDesignation.companyId));
-                            cmd.Parameters.Add(new SqlParameter("@COMPANY_ID",objDesignation.CompanyId));
+                            cmd.Parameters.Add(new SqlParameter("@COMPANY_ID", objDesignation.CompanyId));
                             cmd.Parameters.Add(new SqlParameter("@EMPLOYEE_ID", objDesignation.createdBy));
                             cmd.Parameters.Add(new SqlParameter("@SET_COUNT", SqlDbType.Int)).Direction = ParameterDirection.Output;
                             cmd.Parameters.Add(new SqlParameter("@DESIGNATION_NAME", objDesignation.designationName));
@@ -60,10 +62,9 @@ namespace BMS_New.Models.BMS.Repository
                         else
                         {
                             _designationResponse.StatusFl = false;
-                            _designationResponse.Msg = "Designation Name aleady exists !";
+                            _designationResponse.Msg = "Designation Name already exists !";
                         }
                     }
-                    conn.Close();
                 }
             }
             catch (Exception ex)
@@ -71,10 +72,11 @@ namespace BMS_New.Models.BMS.Repository
                 _designationResponse = new DesignationResponse();
                 _designationResponse.StatusFl = false;
                 _designationResponse.Msg = "Something went wrong. Please try again or Contact Support!";
-               // new LogHelper().AddExceptionLogs(ex.Message.ToString(), ex.Source, ex.StackTrace, this.GetType().Name, new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name, Convert.ToString(HttpContext.Current.Session["EmployeeId"]), Convert.ToInt32(HttpContext.Current.Session["ModuleId"]));
             }
+
             return _designationResponse;
         }
+
 
         public DesignationResponse UpdateDesignation(Designation objDesignation)
         {
