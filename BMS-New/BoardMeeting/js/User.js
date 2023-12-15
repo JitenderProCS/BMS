@@ -227,7 +227,7 @@ function getdiv() {
 //}
 
 function initializeDataTable() {
-    var table = $('#tbl-User-setup').DataTable({
+     $('#tbl-User-setup').DataTable({
         "scrollX": true,
         scrollY: 350,
         dom: 'Bfrtip',

@@ -3,7 +3,7 @@ var CommitteeRoleList = [];
 var arrCommitteeUserList = new Array();
 function fnOpenNew() {
     $("#Coordinator").hide();
-    /*$("#Select_Coordinator").hide();*/
+    $("#Select_Coordinator").hide();
    /* $("#committee_add").modal('show');*/
     $("span[id*='spnCommitte']").html("New Committe");
     $('#lblCommitteeName').removeClass('text-danger');
@@ -49,7 +49,7 @@ $(document).ready(function () {
     function preventBack() { window.history.forward(1); }
 
     fnListCommittee();
-    setuserDesignation();
+   /* setuserDesignation();*/
   
    
     getuserforSuperAdmin();
@@ -111,42 +111,42 @@ function GetCommitteeRole() {
         }
     });
 }
-function setuserDesignation() {
-    var webUrl = uri + "/api/Designation/GetDesignationList"; //"api/DesignationHandler.ashx?caller=GetDesignationList";
-    $.ajax({
-        type: "POST",
-        url: webUrl,
-        data: JSON.stringify({
-            companyId: 0
-        }),
-        contentType: "application/json; charset=utf-8",
-        datatype: "json",
-        async: false,
-        success: function (data) {
-            if (data.StatusFl) {
-                for (var x = 0; x < data.DesignationList.length; x++) {
-                    if (data.DesignationList[x].designationName != 'Chairperson') {
-                        userdesignation.push({
-                            ItemId: data.DesignationList[x].ID,
-                            ItemNm: data.DesignationList[x].designationName
-                        });
-                    }
-                }
-            }
-            else {
-                if (data.Msg == "SessionExpired") {
-                    alert("Your session is expired. Please login again to continue");
-                    window.location.href = "../Login.aspx";
-                }
-                return false;
-            }
-        },
-        error: function (response) {
-            $("#Loader").hide();
-            alert(response.status + ' ' + response.statusText);
-        }
-    });
-}
+//function setuserDesignation() {
+//    var webUrl = uri + "/api/Designation/GetDesignationList"; //"api/DesignationHandler.ashx?caller=GetDesignationList";
+//    $.ajax({
+//        type: "POST",
+//        url: webUrl,
+//        data: JSON.stringify({
+//            companyId: 0
+//        }),
+//        contentType: "application/json; charset=utf-8",
+//        datatype: "json",
+//        async: false,
+//        success: function (data) {
+//            if (data.StatusFl) {
+//                for (var x = 0; x < data.DesignationList.length; x++) {
+//                    if (data.DesignationList[x].designationName != 'Chairperson') {
+//                        userdesignation.push({
+//                            ItemId: data.DesignationList[x].ID,
+//                            ItemNm: data.DesignationList[x].designationName
+//                        });
+//                    }
+//                }
+//            }
+//            else {
+//                if (data.Msg == "SessionExpired") {
+//                    alert("Your session is expired. Please login again to continue");
+//                    window.location.href = "../Login.aspx";
+//                }
+//                return false;
+//            }
+//        },
+//        error: function (response) {
+//            $("#Loader").hide();
+//            alert(response.status + ' ' + response.statusText);
+//        }
+//    });
+//}
 function getuserforSuperAdmin() {
     var webUrl = uri + "/api/Committee/GetUsersForCommitteeSuperAdmin";
     $("input[id*='txtAddSuperAdmin']").autocomplete({
@@ -377,14 +377,6 @@ function fnValidateCoordinator() {
 
     }
 
-    //if (Sequence == '0') {
-    //    isValid = false;
-    //    alert("Please Select Sequence!");
-    //}
-    //else {
-    //    // alert("This is your alert message!");
-    //}
-
     if (!isValid) {
         return isValid;
     }
@@ -437,6 +429,7 @@ function CoordinatorDetail() {
 }
 function fnSelectCoordinator() {
     debugger
+    $("#Select_Coordinator").show();
     if (fnValidateSelectCoordinator()) {
         var obj = new CoordinatorDetail();
         var str = "";
@@ -934,7 +927,7 @@ function DeleteCommittee() {
 
 function CancleCommittee() {
     $('#tbody').html("");
-    var strTable = setCommitteeComposition();
+    //var strTable = setCommitteeComposition();
     $('#tbody').append(strTable);
 }
 

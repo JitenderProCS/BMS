@@ -191,7 +191,7 @@
                       <!--end::Group-->
                       <!--begin::Group-->
                     <div id="Coordinator" class="form-group row">
-                                                <table class="table" id="sample_Users" style="width: 377px;margin-left: 215px;">
+                                                <table class="table" id="sample_Users" style="width: 377px;margin-left: 200px;margin-top: -33px;border: solid;border-width: thin;">
                                                     <thead class="text-uppercase">
                                                         <tr>
                                                             <th style="display: none;"> ID</th>
@@ -221,7 +221,7 @@
                       <!--end::Group-->
                       <!--begin::Group-->
                     <div id="SelectCoordinator" class="form-group row">
-                                                <table class="table" id="Select_Coordinator" style="width: 377px;margin-left: 215px;">
+                                                <table class="table" id="Select_Coordinator" style="width: 377px;margin-left: 200px;margin-top: -33px;border: solid;border-width: thin;">
                                                     <thead class="text-uppercase">
                                                         <tr>
                                                             <th style="display: none;"> ID</th>
